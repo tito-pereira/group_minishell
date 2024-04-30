@@ -6,37 +6,11 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 13:55:46 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:56:33 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// PARSER STRUCTS:
-
-typedef struct s_chunk {
-	char	*infile;
-	int		heredoc;
-	char	*delimiter;
-	char	*outfile;
-	int		append; //0 se não (truncate), 1 se sim (append)
-	char	*og;
-	char	**cmd_n_args;
-	int		inpipe; //1 se for precedido de um pipe
-	int		inpfd; //se sim, o seu fd, default -1
-	int		outpipe; //1 se for redirecionado para um pipe
-	int		outpfd; //se sim, o seu fd, default -1
-}	t_chunk;
-
-typedef struct s_execlist {
-	t_chunk		**chunk;
-	int			cmd_nmb;
-	int			pipe_nmb;
-	int			current; //numero de comando, default 1
-	int			erno;
-}	t_execlist;
-
-//--- MANDATORY EXECUTOR: ---//
 
 int	exec_chunk(t_execlist *execl)
 {
@@ -148,15 +122,4 @@ av[4] = char **envp;
 .mudar o executavel do step 5 para sempre o mesmo
 .traduzir t_mini *;
 .deixar um united char **args para usar aqui;
-*/
-
-/*
-na parte mandatória vou executar todos os outputs finais para o
-STDOUT do terminal
-Em caso de bónus vou implementar o conceito de subshell usado pelo bash:
-- abrir um child process
-- executar minishell também no child process
-- executar o exec_chunk da parte mandatória no STDOUT desse processo
-- retornar o output desse terminal para substituir a expressão em
-	parentesis no parent process
 */
