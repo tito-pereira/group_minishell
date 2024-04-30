@@ -3,73 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   e_1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 18:06:42 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 00:41:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-c = chunk iteration;
-pid, fd, pipe, fork = execve e conexao de pipes
-
-diferentes condicoes pipe flags e redirs para definir os dups
-*/
-
-int	exec_chunk(t_execlist *execl)
-{
-	int	*fd;
-	int	pid;
-	int	c;
-
-	c = execl.current;
-	fd = malloc (2 * sizeof(int));
-	pipe(fd);
-	pid = fork();
-	if (pid == 0)
-	{
-		close (fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		if (inpipe == 1) // inpipe valido
-			dup2(execl.chunk[c].inpfd, STDIN_FILENO);
-		else if (execl->chunk[c]->inpipe == 0 && infile != NULL)
-			dup2(open(execl.chunk[c].infile, O_RDONLY), STDIN_FILENO);
-		if (outfile != NULL)
-			dup2(open(execl.chunk[c].outfile, O_RDONLY), STDOUT_FILENO);
-		if (outpipe != NULL)
-			execl.chunk[c + 1].inpfd = execl.chunk[c].outpfd; //a ser usado no comando seguinte
-		execve(execl.chunk[c].cmd_n_args[0], execl.chunk[c].cmd_n_args, execl->my_envp);
-	}
-	wait(0);
-	close(fd[1]);
-	return (fd[0]);
-}
-
-/*
-pega no fd do ultimo pipe fd e copia tudo (getnextline) para o STDOUT
-*/
-void	last_output(int last)
-{
-	char	*ret;
-	int		sig;
-
-	sig = 1;
-	while (sig == 1)
-	{
-		ret = get_next_line(last);
-		if (ret != NULL)
-		{
-			ft_printf("%s\n", ret);
-			free(ret);
-		}
-		else
-			sig = 0;
-	}
-	close(last);
-}
 /*
 retornar o errno apenas no fim, nos passos intermédios
 nao é realmente necessário
@@ -94,7 +36,7 @@ int	the_executor(t_execlist *execl, int *error_stt)
 	i = -1;
 	while (execl->chunk[++i] != NULL) //chunk loop e executar cada chunk
 	{
-		last = exec_chunk(execl, i);
+		last = exec_chunk(execl);
 		//execl.current++;
 	}
 	execl.erno = errno; //errno do ultimo comando antes de ser contaminado c a getnextline
@@ -146,42 +88,105 @@ execve(execl->chunk[c]->cmd_n_args[0], execl->chunk[c]->cmd_n_args, execl->my_en
 execve(execl->chunk[c]->path, execl->chunk[c]->cmd_n_args, execl->my_envp);
 */
 
-int	exec_chunk(t_execlist *execl, int n)
+void	**get_exec_str(t_chunk *chunk, char ***exec_str)
 {
-	int	*fd;
-	int	fd_in;
-	int	fd_out;
-	int	pid;
-	
-	fd = malloc (2 * sizeof(int));
-	pipe(fd);
-	pid = fork();
-	if (pid == 0)
+	int	i;
+
+	i = 0;
+	if (chunk->blt == 1) //builtin
 	{
-		close (fd[0]);
-		if (infile && inpipe == 1)
-		{
-			fd_in = open(O_RDONLY);
-			dup2(fd_in, STDIN_FILENO);
-		}
-		else if (dentro da pipeline)
-			dup2(fd_in, STDIN_FILENO)
-		//////
-		dup2(fd[1], STDOUT_FILENO);
-		if (inpipe == 1) // inpipe valido
-			dup2(execl.chunk[c].inpfd, STDIN_FILENO);
-		else if (execl->chunk[c]->inpipe == 0 && infile != NULL)
-			dup2(open(execl.chunk[c].infile, O_RDONLY), STDIN_FILENO);
-		if (outfile != NULL)
-			dup2(open(execl.chunk[c].outfile, O_RDONLY), STDOUT_FILENO);
-		if (outpipe != NULL)
-			execl.chunk[c + 1].inpfd = execl.chunk[c].outpfd; //a ser usado no comando seguinte
-		execve(execl.chunk[c].cmd_n_args[0], execl.chunk[c].cmd_n_args, execl->my_envp);
+		while (chunk->cmd_n_args[i] != NULL)
+			i++;
+		*exec_str = malloc((i + 2) * sizeof(char *));
+		*exec_str[0] = ft_strdup(chunk->path);
+		i = -1;
+		while (chunk->cmd_n_args[++i] != NULL)
+			*exec_str[i + 1] = ft_strdup(chunk->cmd_n_args[i]);
+		*exec_str[i] = NULL;
 	}
-	wait(0);
-	close(fd[1]);
-	return (fd[0]);
+	else if (chunk->blt == 0) //terminal, cmd_n_args tradicional
+		*exec_str = chunk->cmd_n_args;
+	//ja vem formatado do step 5 e tudo
 }
+
+void	exec_chunk(t_execlist *execl, char *exec_str)
+{
+	int		*fd;
+	int		*redir;
+	int		pid;
+	int		i;
+	int		inherit;
+	
+	i = -1;
+	fd_in_out = malloc(2 * sizeof(int));
+	redir[0] = -1;
+	redir[0] = -1;
+	inherit = -1;
+	while (execl->chunk[++i] != NULL)
+	{
+		get_exec_str(execl->chunk[i], &exec_str);
+		fd = malloc (2 * sizeof(int));
+		pipe(fd);
+		pid = fork();
+		if (pid == 0)
+		{
+			if (execl->chunk[i]->infile != NULL && execl->chunk[i]->inpipe == 1) //1, infile redir valido
+			{
+				redir[0] = open(infile, O_RDONLY);
+				dup2(redir[0], STDIN_FILENO);
+				close(redir[0]); //depois de dup, fecha-se
+			}
+			else if (i > 0) //resto, inpipe redir invalido, comando nº>1, recebe smp pipe
+				dup2(fd[0], STDIN_FILENO);
+			close (fd[0]); // se tiver que ser usado, é usado antes daqui
+			//acho que se fecha o original depois da dup certo?
+			// else, normal input sem dup
+			//------------------//
+			if (execl->chunk[i]->outfile != NULL) //1, outfile redir
+			{
+				if (execl->chunk[i]->append == 1)
+					redir[1] = open(outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
+				else
+					redir[1] = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
+				if ((i + 1) < execl->cmd_nmd) //more commands after
+					execl->chunk[i + 1]->inpfd = redir[1];
+				dup2(redir[1], STDOUT_FILENO);
+				close(redir[1]); //depois de dup, fecha-se
+			}
+			if ((n + 1) < execl->cmd_nmb) //2, next chunk redir
+			{
+				execl->chunk[i + 1]->inpfd = redir[1];
+				if (execl->chunk[i]->outfile == NULL)
+					redir[1] = (outra ponta do pipe);
+				dup2(fd[1], STDOUT_FILENO);
+			}
+			// else, output normal sem dup
+			execve(exec_str[0], exec_str, execl->my_envp);
+		}
+		wait(0);
+		close(fd[1]); //para assumir a ponta de leitura do pipe
+		//transporta o fd[0] para o proximo fork
+		if ((i + 1 == execl->cmd_nmb)) //ultimo comando
+			close(fd[0]);
+		else
+			inherit = fd[0];
+		free(fd);
+		if (execl->chunk[i]->blt == 1) //if builtin, dou malloc antes
+			free_db(exec_str);
+	}
+	//free(fd);
+}
+
+/*
+o pipe desta funçao é para ligar o output previo com o input seguinte
+inpfd começa em -1 por default e pode ser alterado no loop
+outpfd também
+
+retorna a reading parte do pipe?
+
+faço já uma exec_struct e mando o prototype para o execve?
+ou faço condições?
+*/
 
 /*
 /------------------------------------------------------------------/
