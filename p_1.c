@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 12:57:01 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:29:50 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 	(*execl)->chunk = malloc ((c + 2) * sizeof(t_chunk *));
 	(*execl)->cmd_nmb = c + 1;
 	(*execl)->pipe_nmb = c;
+	(*execl)->my_envp = create_envp();
 	(*execl)->chunk[c + 1] = NULL; //
 	ft_printf("Pipe counter: %d;\n", c);
 	if (chunk_create(input, *execl, exit_stt) == 0)

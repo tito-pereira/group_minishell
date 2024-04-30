@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:45:07 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/18 12:27:53 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:46:48 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,8 +175,8 @@ find /path/to/search -name "filename"
 find . -name "example.txt"
 find . -name "*.txt"
 
-ou usar pwd no execve
-e acrescentar a isso o caminho fixo /builtins/cmd_name
+deixar os cmd_n_args tal como vem do ponto 4, apenas verificar se sao validos
+
 */
 
 int	arg_id(t_execlist *execl, int *exit_stt)
@@ -232,7 +232,4 @@ transformar os builtins em programas executaveis e nao funções
 int execve(const char *pathname, char *const argv[], char *const envp[]);
 execve(char *path, char **args, char **envp)
 args[0] == path;
-
-vou precisar de fazer parceria aqui, fazer o executor e o ponto 5 ao mm tempo
-por estarrem tao interligados
 */

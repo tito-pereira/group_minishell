@@ -6,31 +6,31 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 13:01:23 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/04/30 13:17:28 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:39:28 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **envp)
 {
 	int	builtin;
 
 	if (av[1] == 1)
-		ft_cd((t_mini *)av[2], (char **)av[3], (char **)av[4]);
+		ft_cd((t_mini *)av[2], (char **)av[3], envp);
 	else if (av[1] == 2)
-		ft_echo((t_mini *)av[2], (char **)av[3]);
+		ft_echo((t_mini *)av[2], envp);
 	else if (av[1] == 3)
-		ft_env((t_mini *)av[2], (char **)av[3], (char **)av[4]);
+		ft_env((t_mini *)av[2], (char **)av[3], envp);
     else if (av[1] == 4)
-		ft_exit((t_mini *)av[2], (char **)av[3]);
+		ft_exit((t_mini *)av[2], envp);
     else if (av[1] == 5)
-		ft_export((t_mini *)av[2], (char **)av[3], (char **)av[4]);
+		ft_export((t_mini *)av[2], (char **)av[3], envp);
     else if (av[1] == 6)
-		ft_pwd((t_mini *)av[2], (char **)av[3], (char **)av[4]);
+		ft_pwd((t_mini *)av[2], (char **)av[3], envp);
     else if (av[1] == 7)
-		ft_unset((t_mini *)av[2], (char **)av[3], (char **)av[4]);
+		ft_unset((t_mini *)av[2], (char **)av[3], envp);
 }
 
 /*

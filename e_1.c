@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 13:18:16 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:55:46 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ int	exec_chunk(t_execlist *execl)
 	if (pid == 0)
 	{
 		close (fd[0]);
-		dup2(fd[1], STDOUT);
+		dup2(fd[1], STDOUT_FILENO);
 		if (inpipe == 1)
-			dup2(execl.chunk[c].inpfd, STDIN);
+			dup2(execl.chunk[c].inpfd, STDIN_FILENO);
 		else if (inpipe == 0 && infile != NULL)
-			dup2(open(execl.chunk[c].infile, O_RDONLY), STDIN);
+			dup2(open(execl.chunk[c].infile, O_RDONLY), STDIN_FILENO);
 		if (outfile != NULL)
-			dup2(open(execl.chunk[c].outfile, O_RDONLY), STDOUT);
+			dup2(open(execl.chunk[c].outfile, O_RDONLY), STDOUT_FILENO);
 		if (outpipe != NULL)
 			execl.chunk[c + 1].inpfd = execl.chunk[c].outpfd; //a ser usado no comando seguinte
 		execve(execl.chunk[c].cmd_n_args[0], execl.chunk[c].cmd_n_args, ENV_VAR);
@@ -122,10 +122,13 @@ void	execlist_exe(t_execlist *execl)
 }
 
 /*
-tenho que criar um conversor para a t_mini struct
-para conseguir passar os argumentos direitos aqui no executor
+execve()
 
-vou receber o output 
+char *PATH, char **ARGS, char **execl->my_envp
+
+av[1] = (char *)"./builtins/builtfunct";
+av[2] = (char *)t_mini;
+av[3] = (char *)execl->chunk[i]->cmd_n_args (cmd_n_args ponto 4)
 */
 
 /*
@@ -142,8 +145,9 @@ av[4] = char **envp;
 6   ft_pwd(t_mini *ms, char **cmd, char **envp);
 7	ft_unset(t_mini *ms, char **cmd, char **envp);
 
-traduzir t_mini *;
-deixar um united char **args para usar aqui;
+.mudar o executavel do step 5 para sempre o mesmo
+.traduzir t_mini *;
+.deixar um united char **args para usar aqui;
 */
 
 /*
