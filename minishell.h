@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 17:07:44 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:25:13 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ typedef struct s_chunk {
 	int		append; // (2) redir_checker
 	char	*og; // (1) parse_execl
 	char	**cmd_n_args; // (4) arg_separator
-	char	*path;
-	int		inpipe;
-	int		inpfd;
+	char	*path; // (5) arg_id
+	int		inpipe; // (5) arg_id
+	int		inpfd; // executor
 	int		outpipe; //acho que já não é necessário
-	int		outpfd;
-	int		blt;
+	int		outpfd; // executor
+	int		blt; // (5) arg_id
 }	t_chunk;
 
 // (1) parse_execl()
