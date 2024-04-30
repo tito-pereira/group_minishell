@@ -6,11 +6,18 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 15:28:18 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:56:19 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+c = chunk iteration;
+pid, fd, pipe, fork = execve e conexao de pipes
+
+diferentes condicoes pipe flags e redirs para definir os dups
+*/
 
 int	exec_chunk(t_execlist *execl)
 {
@@ -73,19 +80,19 @@ para o STDOUT
 tou a pensar usar get_next_line(pipe->STDOUT)
 */
 
-void	execlist_exe(t_execlist *execl)
+int	the_executor(t_execlist *execl, int *error_stt)
 {
 	int	i;
 	int	last;
 
-	if (execl.cmd_nmb != (execl.pipe_nmb + 1))
+	if (execl->cmd_nmb != (execl->pipe_nmb + 1))
 	{
 		perror("Number of pipes and commands is not compatible");
-		free_exec(execl);
-		exit (0);
+		*error_stt = 1;
+		return (0);
 	}
 	i = -1;
-	while (execl.chunk[++i] != NULL)
+	while (execl->chunk[++i] != NULL) //chunk loop e executar cada chunk
 	{
 		last = exec_chunk (execl);
 		execl.current++;
@@ -114,24 +121,6 @@ Exit status 126: Permission problem or command is not executable.
 (executor failed)
 (after cada execve)
 
-.mudar o executavel do step 5 para sempre o mesmo;
-.suportar outros comandos sem ser builtin;
-.deixar um united char **args para usar aqui;
 .mudar as t_mini para um int *error
-.fazer mesmo o executor
-*/
-
-/*
-av[1] = int option;
-av[2] = t_mini *ms;
-av[3] = char **cmd;
-av[4] = char **envp;
-
-1	ft_cd(t_mini *ms, char **cmd, char **env);
-2	ft_echo(t_mini *ms, char **cmd);
-3	ft_env(t_mini *ms, char **cmd, char **envp);
-4	ft_exit(t_mini *ms, char **cmd);
-5	ft_export(t_mini *ms, char **cmd, char **envp);
-6   ft_pwd(t_mini *ms, char **cmd, char **envp);
-7	ft_unset(t_mini *ms, char **cmd, char **envp);
+.fazer executor
 */

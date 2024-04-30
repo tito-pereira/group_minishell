@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:40:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/04/30 16:24:21 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:45:33 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,18 +103,26 @@ char	*find_path(char	*arg)
 	return (path);
 }
 
-int	chunk_id(t_chunk *chunk)
+int	chunk_id(t_chunk *chunk, char *prog, int opt)
 {
 	char	*path;
 	char	*old;
 
-	path = find_path(chunk->cmd_n_args[0]);
+	if (opt == 1)
+		path = find_path(prog); //builtin
+	else if (opt == 2)
+		path = find_path(chunk->cmd_n_args[0]); //terminal
 	if (path == NULL)
 		return (0);
-	ft_printf("Swapping old cmd_n_arg[0] with PATH.\n");
-	old = chunk->cmd_n_args[0];
-	chunk->cmd_n_args[0] = path;
-	free (old);
-	ft_printf("Swap successfull.\n");
+	if (opt == 1)
+		chunk->path = path; //builtin
+	else if (opt == 2)
+	{
+		ft_printf("Swapping old cmd_n_arg[0] with PATH.\n");
+		old = chunk->cmd_n_args[0]; //terminal
+		chunk->cmd_n_args[0] = path;
+		free (old);
+		ft_printf("Swap successfull.\n");
+	}
 	return (1);
 }

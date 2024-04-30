@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 16:22:50 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:47:18 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_chunk {
 	int		append; // (2) redir_checker
 	char	*og; // (1) parse_execl
 	char	**cmd_n_args; // (4) arg_separator
+	char	*path;
 	int		inpipe;
 	int		inpfd;
 	int		outpipe; //acho que já não é necessário
@@ -75,7 +76,7 @@ int		output_redir(t_chunk *chunk, int i); // (2)
 char	*new_chnk(char *spec, char *old, int a, int b); // (3)
 int		cmd_separator(t_chunk *chunk); // (4)
 void	add_arg(t_chunk *chunk, char *str); // (2)
-int		chunk_id(t_chunk *chunk); // (5)
+int		chunk_id(t_chunk *chunk, char *prog, int opt); // (5)
 
 // EXECUTOR
 void	execlist_exe(t_execlist *execl);
