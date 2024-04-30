@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 15:04:16 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:03:45 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 (2) - ler e anotar redirections e file names em cada chunk
 */
 
-int	check_redir(t_execlist *execl, int i, int c)
+int	check_redir(t_execlist *execl, int i, int c, int *exit_stt)
 {
 	//ft_printf("Inside check_redir;\n");
 	if(execl->chunk[c]->og[i] == '<' && c == 0)
@@ -24,9 +24,7 @@ int	check_redir(t_execlist *execl, int i, int c)
 		if (input_redir(execl->chunk[c], i) == -1)
 		{
 			perror("Input redirection parsing error");
-			execl->exit_stt = 1; //
-			//free_exec(execl);
-			//exit (0);
+			*exit_stt = 1;
 			return(0);
 		}
 	}
@@ -35,16 +33,14 @@ int	check_redir(t_execlist *execl, int i, int c)
 		if (output_redir(execl->chunk[c], i) == 1)
 		{
 			perror("Output redirection parsing error");
-			execl->exit_stt = 1; //
-			//free_exec(execl);
-			//exit (0);
+			*exit_stt = 1;
 			return(0);
 		}
 	}
 	return(1);
 }
 
-int	redir_checker(t_execlist *execl)// int *exit_stt) == 1
+int	redir_checker(t_execlist *execl, int *exit_stt)
 {
 	int	i;
 	int	c;
@@ -75,7 +71,7 @@ int	redir_checker(t_execlist *execl)// int *exit_stt) == 1
 		while(execl->chunk[c]->og[++i] != '\0')
 		{
 			//ft_printf("Inside while;\n");
-			if (check_redir(execl, i, c) == 0)
+			if (check_redir(execl, i, c, exit_stt) == 0)
 				return(0);
 		}
 	}

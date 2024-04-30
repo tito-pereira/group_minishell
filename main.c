@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 15:24:43 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:08:22 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,20 @@ void	print_exec(t_execlist *execl)
 	}
 }
 
-int	the_parser(t_execlist **execl, char *input)// int *exit_stt)
+int	the_parser(t_execlist **execl, char *input, int *exit_stt)
 {
 	int			flag;
 
 	ft_printf("Inside parsing.\n");
-	flag = pipe_chunks(execl, input);// exit_stt);
+	flag = pipe_chunks(execl, input, exit_stt);
 	if (flag == 1)
-		flag = redir_checker(*execl);// exit_stt);
+		flag = redir_checker(*execl, exit_stt);
 	if (flag == 1)
-		flag = special_char(*execl);// exit_stt);
+		flag = special_char(*execl, exit_stt);
 	if (flag == 1)
-		flag = arg_separator(*execl);// exit_stt);
+		flag = arg_separator(*execl, exit_stt);
 	if (flag == 1)
-		flag = arg_id(*execl);// exit_stt);
+		flag = arg_id(*execl, exit_stt);
 	ft_printf("Finished parsing with flag %d\n", flag);
 	return (flag);
 }

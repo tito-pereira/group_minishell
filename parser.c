@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:45:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 15:26:05 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:10:49 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ retirar todos os free_execl individuais e fazer um geral na main
 (3) - V
 (4) - V
 (5) - V
-exit_stt:
+exit_stt de volta ao main:
 (1) - V, 1
 (2) - V, 1
 (3) - V, 1

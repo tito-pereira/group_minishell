@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 15:06:26 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:06:42 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ int	handle_env_var(int *a, int *b, int *i, char **chunk, t_execlist *execl)
 		{
 			ft_printf("New chunk is NULL\n");
 			perror("Error handling environment variable ($)");
-			execl->exit_stt = 1;
-			//free_exec(execl);
-			//exit(0);
+			//*exit_stt = 1;
 			return(0);
 		}
 		ft_printf("New chunk: '%s'\n", *chunk);
@@ -93,9 +91,7 @@ int	handle_env_var(int *a, int *b, int *i, char **chunk, t_execlist *execl)
 	{
 		ft_printf("Spec is NULL\n");
 		perror("Error handling environment variable ($)");
-		execl->exit_stt = 1;
-		//free_exec(execl);
-		//exit(0);
+		//*exit_stt = 1;
 		return(0);
 	}
 	return(1);
@@ -113,7 +109,7 @@ int	handle_env_var(int *a, int *b, int *i, char **chunk, t_execlist *execl)
 	*/
 }
 
-int	special_char(t_execlist *execl)// int *exit_stt)
+int	special_char(t_execlist *execl, int *exit_stt)
 {
 	int		a;
 	int		b;
@@ -125,7 +121,6 @@ int	special_char(t_execlist *execl)// int *exit_stt)
 	flag = 1;
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
 	ft_printf("Inside parsing (3): special_char;\n");
-	//(void)execl->exit_stt;
 	while (execl->chunk[++j] != NULL)
 	{
 		ft_printf("Chunk n°%d:\n", j);
@@ -140,7 +135,10 @@ int	special_char(t_execlist *execl)// int *exit_stt)
 			{
 				ft_printf("Special char found in position %d\n", i);
 				if (handle_env_var(&a, &b, &i, &execl->chunk[j]->og, execl) == 0)
+				{
+					*exit_stt = 1;
 					return(0);
+				}
 				else
 					ft_printf("execl->chunk[j]->og: '%s'\n", execl->chunk[j]->og);
 			}
