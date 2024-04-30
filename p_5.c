@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:45:07 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 13:46:48 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:55:46 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ deixar os cmd_n_args tal como vem do ponto 4, apenas verificar se sao validos
 
 */
 
-int	arg_id(t_execlist *execl, int *exit_stt)
+int	arg_id(t_execlist *execl)// int *exit_stt)
 {
 	int	i;
 
@@ -194,7 +194,7 @@ int	arg_id(t_execlist *execl, int *exit_stt)
 			perror("Invalid shell command");
 			//free_exec(execl);
 			//exit(0);
-			*exit_stt = 127;
+			execl->exit_stt = 127;
 			return(0);
 		}
 		if (i >= 1)

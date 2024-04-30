@@ -29,14 +29,14 @@ erros para unclosed quotes aqui ou noutro sitio
 */
 
 
-int	arg_separator(t_execlist *execl, int *exit_stt)
+int	arg_separator(t_execlist *execl)// int *exit_stt)
 {
 	int		c;
 	int		ret;
 
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
 	ft_printf("Inside parsing (4): arg_separator;\n");
-	(void)exit_stt;
+	(void)execl->exit_stt;
 	c = -1;
 	while (execl->chunk[++c] != NULL)
 	{

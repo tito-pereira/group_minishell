@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 13:30:05 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:52:46 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_execlist {
 	t_chunk	**chunk;
 	int		cmd_nmb;
 	int		pipe_nmb;
+	int		exit_stt;
 	char	**my_envp;
 }	t_execlist;
 
@@ -60,12 +61,12 @@ void	sig_repeat(int num);
 //void	global_checker(t_execlist *execl);
 
 // PARSER MAIN
-int		the_parser(t_execlist **execl, char *input, int *exit_stt);
-int		pipe_chunks(t_execlist **execl, char *input, int *exit_stt); // (1)
-int		redir_checker(t_execlist *execl, int *exit_stt); // (2)
-int		special_char(t_execlist *execl, int *exit_stt); // (3)
-int		arg_separator(t_execlist *execl, int *exit_stt); // (4)
-int		arg_id(t_execlist *execl, int *exit_stt); // (5)
+int		the_parser(t_execlist **execl, char *input);// int *exit_stt);
+int		pipe_chunks(t_execlist **execl, char *input);// int *exit_stt); // (1)
+int		redir_checker(t_execlist *execl);// int *exit_stt); // (2)
+int		special_char(t_execlist *execl);// int *exit_stt); // (3)
+int		arg_separator(t_execlist *execl);// int *exit_stt); // (4)
+int		arg_id(t_execlist *execl);// int *exit_stt); // (5)
 
 // PARSER SUPPORT
 int		input_redir(t_chunk *chunk, int i); // (2)

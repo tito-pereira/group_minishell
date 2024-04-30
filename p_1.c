@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 13:29:50 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:54:49 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ if ||, error
 nao esta a dar esse error (ou retorno -1)
 */
 
-int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
+int	chunk_create(char *input, t_execlist *execl)// int *exit_stt)
 {
 	char	**og_group;
 	int		i;
@@ -59,7 +59,7 @@ int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
 		perror("Pipe parsing error");
 		//free_exec(execl);
 		//exit (0);
-		*exit_stt = 1;
+		execl->exit_stt = 1;
 		return(0);
 	}
 	i = -1;
@@ -74,7 +74,7 @@ int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
 
 // transformar em retorno int
 //t_execlist	*pipe_chunks(char *input, int *exit_stt)
-int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
+int	pipe_chunks(t_execlist **execl, char *input)
 {
 	int			c;
 	//t_execlist	*execl;
@@ -88,7 +88,7 @@ int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 	{
 		perror("Memory allocation problem in the parser");
 		//exit (0);
-		*exit_stt = 1;
+		(*execl)->exit_stt = 1;
 		return(0);
 	}
 	c = pipe_counter(input);
@@ -97,7 +97,7 @@ int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 		perror("Invalid pipe placement");
 		//free_exec(execl);
 		//exit (0);
-		*exit_stt = 1;
+		(*execl)->exit_stt = 1;
 		return(0);
 	}
 	(*execl)->chunk = malloc ((c + 2) * sizeof(t_chunk *));
@@ -106,7 +106,7 @@ int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 	(*execl)->my_envp = create_envp();
 	(*execl)->chunk[c + 1] = NULL; //
 	ft_printf("Pipe counter: %d;\n", c);
-	if (chunk_create(input, *execl, exit_stt) == 0)
+	if (chunk_create(input, *execl) == 0)
 		return(0);
 	if (*execl)
 	{

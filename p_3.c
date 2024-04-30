@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 12:47:21 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:55:23 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	handle_env_var(int *a, int *b, int *i, char **chunk, t_execlist *execl)
 	*/
 }
 
-int	special_char(t_execlist *execl, int *exit_stt)
+int	special_char(t_execlist *execl)// int *exit_stt)
 {
 	int		a;
 	int		b;
@@ -123,7 +123,7 @@ int	special_char(t_execlist *execl, int *exit_stt)
 	flag = 1;
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
 	ft_printf("Inside parsing (3): special_char;\n");
-	(void)exit_stt;
+	(void)execl->exit_stt;
 	while (execl->chunk[++j] != NULL)
 	{
 		ft_printf("Chunk n°%d:\n", j);

@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 12:27:42 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:49:19 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,21 +88,20 @@ void	print_exec(t_execlist *execl)
 	}
 }
 
-int	the_parser(t_execlist **execl, char *input, int *exit_stt)
+int	the_parser(t_execlist **execl, char *input)// int *exit_stt)
 {
-	//t_execlist	*execl;
 	int			flag;
 
 	ft_printf("Inside parsing.\n");
-	flag = pipe_chunks(execl, input, exit_stt);
+	flag = pipe_chunks(execl, input);// exit_stt);
 	if (flag == 1)
-		flag = redir_checker(*execl, exit_stt);
+		flag = redir_checker(*execl);// exit_stt);
 	if (flag == 1)
-		flag = special_char(*execl, exit_stt);
+		flag = special_char(*execl);// exit_stt);
 	if (flag == 1)
-		flag = arg_separator(*execl, exit_stt);
+		flag = arg_separator(*execl);// exit_stt);
 	if (flag == 1)
-		flag = arg_id(*execl, exit_stt);
+		flag = arg_id(*execl);// exit_stt);
 	ft_printf("Finished parsing with flag %d\n", flag);
 	return (flag);
 }
@@ -143,10 +142,10 @@ int	main()
 {
 	char		*input;
 	t_execlist	*execl;
-	int			exit_stt;
+	//int			exit_stt;
 
 	global_sig = 0;
-	exit_stt = 0;
+	//exit_stt = 0;
 	execl = NULL;
 	while (1)
 	{
@@ -163,7 +162,7 @@ int	main()
 			ft_printf("Closing minishell...\n");
 			exit (0);
 		}
-		if (the_parser(&execl, input, &exit_stt) == 1)
+		if (the_parser(&execl, input) == 1)
 			print_exec(execl);
 		//else, free execl maybe
 		//free(input);

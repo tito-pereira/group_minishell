@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 13:57:29 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:44:57 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,17 @@ execve()
 char *PATH, char **ARGS, char **execl->my_envp
 
 av[1] = (char *)"./builtins/builtfunct";
-av[2] = (char *)t_mini;
+av[2] = (char *)execl; (atualizar o error status)
 av[3] = (char *)execl->chunk[i]->cmd_n_args (cmd_n_args ponto 4)
+
+execl->my_envp; //step 1
+execl->path; //step 5
+cmd_n_args mantém-se do ponto 4
+
+.mudar o executavel do step 5 para sempre o mesmo;
+.deixar um united char **args para usar aqui;
+.mudar as t_mini para um int *error
+.fazer mesmo o executor
 */
 
 /*
@@ -118,11 +127,4 @@ av[4] = char **envp;
 5	ft_export(t_mini *ms, char **cmd, char **envp);
 6   ft_pwd(t_mini *ms, char **cmd, char **envp);
 7	ft_unset(t_mini *ms, char **cmd, char **envp);
-
-execl->path; //step 5
-execl->mini; //exec
-
-.mudar o executavel do step 5 para sempre o mesmo
-.traduzir t_mini *;
-.deixar um united char **args para usar aqui;
 */
