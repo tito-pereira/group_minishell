@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 11:18:33 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 11:50:54 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,6 @@ foreground pipeline.
 . format (norm) && leaks && error check (valgrind)
 . sacar o tester do github e correr
 
-acabando o error status e handling, deixar o resto para o ruben
-e comecar ja a fazer o philosophers
+criar uma copia de env_var com mallocs no inicio, usar durante a duracao
+do minishell e alterar com as builtins, e no fim dar free a tudo
 */

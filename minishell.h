@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/18 12:38:54 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 11:51:26 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_execlist {
 	int		cmd_nmb;
 	int		pipe_nmb;
 }	t_execlist;
+// char **env_var;
 
 // SIGNAL HANDLING
 void	sig_handler_one(void);
