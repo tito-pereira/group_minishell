@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/08 03:21:58 by marvin           ###   ########.fr       */
+/*   Updated: 2024/04/30 13:18:16 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,17 +128,22 @@ para conseguir passar os argumentos direitos aqui no executor
 vou receber o output 
 */
 
-//--- BONUS EXECUTOR: ---//
-
 /*
-last (V) - fica a atualizar o ultimo pipe fd[1] constantemente para depois ser usado
-no last_output
-!!!!!!!!!
-o last tem que ser reintroduzido na exec function em casos de multiplos pipes
-!!!!!!!!!
+av[1] = int option;
+av[2] = t_mini *ms;
+av[3] = char **cmd;
+av[4] = char **envp;
 
-- subshell_exe
-- execl_group_exe
+1	ft_cd(t_mini *ms, char **cmd, char **env);
+2	ft_echo(t_mini *ms, char **cmd);
+3	ft_env(t_mini *ms, char **cmd, char **envp);
+4	ft_exit(t_mini *ms, char **cmd);
+5	ft_export(t_mini *ms, char **cmd, char **envp);
+6   ft_pwd(t_mini *ms, char **cmd, char **envp);
+7	ft_unset(t_mini *ms, char **cmd, char **envp);
+
+traduzir t_mini *;
+deixar um united char **args para usar aqui;
 */
 
 /*

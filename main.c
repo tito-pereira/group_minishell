@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 11:50:54 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:27:42 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,22 @@ char	*ft_read()
 		else if (input == NULL && global_sig != 2)
 			exit(0);
 	}
+}
+
+char	**create_envp(void)
+{
+	char	**my_envp;
+	int		i;
+
+	i = -1;
+	while (__environ[++i] != NULL)
+		i++;
+	my_envp = malloc((i + 1) * sizeof(char *));
+	i = -1;
+	while (__environ[++i] != NULL)
+		my_envp[i] = ft_strdup(__environ[i]);
+	my_envp[i] = NULL;
+	return(my_envp);
 }
 
 /*
@@ -221,6 +237,10 @@ foreground pipeline.
 . format (norm) && leaks && error check (valgrind)
 . sacar o tester do github e correr
 
-criar uma copia de env_var com mallocs no inicio, usar durante a duracao
-do minishell e alterar com as builtins, e no fim dar free a tudo
+- refazer step 5 (remover find e execves e pipe flags);
+- refazer executor (remover pipes, apenas lancar a funcao por ordem);
+
+testing:
+- create_envp
+- exit_stt na execlist maybe
 */

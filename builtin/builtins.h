@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/30 12:06:11 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/04/30 13:03:10 by tibarbos         ###   ########.fr       */
+/*   Created: 2024/04/30 12:55:14 by tibarbos          #+#    #+#             */
+/*   Updated: 2024/04/30 13:07:02 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#ifndef BUILTINS_H
+#define BUILTINS_H
 
-void	ft_env(t_mini *ms, char **cmd, char **envp)
-{
-	int	i;
+#include "../minishell.h"
 
-	if (!cmd[1])
-	{
-		i = 0
-		while (envp && *envp && envp[i][0])
-		{
-			ft_printf("%s\n", envp[i]);
-			i++;
-		}
-		ms->error = 0;
-	}
-	else
-	{
-		ft_putstr_fd("Bad usage, burro." 2);
-		ms->error = 69;
-	}
-}
+void	ft_cd(t_mini *ms, char **cmd, char **env);
+void	ft_echo(t_mini *ms, char **cmd);
+void	ft_env(t_mini *ms, char **cmd, char **envp);
+void	ft_exit(t_mini *ms, char **cmd);
+void	ft_export(t_mini *ms, char **cmd, char **envp);
+void    ft_pwd(t_mini *ms, char **cmd, char **envp);
+void	ft_unset(t_mini *ms, char **cmd, char **envp);
+
+#endif
