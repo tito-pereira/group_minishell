@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 14:44:57 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:57:42 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,17 @@ execve()
 char *PATH, char **ARGS, char **execl->my_envp
 
 av[1] = (char *)"./builtins/builtfunct";
-av[2] = (char *)execl; (atualizar o error status)
+av[2] = (char *)execl; (atualizar o error status, se for, p 126)
 av[3] = (char *)execl->chunk[i]->cmd_n_args (cmd_n_args ponto 4)
 
 execl->my_envp; //step 1
 execl->path; //step 5
 cmd_n_args mantém-se do ponto 4
+
+Exit status 2: Misuse of shell builtins (e.g., incorrect usage of a command).
+(built in failed)
+Exit status 126: Permission problem or command is not executable.
+(executor failed)
 
 .mudar o executavel do step 5 para sempre o mesmo;
 .deixar um united char **args para usar aqui;

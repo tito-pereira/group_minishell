@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:45:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/18 11:35:58 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:10:36 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,27 @@ que criei para o meu parser
 e tambem a ideia da struct bonus se o fizer
 
 retirar todos os free_execl individuais e fazer um geral na main
+(c exit status != 0)
 (1) - V
-(2) - por fazer
-(3) - por fazer
-(4) - por fazer
+(2) - V
+(3) - V
+(4) - V
 (5) - V
+exit_stt:
+(1) - V, 1
+(2) - V, 1
+(3) - V, 1
+(4) - V, 1
+(5) - V, 127
+(exe) - por fazer (126)
+(blt) - por fazer (2)
 
-change *execl -> &execl
+change *execl -> &execl (????)
 (1) - por fazer
 (2) - por fazer
 (3) - por fazer
 (4) - por fazer
 (5) - por fazer
-
-exit_stt:
-(1) - V, 1
-(2) - por fazer
-(3) - por fazer
-(4) - por fazer
-(5) - V, 127
 
 Exit status 1: Generic error code indicating unspecified error.
 (1, 2, 3, 4)

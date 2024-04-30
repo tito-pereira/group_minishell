@@ -46,14 +46,16 @@ int	arg_separator(t_execlist *execl)// int *exit_stt)
 		if (ret == 0)
 		{
 			perror("Empty pipe error");
-			free_exec(execl);
+			execl->exit_stt = 1;
+			//free_exec(execl);
 			//exit(0);
 			return(0);
 		}
 		else if (ret == -1)
 		{
 			//perror("Unclosed quotes error");
-			free_exec(execl);
+			execl->exit_stt = 1;
+			//free_exec(execl);
 			//exit(0);
 			return(0);
 		}

@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 14:55:23 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:06:26 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int	handle_env_var(int *a, int *b, int *i, char **chunk, t_execlist *execl)
 		{
 			ft_printf("New chunk is NULL\n");
 			perror("Error handling environment variable ($)");
-			free_exec(execl);
+			execl->exit_stt = 1;
+			//free_exec(execl);
 			//exit(0);
 			return(0);
 		}
@@ -92,7 +93,8 @@ int	handle_env_var(int *a, int *b, int *i, char **chunk, t_execlist *execl)
 	{
 		ft_printf("Spec is NULL\n");
 		perror("Error handling environment variable ($)");
-		free_exec(execl);
+		execl->exit_stt = 1;
+		//free_exec(execl);
 		//exit(0);
 		return(0);
 	}
@@ -123,7 +125,7 @@ int	special_char(t_execlist *execl)// int *exit_stt)
 	flag = 1;
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
 	ft_printf("Inside parsing (3): special_char;\n");
-	(void)execl->exit_stt;
+	//(void)execl->exit_stt;
 	while (execl->chunk[++j] != NULL)
 	{
 		ft_printf("Chunk n°%d:\n", j);

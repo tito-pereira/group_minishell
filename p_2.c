@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 14:55:14 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:04:16 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	check_redir(t_execlist *execl, int i, int c)
 		if (input_redir(execl->chunk[c], i) == -1)
 		{
 			perror("Input redirection parsing error");
-			free_exec(execl);
+			execl->exit_stt = 1; //
+			//free_exec(execl);
 			//exit (0);
 			return(0);
 		}
@@ -34,7 +35,8 @@ int	check_redir(t_execlist *execl, int i, int c)
 		if (output_redir(execl->chunk[c], i) == 1)
 		{
 			perror("Output redirection parsing error");
-			free_exec(execl);
+			execl->exit_stt = 1; //
+			//free_exec(execl);
 			//exit (0);
 			return(0);
 		}
@@ -42,14 +44,14 @@ int	check_redir(t_execlist *execl, int i, int c)
 	return(1);
 }
 
-int	redir_checker(t_execlist *execl)//int *exit_stt)
+int	redir_checker(t_execlist *execl)// int *exit_stt) == 1
 {
 	int	i;
 	int	c;
 
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
 	ft_printf("Inside parsing (2): redir_checker;\n");
-	(void)execl->exit_stt;
+	//(void)execl->exit_stt;
 	c = -1;
 	ft_printf("Is it here?\n");
 	if (execl == NULL)
