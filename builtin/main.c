@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 13:01:23 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/04/30 13:39:28 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:27:51 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	main(int ac, char **av, char **envp)
 }
 
 /*
+.mudar as t_mini para um int *error
+
 av[1] = int option;
 av[2] = t_mini *ms;
 av[3] = char **cmd;

@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:45:07 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 14:55:46 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:03:56 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@
 ◦ unset with no options
 ◦ env with no options or arguments
 ◦ exit with no options
-
-prototipo da get_next_line
-get_next acrescenta um \n ao fim de cada linha?
-porque raio o output tem um \n no fim
 */
 
 char	**find_execve(char *name)
@@ -109,8 +105,13 @@ char	*get_cmd_name(char *arg)
 		ft_printf("Non-existant command\n");
 	return (name);
 }
-// aqui vai ser o nome do executavel do built in
-// retirar o ".c" quando ja tiver os executaveis prontos
+/*
+mudar isto apenas para a flag builtin;
+se ativo o cmd_n_args ou o path_n_args;
+
+normal cmds -> path_n_args -> execve
+builtin cmds -> path + cmd_n_args -> execve
+*/
 
 char	*find_path(char	*arg)
 {

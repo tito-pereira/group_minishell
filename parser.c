@@ -6,18 +6,13 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:45:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 15:10:36 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:26:05 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-eu so quero manter este file para me lembrar de todas as regras e hierarqias
-que criei para o meu parser
-
-e tambem a ideia da struct bonus se o fizer
-
 retirar todos os free_execl individuais e fazer um geral na main
 (c exit status != 0)
 (1) - V
@@ -34,25 +29,14 @@ exit_stt:
 (exe) - por fazer (126)
 (blt) - por fazer (2)
 
-change *execl -> &execl (????)
+talvez tenha q retornar o error_stt a main e nao na struct execl
+
+change *execl -> &execl (????) q raio é isto
 (1) - por fazer
 (2) - por fazer
 (3) - por fazer
 (4) - por fazer
 (5) - por fazer
-
-Exit status 1: Generic error code indicating unspecified error.
-(1, 2, 3, 4)
-Exit status 2: Misuse of shell builtins (e.g., incorrect usage of a command).
-(built in failed)
-Exit status 126: Permission problem or command is not executable.
-(executor failed)
-Exit status 127: Command not found or executable cannot be invoked.
-(5, arg_id)
-Exit status 128+n: Fatal error signal n (where n is a signal number).
-Exit status 130: Command terminated by Ctrl+C (SIGINT).
-(signal ctrl-D)
-Exit status 255: Exit status out of range or undefined.
 
 error/individual exit(0) list:
 (1) (DONE)
@@ -69,6 +53,19 @@ error/individual exit(0) list:
 . (pode haver mais na 4a)
 (5) (DONE)
 . chunk_id returns 0;
+
+Exit status 1: Generic error code indicating unspecified error.
+(1, 2, 3, 4)
+Exit status 2: Misuse of shell builtins (e.g., incorrect usage of a command).
+(built in failed)
+Exit status 126: Permission problem or command is not executable.
+(executor failed)
+Exit status 127: Command not found or executable cannot be invoked.
+(5, arg_id)
+Exit status 128+n: Fatal error signal n (where n is a signal number).
+Exit status 130: Command terminated by Ctrl+C (SIGINT).
+(signal ctrl-D)
+Exit status 255: Exit status out of range or undefined.
 */
 
 /*

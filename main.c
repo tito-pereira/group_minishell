@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 14:49:19 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:24:43 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,10 @@ int	main()
 {
 	char		*input;
 	t_execlist	*execl;
-	//int			exit_stt;
+	int			exit_stt;
 
 	global_sig = 0;
-	//exit_stt = 0;
+	exit_stt = 0;
 	execl = NULL;
 	while (1)
 	{
@@ -164,7 +164,8 @@ int	main()
 		}
 		if (the_parser(&execl, input) == 1)
 			print_exec(execl);
-		//else, free execl maybe
+		//else, free execl maybe, retry input
+		//error_stt apenas fica gravado
 		//free(input);
 		//if (global_sig == 2)
 			//free_exec(execl);
