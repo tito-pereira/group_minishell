@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 13:56:33 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:57:29 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,9 @@ av[4] = char **envp;
 5	ft_export(t_mini *ms, char **cmd, char **envp);
 6   ft_pwd(t_mini *ms, char **cmd, char **envp);
 7	ft_unset(t_mini *ms, char **cmd, char **envp);
+
+execl->path; //step 5
+execl->mini; //exec
 
 .mudar o executavel do step 5 para sempre o mesmo
 .traduzir t_mini *;
