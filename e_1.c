@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 00:41:01 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/01 01:28:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,31 +61,11 @@ typedef struct s_chunk {
 	int		blt; // (5) arg_id
 }	t_chunk;
 
-execve struct maker
-if (chunk[i]->blt == 0)
-	cmd_n_args normal
-else if (chunk[i]->blt == 1)
-{
-	struct[0] = path;
-	resto = copy;
-}
+provavelmente ver melhor os outputs, ja nao me lembro o que fiz
+e estao incompletos
 
-INPUT REDIR:
-inpipe - apenas o primeiro pipevalido
-
-OUTPUT REDIR
-outpipe = quando o comando nao e o ultimo, ou quando ha outfile
-guardar fd final (outpfd)
-if outfile -> dup2 outfile e retornar outfile fd (outpfd)
-
-if (append)
-	int fd = open("filename.txt", O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0644);
-(tem a ver com as flags do open)
-
-(blt == 0)
-execve(execl->chunk[c]->cmd_n_args[0], execl->chunk[c]->cmd_n_args, execl->my_envp);
-(blt == 1)
-execve(execl->chunk[c]->path, execl->chunk[c]->cmd_n_args, execl->my_envp);
+colocar o error stt especifico 126? depois do execve
+caso mudar para isso, significa que o execve falhou
 */
 
 void	**get_exec_str(t_chunk *chunk, char ***exec_str)
@@ -109,20 +89,20 @@ void	**get_exec_str(t_chunk *chunk, char ***exec_str)
 	//ja vem formatado do step 5 e tudo
 }
 
-void	exec_chunk(t_execlist *execl, char *exec_str)
+void	exec_chunk(t_execlist *execl, char *exec_str) //int *error_stt
 {
 	int		*fd;
 	int		*redir;
 	int		pid;
 	int		i;
-	int		inherit;
+	int		inherit; //inpfd ???
 	
 	i = -1;
-	fd_in_out = malloc(2 * sizeof(int));
+	redir = malloc(2 * sizeof(int));
 	redir[0] = -1;
-	redir[0] = -1;
+	redir[1] = -1;
 	inherit = -1;
-	while (execl->chunk[++i] != NULL)
+	while (execl->chunk[++i] != NULL) // && *error_stt != 126
 	{
 		get_exec_str(execl->chunk[i], &exec_str);
 		fd = malloc (2 * sizeof(int));
@@ -130,6 +110,7 @@ void	exec_chunk(t_execlist *execl, char *exec_str)
 		pid = fork();
 		if (pid == 0)
 		{
+			close(fd[0]);
 			if (execl->chunk[i]->infile != NULL && execl->chunk[i]->inpipe == 1) //1, infile redir valido
 			{
 				redir[0] = open(infile, O_RDONLY);
@@ -137,8 +118,10 @@ void	exec_chunk(t_execlist *execl, char *exec_str)
 				close(redir[0]); //depois de dup, fecha-se
 			}
 			else if (i > 0) //resto, inpipe redir invalido, comando nº>1, recebe smp pipe
-				dup2(fd[0], STDIN_FILENO);
-			close (fd[0]); // se tiver que ser usado, é usado antes daqui
+			{
+				dup2(execl->chunk[i]->inpfd, STDIN_FILENO);
+				close (execl->chunk[i]->inpfd); // se tiver que ser usado, é usado antes daqui
+			}
 			//acho que se fecha o original depois da dup certo?
 			// else, normal input sem dup
 			//------------------//
@@ -148,44 +131,51 @@ void	exec_chunk(t_execlist *execl, char *exec_str)
 					redir[1] = open(outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
 				else
 					redir[1] = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
-				if ((i + 1) < execl->cmd_nmd) //more commands after
+				if ((i + 1) < execl->cmd_nmd) //outfile inside pipeline
 					execl->chunk[i + 1]->inpfd = redir[1];
 				dup2(redir[1], STDOUT_FILENO);
 				close(redir[1]); //depois de dup, fecha-se
+				//close(fd[1]);
 			}
-			if ((n + 1) < execl->cmd_nmb) //2, next chunk redir
+			if ((i + 1) < execl->cmd_nmb) //2, next chunk redir
 			{
-				execl->chunk[i + 1]->inpfd = redir[1];
+				execl->chunk[i + 1]->inpfd = fd[1];
 				if (execl->chunk[i]->outfile == NULL)
 					redir[1] = (outra ponta do pipe);
 				dup2(fd[1], STDOUT_FILENO);
+				//close(fd[1]);
 			}
+			close(fd[1]);
 			// else, output normal sem dup
 			execve(exec_str[0], exec_str, execl->my_envp);
 		}
 		wait(0);
 		close(fd[1]); //para assumir a ponta de leitura do pipe
-		//transporta o fd[0] para o proximo fork
-		if ((i + 1 == execl->cmd_nmb)) //ultimo comando
+		if ((i + 1) == execl->cmd_nmb) //ultimo comando
 			close(fd[0]);
 		else
-			inherit = fd[0];
+			execl->chunk[i + 1]->inpfd = fd[0]; //override ao outfile inside pipeline
 		free(fd);
 		if (execl->chunk[i]->blt == 1) //if builtin, dou malloc antes
 			free_db(exec_str);
 	}
-	//free(fd);
 }
 
 /*
-o pipe desta funçao é para ligar o output previo com o input seguinte
-inpfd começa em -1 por default e pode ser alterado no loop
-outpfd também
+1. fd (dentro do loop)
+fd sao aliados ao fork/pipe de cada iteracao
+fd levam malloc e free dentro de cada iteraçao, simples
+(menos fd[0] em non-last commands, mantem-se vivo)
 
-retorna a reading parte do pipe?
+-> se for preciso guardar fd[0], guarda no inherit ou inpfd
 
-faço já uma exec_struct e mando o prototype para o execve?
-ou faço condições?
+2. redir (fora do loop)
+redir sao fd de suporte. levam malloc antes do loop
+e levam free depois do loop. simples
+
+3. exec_str
+se for builtin leva free
+se nao for, apenas é reassigned
 */
 
 /*
