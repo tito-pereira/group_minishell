@@ -3,46 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   e_1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 01:28:52 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/01 11:51:55 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-retornar o errno apenas no fim, nos passos intermédios
-nao é realmente necessário
-
-o ultimo comando tem que executar para o terminal
-por isso tenho que ligar o pipe final e copiar o output todo
-para o STDOUT
-tou a pensar usar get_next_line(pipe->STDOUT)
-*/
-
-int	the_executor(t_execlist *execl, int *error_stt)
-{
-	int	i;
-	int	last;
-
-	if (execl->cmd_nmb != (execl->pipe_nmb + 1))
-	{
-		perror("Number of pipes and commands is not compatible");
-		*error_stt = 1;
-		return (0);
-	}
-	i = -1;
-	while (execl->chunk[++i] != NULL) //chunk loop e executar cada chunk
-	{
-		last = exec_chunk(execl);
-		//execl.current++;
-	}
-	execl.erno = errno; //errno do ultimo comando antes de ser contaminado c a getnextline
-	last_output(last);
-	//return (1);
-}
 
 /*
 typedef struct s_chunk {
@@ -89,7 +57,7 @@ void	**get_exec_str(t_chunk *chunk, char ***exec_str)
 	//ja vem formatado do step 5 e tudo
 }
 
-void	exec_chunk(t_execlist *execl, char *exec_str) //int *error_stt
+void	exec_chunk(t_execlist *execl, char *exec_str, int *error_stt)
 {
 	int		*fd;
 	int		*redir;
@@ -110,10 +78,10 @@ void	exec_chunk(t_execlist *execl, char *exec_str) //int *error_stt
 		pid = fork();
 		if (pid == 0)
 		{
-			close(fd[0]);
+			close(fd[0]); //assume posicao de escrita do pipe
 			if (execl->chunk[i]->infile != NULL && execl->chunk[i]->inpipe == 1) //1, infile redir valido
 			{
-				redir[0] = open(infile, O_RDONLY);
+				redir[0] = open(execl->chunk[i]->infile, O_RDONLY);
 				dup2(redir[0], STDIN_FILENO);
 				close(redir[0]); //depois de dup, fecha-se
 			}
@@ -128,9 +96,9 @@ void	exec_chunk(t_execlist *execl, char *exec_str) //int *error_stt
 			if (execl->chunk[i]->outfile != NULL) //1, outfile redir
 			{
 				if (execl->chunk[i]->append == 1)
-					redir[1] = open(outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
+					redir[1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
 				else
-					redir[1] = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
+					redir[1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
 				if ((i + 1) < execl->cmd_nmd) //outfile inside pipeline
 					execl->chunk[i + 1]->inpfd = redir[1];
 				dup2(redir[1], STDOUT_FILENO);
@@ -148,6 +116,7 @@ void	exec_chunk(t_execlist *execl, char *exec_str) //int *error_stt
 			close(fd[1]);
 			// else, output normal sem dup
 			execve(exec_str[0], exec_str, execl->my_envp);
+			*error_stt = 126;
 		}
 		wait(0);
 		close(fd[1]); //para assumir a ponta de leitura do pipe
@@ -176,6 +145,25 @@ e levam free depois do loop. simples
 3. exec_str
 se for builtin leva free
 se nao for, apenas é reassigned
+*/
+
+int	the_executor(t_execlist *execl, int *error_stt)
+{
+	char	*exec_str;
+
+	if (execl->cmd_nmb != (execl->pipe_nmb + 1))
+	{
+		perror("Error parsing proportional number of pipes and commands");
+		*error_stt = 1;
+		return (0);
+	}
+	exec_chunk(execl, exec_str, error_stt);
+	return (1);
+}
+
+/*
+ha alguma vantagem do executor retornar 0 ou 1?
+// ou posso apenas deixar como void
 */
 
 /*

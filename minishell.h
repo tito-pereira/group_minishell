@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 17:25:13 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 11:50:44 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 # define PROMPT		">> minishell: "
 # define NPROMPT	"\n>> minishell: "
 
-// (1) parse_execl()
 typedef struct s_chunk {
 	char	*infile; // (2) redir_checker
 	int		heredoc; // (2) redir_checker
@@ -46,7 +45,6 @@ typedef struct s_chunk {
 	int		blt; // (5) arg_id
 }	t_chunk;
 
-// (1) parse_execl()
 typedef struct s_execlist {
 	t_chunk	**chunk;
 	int		cmd_nmb;
@@ -78,28 +76,15 @@ int		cmd_separator(t_chunk *chunk); // (4)
 void	add_arg(t_chunk *chunk, char *str); // (2)
 int		chunk_id(t_chunk *chunk, char *prog, int opt); // (5)
 
+// OTHER
+char	**create_envp(void);
+
 // EXECUTOR
-void	execlist_exe(t_execlist *execl);
-//int	input_redir(t_chunk *chunk, int i);
-//int	output_redir(t_chunk *chunk, int i);
+int		the_executor(t_execlist *execl, int *error_stt);
 
 // FREE
 void	free_db(char **str);
 void	free_chunk(t_chunk *chunk);
 void	free_exec(t_execlist *exec);
-
-// OTHER
-char	**create_envp(void);
-
-// BUILT-IN FUNCTIONS
-/*
-void	ft_cd(t_mini *ms, char **cmd, char **env);
-void	ft_echo(t_mini *ms, char **cmd);
-void	ft_env(t_mini *ms, char **cmd, char **envp);
-void	ft_exit(t_mini *ms, char **cmd);
-void	ft_export(t_mini *ms, char **cmd, char **envp);
-void 	ft_pwd(t_mini *ms, char **cmd, char **envp);
-void	ft_unset(t_mini *ms, char **cmd, char **envp);
-*/
 
 #endif
