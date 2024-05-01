@@ -23,7 +23,7 @@ void	ft_echo(t_mini *ms, char **cmd)
 	while (cmd && cmd[i] && !ft_strncmp(cmd[i], "-n", 2))
 	{
 		j = 2;
-		while (cmd[i][j] == "n")
+		while (cmd[i][j] == 'n')
 			j++;
 		if (cmd[i][j] != '\0')
 			break;
@@ -32,9 +32,9 @@ void	ft_echo(t_mini *ms, char **cmd)
 	}
 	while (cmd[i])
 	{
-		ft_printf("%s", cmd[i])
+		ft_printf("%s", cmd[i]);
 		if (cmd[++i])
-			ft_putchar_fd(" ", 1);
+			ft_putchar_fd(' ', 1);
 	}
 	if (newline)
 		ft_printf("\n");

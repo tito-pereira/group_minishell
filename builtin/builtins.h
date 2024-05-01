@@ -28,7 +28,7 @@ typedef struct s_mini
 void	ft_cd(t_mini *ms, char **cmd, char **env);
 void	ft_echo(t_mini *ms, char **cmd);
 void	ft_env(t_mini *ms, char **cmd, char **envp);
-void	ft_exit(t_mini *ms, char **cmd);
+void	ft_exit(char **cmd);
 void	ft_export(t_mini *ms, char **cmd, char **envp);
 void    ft_pwd(t_mini *ms, char **cmd, char **envp);
 void	ft_unset(t_mini *ms, char **cmd, char **envp);

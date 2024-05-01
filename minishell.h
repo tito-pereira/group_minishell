@@ -23,6 +23,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <signal.h>
+# include <linux/limits.h>
 # include "./mylib/mylib.h"
 
 # define ENV_VAR    __environ
@@ -86,5 +87,7 @@ int		exec_central(t_execlist *execl, int *error_stt);
 void	free_db(char **str);
 void	free_chunk(t_chunk *chunk);
 void	free_exec(t_execlist *exec);
+char	*free_ptr(char *ptr);
+char	**free_mat(char **mat);
 
 #endif

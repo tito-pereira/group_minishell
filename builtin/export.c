@@ -46,7 +46,7 @@ void	update_var(char *var, int var_pos, char **envp)
 	else
 	{
 		envp[var_pos] = free_ptr(envp[var_pos]);
-		envp[var_pos] = ft_strdup(temp_envp[var_pos]);
+		envp[var_pos] = ft_strdup(var);
 	}
 }
 
@@ -67,7 +67,7 @@ int	valid_var(char *var)
 			res = 0;
 		i++;
 	}
-	return (ret);
+	return (res);
 }
 
 void	ft_export(t_mini *ms, char **cmd, char **envp)
@@ -88,10 +88,10 @@ void	ft_export(t_mini *ms, char **cmd, char **envp)
 		}
 		else if (!valid_var(cmd[i]))
 		{
-			ft_putstr_fd(PROMPT_MSG": export: ", 2);
+			ft_putstr_fd(NPROMPT": export: ", 2);
 			ft_putstr_fd(cmd[i], 2);
 			ft_putstr_fd(": not a valid identifier\n", 2);
-			ms->error 69;
+			ms->error = 69;
 		}
 		else
 			ms->error = 0;

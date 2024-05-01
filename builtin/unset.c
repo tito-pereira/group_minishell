@@ -30,7 +30,7 @@ void	remove_var(char *var, char **envp)
 		i++;
 		while (envp[i])
 		{
-			envp[i] = envp[i + 1]
+			envp[i] = envp[i + 1];
 			i++;
 		}
 		envp[i] = NULL;

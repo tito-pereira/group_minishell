@@ -17,6 +17,7 @@ void	go_to_dir(t_mini *ms, char *dir, char **env)
 	char	**exp;
 	char	*temp;
 
+	temp = '\0';
 	exp = ft_calloc(3, sizeof(char *));
 	exp[0] = ft_strdup("export");
 	if (chdir(dir) == 0)
@@ -28,7 +29,7 @@ void	go_to_dir(t_mini *ms, char *dir, char **env)
 	}
 	else
 	{
-		ft_putstr_fd(PROMPT_MSG": cd: No such file or directory", 2);
+		ft_putstr_fd(NPROMPT": cd: No such file or directory", 2);
 		ms->error = 69;
 	}
 	temp = free_ptr(temp);
@@ -39,8 +40,8 @@ char	*home_dir(char **env)
 {
 	char	*home;
 
-	while(env && ft_strncmp(envp[i], "HOME=", 5))
-		env++
+	while(env && ft_strncmp(*env, "HOME=", 5))
+		env++;
 	home = *env + 5;
 	return (home);
 }
@@ -53,7 +54,7 @@ void	ft_cd(t_mini *ms, char **cmd, char **env)
 		go_to_dir(ms, cmd[1], env);
 	else
 	{
-		perror("Error in 'cd' built-in command", 2);
+		ft_putstr_fd ("-" NPROMPT ": cd:  invalid usage\n", 2);
 		ms->error = 69;
 	}
 }

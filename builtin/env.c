@@ -18,7 +18,7 @@ void	ft_env(t_mini *ms, char **cmd, char **envp)
 
 	if (!cmd[1])
 	{
-		i = 0
+		i = 0;
 		while (envp && *envp && envp[i][0])
 		{
 			ft_printf("%s\n", envp[i]);
@@ -28,7 +28,7 @@ void	ft_env(t_mini *ms, char **cmd, char **envp)
 	}
 	else
 	{
-		ft_putstr_fd("Bad usage, burro." 2);
+		ft_putstr_fd("Bad usage, burro.", 2);
 		ms->error = 69;
 	}
 }
