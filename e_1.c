@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 12:16:43 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:29:52 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ colocar o error stt especifico 126? depois do execve
 caso mudar para isso, significa que o execve falhou
 */
 
-void	**get_exec_str(t_chunk *chunk, char ***exec_str)
+void	get_exec_str(t_chunk *chunk, char ***exec_str)
 {
 	int	i;
 
@@ -99,7 +99,7 @@ void	output_options(t_execlist *execl, int *fd, int *redir, int i)
 	// else, output normal sem dup
 }
 
-void	process_end(t_execlist *execl, char *exec_str, int *fd, int i)
+void	process_end(t_execlist *execl, char **exec_str, int *fd, int i)
 {
 	wait(0);
 	close(fd[1]); //para assumir a ponta de leitura do pipe
@@ -112,7 +112,7 @@ void	process_end(t_execlist *execl, char *exec_str, int *fd, int i)
 		free_db(exec_str);
 }
 
-void	exec_chunk(t_execlist *execl, char *exec_str, int *error_stt)
+void	exec_chunk(t_execlist *execl, char **exec_str, int *error_stt)
 {
 	int		*fd;
 	int		*redir;
@@ -159,8 +159,9 @@ se nao for, apenas é reassigned
 
 int	exec_central(t_execlist *execl, int *error_stt)
 {
-	char	*exec_str;
+	char	**exec_str;
 
+	exec_str = NULL;
 	if (execl->cmd_nmb != (execl->pipe_nmb + 1))
 	{
 		perror("Error parsing proportional number of pipes and commands");

@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 12:20:27 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:42:22 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,6 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt)
 	ft_printf("Finished parsing with flag %d\n", flag);
 	return (flag);
 }
-// retorna o execl em caso de sucesso
-// NULL em caso de qualquer parsing error
-// mudar o (1), pipe_chunks, para retornar 1 ou 0
-// para o replay prompt e general free_execl
 
 /*
 esta global var, bem como a exit handler, vai ter de ficar no mesmo file da main
@@ -213,36 +209,10 @@ para o exame
 opa ya. vou fazer basicamente dois sets de signal handling, faz sentido
 apenas os faco manualmente e nao uso as set functions()
 ...
-
-- executor + buildins;
-. o segredo vai ser pipe a VAR especifica e atualizar na main
-as environment variables
-. ou pipe a struc inteira com as environment variables todas
-
-pra ja eu tenho posto todos os erros para dar exit do minishell
-mas eu quero voltar
-
-Handle $? which should expand to the exit status of the most recently executed
-foreground pipeline.
-
-...
-
-. error handling sem exit(0) + error status 2 em 1
 . $? no ponto 3
-. executor
-.,.,.,.,.,
-. step 5 (acho que esta)
-. verificar que tenho todos os requisitos do enunciado aqui
-(faltava o $? error status e tou a tratar)
 . testar as '' e outros parametros inteiros e frees
-(com o ruben, ver a questao de redisplay e pipes de execucao)
-. format (norm) && leaks && error check (valgrind)
-. sacar o tester do github e correr
 
-- refazer step 5 (remover find e execves e pipe flags);
-- refazer executor (remover pipes, apenas lancar a funcao por ordem);
+testing
 
-testing:
-- create_envp
-- exit_stt na execlist maybe
+$PATH, $HOME, $SHELL, $PWD
 */

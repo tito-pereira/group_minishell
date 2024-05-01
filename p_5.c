@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_5(new).c                                         :+:      :+:    :+:   */
+/*   p_5.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:35:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/04/30 17:10:11 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 13:10:39 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	arg_id(t_execlist *execl, int *exit_stt)
 		if (r == 0)
 		{
 			perror("Command path finding error");
-			*exit_stt = 127; // ???
+			*exit_stt = 127;
 			return(0);
 		}
 	}
@@ -56,6 +56,9 @@ int	arg_id(t_execlist *execl, int *exit_stt)
 }
 
 /*
+so tou a usar builtins por isso o erro esta na parte dos builtins
+
+
 if (BUILTIN) , flag == 1
 arg[0] = path/builtft
 arg[1] = (char *)cmd_n_args;

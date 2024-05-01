@@ -6,13 +6,13 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:46:14 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/05/23 17:35:13 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 13:08:38 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_set_size(int n)
+int	ftt_set_size(int n)
 {
 	int	counter;
 	int	tmp;
@@ -34,7 +34,7 @@ int	ft_set_size(int n)
 	return (counter);
 }
 
-char	*ft_reverse(char *str)
+char	*ftt_reverse(char *str)
 {
 	int	i;
 	int	size;
@@ -55,7 +55,7 @@ char	*ft_reverse(char *str)
 	return (str);
 }
 
-char	*ft_support(char *ret, unsigned int tmp, int i, int n)
+char	*ftt_support(char *ret, unsigned int tmp, int i, int n)
 {
 	if (n < 0)
 		tmp *= -1;
@@ -78,11 +78,11 @@ char	*f_itoa(int n)
 
 	i = 0;
 	tmp = n;
-	ret = malloc((ft_set_size(n) + 1) * sizeof(char));
+	ret = malloc((ftt_set_size(n) + 1) * sizeof(char));
 	if (ret == NULL)
 		return (NULL);
-	ret = ft_support(ret, tmp, i, n);
-	ret[ft_set_size(n)] = '\0';
-	ft_reverse(ret);
+	ret = ftt_support(ret, tmp, i, n);
+	ret[ftt_set_size(n)] = '\0';
+	ftt_reverse(ret);
 	return (ret);
 }

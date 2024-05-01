@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 17:06:42 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:48:55 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ nao esquecer que "" suporta $ mas '' já não
 
 Handle environment variables ($ followed by a sequence of characters) which
 should expand to their values.
+Handle $? which should expand to the exit status of the most recently executed
+foreground pipeline.
 
 $PATH, $HOME, $SHELL, $PWD
 
@@ -50,7 +52,7 @@ void	get_positions(int *a, int *b, int *i, char *chunk)
 	*/
 }
 
-char	*get_spec(int *a, int *b, char *chunk)
+char	*get_spec(int *a, int *b, char *chunk, int *exit_stt)
 {
 	char	*env_name;
 	char	*env_value;
@@ -60,7 +62,10 @@ char	*get_spec(int *a, int *b, char *chunk)
 	ft_printf("env_name: '%s'\n", env_name);
 	if (!env_name)
 		return(NULL);
-	env_value = getenv(env_name);
+	if (env_name[0] == '?')
+		env_value = ft_itoa(*exit_stt);
+	else
+		env_value = getenv(env_name);
 	if (!env_value)
 		return(NULL);
 	free(env_name);
@@ -68,13 +73,13 @@ char	*get_spec(int *a, int *b, char *chunk)
 	return (env_value);
 }
 
-int	handle_env_var(int *a, int *b, int *i, char **chunk, t_execlist *execl)
+int	h_env_var(int *a, int *b, int *i, char **chunk, int *exit_stt)
 {
 	char	*spec;
 
 	ft_printf("Inside the handler\n");
 	get_positions(a, b, i, *chunk);
-	spec = ft_strdup(get_spec(a, b, *chunk));
+	spec = ft_strdup(get_spec(a, b, *chunk, exit_stt));
 	if (spec != NULL)
 	{
 		*chunk = new_chnk(spec, *chunk, *a, *b);
@@ -134,7 +139,7 @@ int	special_char(t_execlist *execl, int *exit_stt)
 			if (execl->chunk[j]->og[i] == '$' && flag == 1)
 			{
 				ft_printf("Special char found in position %d\n", i);
-				if (handle_env_var(&a, &b, &i, &execl->chunk[j]->og, execl) == 0)
+				if (h_env_var(&a, &b, &i, &execl->chunk[j]->og, exit_stt) == 0)
 				{
 					*exit_stt = 1;
 					return(0);
