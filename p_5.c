@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:35:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/01 13:10:39 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 13:50:02 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_builtin(char *arg)
 {
-	ft_printf("Checking if builtin or not.\n");
+	ft_printf("Checking if builtin or not:\n");
 	if (ft_strncmp("echo", arg, 256) == 0
 		|| ft_strncmp("cd", arg, 256) == 0
 		|| ft_strncmp("pwd", arg, 256) == 0
@@ -22,7 +22,11 @@ int	check_builtin(char *arg)
 		|| ft_strncmp("unset", arg, 256) == 0
 		|| ft_strncmp("env", arg, 256) == 0
 		|| ft_strncmp("exit", arg, 256) == 0)
+	{
+		ft_printf("Builtin confirmed.\n");
 		return (1);
+	}
+	ft_printf("Not builtin.\n");
 	return (0);
 }
 

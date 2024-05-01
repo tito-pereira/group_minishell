@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:40:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/01 12:25:16 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 13:48:00 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*find_path(char	*arg)
 {
 	char	*path;
 
-	ft_printf("Finding our built-in command PATH:\n");
+	ft_printf("Finding our command PATH:\n");
 	path = get_path(arg);
 	ft_printf("PATH discovered.\n");
 	if (path == NULL)
