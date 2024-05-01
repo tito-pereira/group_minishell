@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 17:08:22 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:20:27 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	print_exec(t_execlist *execl)
 	}
 }
 
-int	the_parser(t_execlist **execl, char *input, int *exit_stt)
+int	parse_central(t_execlist **execl, char *input, int *exit_stt)
 {
 	int			flag;
 
@@ -160,10 +160,12 @@ int	main()
 		if (ft_strncmp(input, "exit", 10) == 0)
 		{
 			ft_printf("Closing minishell...\n");
-			exit (0);
+			exit(0);
 		}
-		if (the_parser(&execl, input) == 1)
+		if (parse_central(&execl, input, &exit_stt) == 1)
 			print_exec(execl);
+		exec_central(execl, &exit_stt);
+		free_exec(execl);
 		//else, free execl maybe, retry input
 		//error_stt apenas fica gravado
 		//free(input);

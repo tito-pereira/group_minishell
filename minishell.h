@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 11:50:44 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:18:23 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	sig_repeat(int num);
 //void	global_checker(t_execlist *execl);
 
 // PARSER MAIN
-int		the_parser(t_execlist **execl, char *input, int *exit_stt);
+int		parse_central(t_execlist **execl, char *input, int *exit_stt);
 int		pipe_chunks(t_execlist **execl, char *input, int *exit_stt); // (1)
 int		redir_checker(t_execlist *execl, int *exit_stt); // (2)
 int		special_char(t_execlist *execl, int *exit_stt); // (3)
@@ -80,7 +80,7 @@ int		chunk_id(t_chunk *chunk, char *prog, int opt); // (5)
 char	**create_envp(void);
 
 // EXECUTOR
-int		the_executor(t_execlist *execl, int *error_stt);
+int		exec_central(t_execlist *execl, int *error_stt);
 
 // FREE
 void	free_db(char **str);
