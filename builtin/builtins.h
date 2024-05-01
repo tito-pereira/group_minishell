@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:55:14 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/04/30 13:07:02 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:26:12 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 #define BUILTINS_H
 
 #include "../minishell.h"
+
+typedef struct s_mini
+{
+    char    *input;
+    char    *prompt;
+    char    **envp;
+    //t_token *token;
+    char    error;
+    char    exit;
+}   t_mini;
 
 void	ft_cd(t_mini *ms, char **cmd, char **env);
 void	ft_echo(t_mini *ms, char **cmd);

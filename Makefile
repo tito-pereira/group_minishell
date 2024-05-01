@@ -6,7 +6,7 @@
 #    By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:44:12 by marvin            #+#    #+#              #
-#    Updated: 2024/05/01 13:01:43 by tibarbos         ###   ########.fr        #
+#    Updated: 2024/05/01 14:20:31 by tibarbos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,26 +22,26 @@ LIBS= -lreadline -L./mylib -lft
 
 $(NAME): $(OBJ)
 	@cd ./mylib && make
-#	@cd ./builtin && make
+	@cd ./builtin && make
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
 all: $(NAME)
 	@cd ./mylib && make all
-#	@cd ./builtin && make all
+	@cd ./builtin && make all
 
 clean:
 	@cd ./mylib && make clean
-#	@cd ./builtin && make clean
+	@cd ./builtin && make clean
 	@$(RM) $(OBJ)
 
 fclean:	clean
 	@cd ./mylib && make fclean
-#	@cd ./builtin && make fclean
+	@cd ./builtin && make fclean
 	@$(RM) $(NAME)
 
 re: fclean all
 	@cd ./mylib && make re
-#	@cd ./builtin && make re
+	@cd ./builtin && make re
 
 test: re
 	@make clean

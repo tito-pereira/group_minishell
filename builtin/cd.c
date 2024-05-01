@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:04 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/04/30 13:03:20 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:29:37 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_cd(t_mini *ms, char **cmd, char **env)
 		go_to_dir(ms, cmd[1], env);
 	else
 	{
-		ft_putstr_fd("Erro: Burro.", 2);
+		perror("Error in 'cd' built-in command", 2);
 		ms->error = 69;
 	}
 }

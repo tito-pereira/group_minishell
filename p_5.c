@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:35:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/01 13:50:02 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 13:51:16 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	arg_id(t_execlist *execl, int *exit_stt)
 	while (execl->chunk[++i] != NULL)
 	{
 		ft_printf("Getting command id from chunk n°%d:\n", i);
-		if (i >= 1)
+		if (i == 0)
 			execl->chunk[i]->inpipe = 1;
 		execl->chunk[i]->blt = check_builtin(execl->chunk[i]->cmd_n_args[0]);
 		if (execl->chunk[i]->blt == 1)

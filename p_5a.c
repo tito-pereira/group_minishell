@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:40:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/01 13:48:00 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/01 13:55:40 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**find_execve(char *name)
 	env[0] = ft_strdup("/usr/bin/find");
 	env[1] = ft_strdup(".");
 	env[2] = ft_strdup("-name");
-	env[3] = name;
+	env[3] = ft_strdup(name); //pelo menos nas builtins
 	env[4] = NULL;
 	return (env);
 }
@@ -81,6 +81,7 @@ char	*get_path(char *name)
 		ft_printf("execve error ocurred.\n");
 	}
 	wait(0);
+	ft_printf("execve finished\n");
 	free_db(env);
 	close(fd[1]);
 	path = get_next_line(fd[0]);
@@ -110,9 +111,15 @@ int	chunk_id(t_chunk *chunk, char *prog, int opt)
 
 	path = NULL;
 	if (opt == 1)
+	{
+		ft_printf("(yes builtin) Finding path for '%s'\n", prog);
 		path = find_path(prog); //builtin
+	}
 	else if (opt == 2)
+	{
+		ft_printf("(not builtin) Finding path for '%s'\n", chunk->cmd_n_args[0]);
 		path = find_path(chunk->cmd_n_args[0]); //terminal
+	}
 	if (path == NULL)
 		return (0);
 	if (opt == 1)
