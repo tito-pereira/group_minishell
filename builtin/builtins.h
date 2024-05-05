@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:55:14 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/01 14:26:12 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/05 21:52:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
 
 #ifndef BUILTINS_H
 #define BUILTINS_H
@@ -34,3 +36,5 @@ void    ft_pwd(t_mini *ms, char **cmd, char **envp);
 void	ft_unset(t_mini *ms, char **cmd, char **envp);
 
 #endif
+
+*/

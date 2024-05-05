@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 13:01:23 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/04/30 15:27:51 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/05 21:53:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
+/*
 
 int	main(int ac, char **av, char **envp)
 {
@@ -32,6 +33,8 @@ int	main(int ac, char **av, char **envp)
     else if (av[1] == 7)
 		ft_unset((t_mini *)av[2], (char **)av[3], envp);
 }
+
+*/
 
 /*
 .mudar as t_mini para um int *error

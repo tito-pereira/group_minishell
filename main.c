@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 12:42:22 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/05 18:31:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,8 +211,14 @@ apenas os faco manualmente e nao uso as set functions()
 ...
 . $? no ponto 3
 . testar as '' e outros parametros inteiros e frees
+*/
 
-testing
+/*
+ora bem
 
-$PATH, $HOME, $SHELL, $PWD
+. test step 5
+. test executor
+. test builtins
+
+. valgrind, norm, github testers
 */

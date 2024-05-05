@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 12:29:52 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/05 23:21:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void	exec_chunk(t_execlist *execl, char **exec_str, int *error_stt)
 	int		i;
 	
 	i = -1;
+	ft_printf("inside exec_chunk\n");
 	redir = malloc(2 * sizeof(int));
 	redir[0] = -1;
 	redir[1] = -1;
@@ -162,6 +163,7 @@ int	exec_central(t_execlist *execl, int *error_stt)
 	char	**exec_str;
 
 	exec_str = NULL;
+	ft_printf("Inside exec central\n");
 	if (execl->cmd_nmb != (execl->pipe_nmb + 1))
 	{
 		perror("Error parsing proportional number of pipes and commands");
