@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_5a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:40:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/05 23:15:36 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/06 11:42:21 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	**find_execve(char *name, int option)
 	char	**env;
 
 	ft_printf("Creating char **env.\n");
+	env = NULL;
 	if (option == 1) //builtin
 	{
 		env = malloc(5 * sizeof(char *));
