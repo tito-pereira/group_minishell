@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 17:03:45 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:57:16 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	redir_checker(t_execlist *execl, int *exit_stt)
 
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
 	ft_printf("Inside parsing (2): redir_checker;\n");
-	//(void)execl->exit_stt;
 	c = -1;
 	ft_printf("Is it here?\n");
 	if (execl == NULL)

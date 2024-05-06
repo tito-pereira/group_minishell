@@ -36,7 +36,6 @@ int	arg_separator(t_execlist *execl, int *exit_stt)
 
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
 	ft_printf("Inside parsing (4): arg_separator;\n");
-	(void)execl->exit_stt;
 	c = -1;
 	while (execl->chunk[++c] != NULL)
 	{
@@ -93,18 +92,18 @@ burro do crl
 eu igualo os pointers mas dou free ao conteudo local na mesma
 */
 
-void	add_arg(t_chunk *chunk, char *str)
+void	add_arg(t_chunk *chunk, char **str)
 {
 	int		c;
 	char	**new;
 
 	c = 0;
-	ft_printf("Adding new arg to cmd_n_args;\nThis bad boy: '%s'\n", str);
+	ft_printf("Adding new arg to cmd_n_args;\nThis bad boy: '%s'\n", *str);
 	if (chunk->cmd_n_args == NULL)
 	{
 		ft_printf("First arg;\n");
 		chunk->cmd_n_args = malloc(2 * sizeof(char *));
-		chunk->cmd_n_args[0] = str;
+		chunk->cmd_n_args[0] = *str;
 		chunk->cmd_n_args[1] = NULL;
 	}
 	else
@@ -117,111 +116,16 @@ void	add_arg(t_chunk *chunk, char *str)
 		c = -1;
 		while (chunk->cmd_n_args[++c] != NULL)
 			new[c] = ft_strdup(chunk->cmd_n_args[c]);
-		new[c] = str;
+		new[c] = *str;
 		new[c + 1] = NULL;
 		ft_printf("Manual print:\n");
-		ft_printf("new[%d]: %s;\n", 0, new[0]);
-		if (new[1])
-			ft_printf("new[%d]: %s;\n", 1, new[1]);
-		if (new[2])
-			ft_printf("new[%d]: %s;\n", 2, new[2]);
-		//ft_printf("Everything good up until here;\n");
+		if (new[c])
+			ft_printf("new[%d]: %s;\n", c, new[c]);
+		if (new[c + 1] == NULL)
+			ft_printf("new[%d]: %s;\n", (c + 1), new[c + 1]);
+		if (new[c + 2] == NULL)
+			ft_printf("new[%d] exists and is NULL\n", (c + 2));
 		free_db(chunk->cmd_n_args);
 		chunk->cmd_n_args = new;
 	}
-	ft_printf("Successfull addition;\n");
-	//ft_printf("Manual print:\n");
-	//ft_printf("str[%d]: %s;\n", 0, chunk->cmd_n_args[0]);
 }
-
-/*
-void	add_arg(t_chunk *chunk, char *str)
-{
-	int		c;
-	char	**new;
-
-	c = 0;
-	if (chunk->cmd_n_args == NULL)
-	{
-		chunk->cmd_n_args = malloc(2 * sizeof(char *));
-		chunk->cmd_n_args[0] = str;
-		chunk->cmd_n_args[1] = NULL;
-	}
-	else
-	{
-		while (chunk->cmd_n_args[c] != NULL)
-			c++;
-		new = malloc((c + 2) * sizeof(char *));
-		c = -1;
-		while (chunk->cmd_n_args[++c] != NULL)
-			new[c] = chunk->cmd_n_args[c];
-		new[c] = str;
-		new[c + 1] = NULL;
-		free_db(chunk->cmd_n_args);
-		chunk->cmd_n_args = new;
-	}
-}*/
-
-
-/**
-{
-	c = 0;
-	while (chunk->cmd_n_args[c] != NULL)
-		c++;
-	new = malloc((c + 2) * sizeof(char *));
-	c = -1;
-	while (chunk->cmd_n_args[++c] != NULL)
-		new[c] = chunk->cmd_n_args[c];
-	new[c] = str;
-	new[c + 1] = NULL;
-	free_db(chunk->cmd_n_args);
-	chunk->cmd_n_args = new;
-}
-
-c = 0; arg[0] == wassup; c = 1
-c = 1; arg[1] == NULL; exit
-new = malloc 1 + 2 char * = 3 char *
-
-c = -1;
-c++; arg[0] == wassup == new[0];
-c++; arg[1] == NULL, exit
-new
-
-old
-void	arg_separator(t_execlist *execl)
-{
-	int		i;
-	int		c;
-	//int		ag;
-	int		ret;
-
-	c = -1;
-	while (execl->chunk[++c] != NULL)
-	{
-		i = -1;
-		//ag = arg_counter(execl->chunk[c]->og);
-		//if (ag == -1)
-			return (NULL); //condição de erro
-		//execl->chunk[c]->cmd_n_args = malloc (ag * sizeof(char *));
-		ret = cmd_separator(execl->chunk[c]);
-		if (ret != 1)
-			arg_sep_errors(execl, ret);
-	}
-}
-
-void	arg_sep_errors(t_execlist *execl, int ret)
-{
-	if (ret == 0)
-	{
-		perror("Empty pipe error");
-		free_exec(execl);
-		exit(0);
-	}
-	else if (ret == -1)
-	{
-		//perror("Unclosed quotes error");
-		free_exec(execl);
-		exit(0);
-	}
-}
-*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_4a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:45:01 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/18 17:45:02 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/06 17:10:46 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ int	cmd_separator(t_chunk *chunk)
 	int		i;
 	int		a;
 	int		b;
+	char	*sub;
 
 	i = -1;
 	a = 0;
@@ -222,7 +223,8 @@ int	cmd_separator(t_chunk *chunk)
 			if (double_quote(&a, &b, chunk, &i) == -1)
 				return (-1); //unclosed quotes
 			ft_printf("a == [%d] && b == [%d]\n", a, b);
-			add_arg(chunk, ft_substr(chunk->og, a, (b - a + 1)));
+			sub = ft_substr(chunk->og, a, (b - a + 1));
+			add_arg(chunk, &sub);
 		}
 		if (chunk->og[i] == '\0')
 			return (1);
@@ -231,36 +233,3 @@ int	cmd_separator(t_chunk *chunk)
 		return (0); //endstring , empty
 	return (1);
 }
-
-/*
-old
-
-int	cmd_separator(t_chunk *chunk, int arg_c)
-{
-	int		i;
-	int		a;
-	int		b;
-	//int		c;
-
-	//c = -1;
-	i = -1;
-	a = 0;
-	b = 0;
-	while (chunk.og[++i])//(++c <= arg_c)
-	{
-		while (chunk.og[i] == 9 || chunk.og[i] == 32) //whitespaces
-			i++;
-		if (non_white(&a, &b, chunk.og, i) == -1)
-			return (-1); //unclosed quotes ?
-		if (single_quote(&a, &b, chunk.og, i) == -1)
-			return (-1); //unclosed quotes
-		if (double_quote(&a, &b, chunk.og, i) == -1)
-			return (-1); //unclosed quotes
-		if (a == b) //significa que todos retornaram zero, os -1 ja sairam fora
-			return (0); //endstring , empty
-		//chunk.cmd_n_args[c] = ft_substr(chunk.og, a, (b - a));
-		add_arg(chunk, )
-	}
-	return (1);
-}
-*/

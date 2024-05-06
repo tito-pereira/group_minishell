@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/05 18:31:20 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/06 16:06:26 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt)
 	if (flag == 1)
 		flag = arg_separator(*execl, exit_stt);
 	if (flag == 1)
+		flag = rmv_redirs(*execl, exit_stt);
+	if (flag == 1)
 		flag = arg_id(*execl, exit_stt);
 	ft_printf("Finished parsing with flag %d\n", flag);
 	return (flag);
@@ -159,8 +161,10 @@ int	main()
 			exit(0);
 		}
 		if (parse_central(&execl, input, &exit_stt) == 1)
+		{
 			print_exec(execl);
-		exec_central(execl, &exit_stt);
+			exec_central(execl, &exit_stt);
+		}
 		free_exec(execl);
 		//else, free execl maybe, retry input
 		//error_stt apenas fica gravado

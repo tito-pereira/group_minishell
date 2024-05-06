@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_5.c                                              :+:      :+:    :+:   */
+/*   p_6.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:35:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/06 15:16:37 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:25:41 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	arg_id(t_execlist *execl, int *exit_stt)
 
 	i = -1;
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (5): arg_id;\n");
+	ft_printf("Inside parsing (6): arg_id;\n");
 	while (execl->chunk[++i] != NULL)
 	{
 		ft_printf("Getting command id from chunk n°%d:\n", i);

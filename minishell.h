@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/06 15:18:48 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:01:10 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct s_execlist {
 	t_chunk	**chunk;
 	int		cmd_nmb;
 	int		pipe_nmb;
-//	int		exit_stt;
 	char	**my_envp;
 }	t_execlist;
 
@@ -75,7 +74,7 @@ int		input_redir(t_chunk *chunk, int i); // (2)
 int		output_redir(t_chunk *chunk, int i); // (2)
 char	*new_chnk(char *spec, char *old, int a, int b); // (3)
 int		cmd_separator(t_chunk *chunk); // (4)
-void	add_arg(t_chunk *chunk, char *str); // (2)
+void	add_arg(t_chunk *chunk, char **str); // (4)
 int		chunk_id(t_chunk *chunk, char *prog, int opt); // (5)
 
 // OTHER
