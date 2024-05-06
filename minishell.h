@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/06 12:41:34 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:18:48 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		pipe_chunks(t_execlist **execl, char *input, int *exit_stt); // (1)
 int		redir_checker(t_execlist *execl, int *exit_stt); // (2)
 int		special_char(t_execlist *execl, int *exit_stt); // (3)
 int		arg_separator(t_execlist *execl, int *exit_stt); // (4)
-//int		rmv_redirs(t_execlist *execl, int *exit_stt); // (4.5)
+int		rmv_redirs(t_execlist *execl, int *exit_stt); // (4.5)
 int		arg_id(t_execlist *execl, int *exit_stt); // (5)
 
 // PARSER SUPPORT

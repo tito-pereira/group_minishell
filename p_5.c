@@ -5,79 +5,80 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/30 15:35:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/01 13:51:16 by tibarbos         ###   ########.fr       */
+/*   Created: 2024/05/06 11:50:43 by tibarbos          #+#    #+#             */
+/*   Updated: 2024/05/06 15:19:54 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_builtin(char *arg)
-{
-	ft_printf("Checking if builtin or not:\n");
-	if (ft_strncmp("echo", arg, 256) == 0
-		|| ft_strncmp("cd", arg, 256) == 0
-		|| ft_strncmp("pwd", arg, 256) == 0
-		|| ft_strncmp("export", arg, 256) == 0
-		|| ft_strncmp("unset", arg, 256) == 0
-		|| ft_strncmp("env", arg, 256) == 0
-		|| ft_strncmp("exit", arg, 256) == 0)
-	{
-		ft_printf("Builtin confirmed.\n");
-		return (1);
-	}
-	ft_printf("Not builtin.\n");
-	return (0);
-}
+/*
+recebo o cmd_n_args dentro de cada chunk
 
-int	arg_id(t_execlist *execl, int *exit_stt)
+acrescentar um novo step p_novo, pré ou pos p_4
+se calhar pos p_4 da mais jeito
+ve os args todos
+ve str[0] == '<' || str[0] == '>'
+alona novo char ** c tamanho - 2
+retira esse arg e o proximo
+free na antiga e retorna a nova char *
+
+e se tiver multiplas redirections, vou ter que retirar tudo
+
+red vai ser um indice
+*/
+
+int	verify_redir(t_chunk *chunk)
 {
 	int	i;
-	int	r;
 
 	i = -1;
-	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (5): arg_id;\n");
-	while (execl->chunk[++i] != NULL)
+	while (chunk->cmd_n_args[++i] != NULL)
 	{
-		ft_printf("Getting command id from chunk n°%d:\n", i);
-		if (i == 0)
-			execl->chunk[i]->inpipe = 1;
-		execl->chunk[i]->blt = check_builtin(execl->chunk[i]->cmd_n_args[0]);
-		if (execl->chunk[i]->blt == 1)
-			r = chunk_id(execl->chunk[i], "builtft", 1);
-		else if (execl->chunk[i]->blt == 0)
-			r = chunk_id(execl->chunk[i], NULL, 2);
-		if (r == 0)
-		{
-			perror("Command path finding error");
-			*exit_stt = 127;
-			return(0);
-		}
+		if (chunk->cmd_n_args[i][0] == '>'
+			|| chunk->cmd_n_args[i][0] == '<')
+			return (i);
 	}
-	ft_printf("Finished the arg id parsing.\n");
-	return(1);
+	return (-1);
 }
 
-/*
-so tou a usar builtins por isso o erro esta na parte dos builtins
+void	remove_redir(t_chunk *chunk, int red)
+{
+	char	**new;
+	int		i;
 
+	i = 0;
+	while (chunk->cmd_n_args[i] != NULL)
+		i++;
+	new = malloc((i - 1) * sizeof(char *));
+	i = 0;
+	while (i != red)
+		new[i] = chunk->cmd_n_args[i];
+	if (i == red)
+		i += 2;
+	while (chunk->cmd_n_args[i] != NULL)
+		new[i] = chunk->cmd_n_args[i];
+	new[i] = NULL;
+	free(chunk->cmd_n_args[red]);
+	free(chunk->cmd_n_args[red + 1]);
+	chunk->cmd_n_args = new;
+}
 
-if (BUILTIN) , flag == 1
-arg[0] = path/builtft
-arg[1] = (char *)cmd_n_args;
+int	rmv_redirs(t_execlist *execl, int *exit_stt)
+{
+	int	i;
+	int	red;
 
-else (terminal) , flag == 0
-path_n_args || modify cmd_n_args
-arg[0] = path/terminal
-arg[1] = arg normal
-
-ADD CHUNK_PATH
-por default,
-execl->chunk[i]->path = NULL;
-senao, mudar apenas nos builtins;
-
-vou ter que retirar aquela condicao de erro porque vou aceitar todos os
-comandos e so verifico os erros no executor
-OU MANTENHO?
-*/
+	i = -1;
+	red = 0;
+	while (execl->chunk[++i] != NULL)
+	{
+		while (red != -1)
+		{
+			red = verify_redir(execl->chunk[i]);
+			if (red != 1)
+				remove_redir(execl->chunk[i], red);
+		}
+	}
+	return (1);
+}
