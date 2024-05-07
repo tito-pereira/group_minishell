@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:45:01 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/07 13:08:18 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:29:48 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,22 +130,28 @@ if:
 
 int	single_quote(int *a, int *b, t_chunk *chunk, int *i)
 {
-	int	beg;
-
-	beg = *a;
+	ft_printf("Parsing single quotes\n");
+	//int beg = *a;
 	if (chunk->og[*i] != 39)
 		return(0);
+	(*i)++;
 	*a = *i;
 	while(chunk->og[*i] != 39 && chunk->og[*i] != '\0')
 		(*i)++;
 	if(chunk->og[*i] == '\0')
 	{
-		*a = beg;
-		perror("Unclosed single quote error");
+		//*a = beg;
+		perror("Unclosed single quotes error");
 		return(-1);
 	}
-	if(chunk->og[*i] == 39)
-		*b = *i;
+	*b = *i;
+	if (*b == *a)
+	{
+		perror("Empty single quotes error");
+		return(-1);
+	}
+	if (chunk->og[*i] == 39)
+		*b = (*i - 1);
 	return(1);
 }
 
@@ -165,10 +171,8 @@ if:
 
 int	double_quote(int *a, int *b, t_chunk *chunk, int *i)
 {
-	//int	beg;
-
 	ft_printf("Parsing double quotes\n");
-	//beg = *a;
+	//int beg = *a;
 	if (chunk->og[*i] != 34)
 		return(0);
 	(*i)++;
@@ -210,6 +214,8 @@ perror
 anyway
 . nem sei se preciso daquela verificacao de inicio, ja esta assegurada
 pelo cmd_separator
+PRECISAS SIM, o loop inteiro entra em todas as verificacoes entao é
+importante ter essa condicao de saida
 
 ""<stuff>\0
 <stuff>""\0
