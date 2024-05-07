@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:35:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/06 18:25:41 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/07 11:39:17 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	check_absolute(t_chunk *chunk)
 	while (chunk->cmd_n_args[0][i] != '\0')
 		i++;
 	if ((i >= 1 && chunk->cmd_n_args[0][0] == '/')
+		|| (i >= 1 && chunk->cmd_n_args[0][0] == '~')
 		|| (i >= 2 && chunk->cmd_n_args[0][0] == '.'
 		&& chunk->cmd_n_args[0][1] == '/')
 		|| (i >= 3 && chunk->cmd_n_args[0][0] == '.'

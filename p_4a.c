@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:45:01 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/06 17:10:46 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:08:18 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,34 +165,62 @@ if:
 
 int	double_quote(int *a, int *b, t_chunk *chunk, int *i)
 {
-	int	beg;
+	//int	beg;
 
-	beg = *a;
+	ft_printf("Parsing double quotes\n");
+	//beg = *a;
 	if (chunk->og[*i] != 34)
 		return(0);
+	(*i)++;
 	*a = *i;
 	while(chunk->og[*i] != 34 && chunk->og[*i] != '\0')
 		(*i)++;
 	if(chunk->og[*i] == '\0')
 	{
-		*a = beg;
+		//*a = beg;
 		perror("Unclosed double quotes error");
 		return(-1);
 	}
-	if(chunk->og[*i] == 34)
-		*b = *i;
+	*b = *i;
+	if (*b == *a)
+	{
+		perror("Empty double quotes error");
+		return(-1);
+	}
+	if (chunk->og[*i] == 34)
+		*b = (*i - 1);
 	return(1);
 }
 
 /*
-acho que posso tirar os whitespaces
+double quotes ficam inseridas no arg
 
-introduzir erros de '\0':
--1 erro de unclosed quotes
-0 grupo errado
+a >> 1 -> \0 ou "
 
-- endstring errors ?
-- i ou *i ?
+if \0, error
+if " && b == a, error
+if " && b > a, success
+
+(b nunca fica atras de a
+no maximo, b == a)
+
+perror
+
+. o a nao precisa de retornar ao inicio pq eu vou matar o processo
+anyway
+. nem sei se preciso daquela verificacao de inicio, ja esta assegurada
+pelo cmd_separator
+
+""<stuff>\0
+<stuff>""\0
+<stuff>""<stuff>\0
+"uwencewncjw\0
+
+if a == b, error porque empty quotes?
+
+32 - space
+34 - double quotes
+39 - single quotes
 */
 
 int	cmd_separator(t_chunk *chunk)

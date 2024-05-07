@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/06 16:06:26 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/07 12:02:46 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,35 @@ void	print_exec(t_execlist *execl)
 	}
 }
 
+int	null_input(char *input, int *exit_stt)
+{
+	int	i;
+
+	i = -1;
+	if (input[0] == '\0')
+	{
+		perror("Empty input");
+		*exit_stt = 1;
+		return (0);
+	}
+	while (input[++i])
+	{
+		if (input[i] != ' ' && input[i] != '	')
+			return (1);
+	}
+	perror("Empty input");
+	*exit_stt = 1;
+	return (0);
+}
+
 int	parse_central(t_execlist **execl, char *input, int *exit_stt)
 {
 	int			flag;
 
 	ft_printf("Inside parsing.\n");
-	flag = pipe_chunks(execl, input, exit_stt);
+	flag = null_input(input, exit_stt);
+	if (flag == 1)
+		flag = pipe_chunks(execl, input, exit_stt);
 	if (flag == 1)
 		flag = redir_checker(*execl, exit_stt);
 	if (flag == 1)
@@ -163,9 +186,11 @@ int	main()
 		if (parse_central(&execl, input, &exit_stt) == 1)
 		{
 			print_exec(execl);
-			exec_central(execl, &exit_stt);
+			if (exec_central(execl, &exit_stt) == 1)
+				exit_stt = 0;
 		}
-		free_exec(execl);
+		if (execl)
+			free_exec(execl);
 		//else, free execl maybe, retry input
 		//error_stt apenas fica gravado
 		//free(input);
