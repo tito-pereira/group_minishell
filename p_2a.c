@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_2a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/18 17:44:41 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/08 18:28:57 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,35 @@ char	*get_name(char *str, int i)
 	int	a;
 	int	b;
 
+	ft_printf("Getting file name:\n");
 	while (str[i] == 9 || str[i] == 32)
 		i++;
 	if (str[i] == '\0')
 		return (NULL);
 	a = i;
+	ft_printf("a:%d;\n", a);
 	while (str[i] != 9 && str[i] != 32 && str[i] != '\0')
 		i++;
-	if (str[i] == '\0')
-		return (NULL);
-	b = i - 1;
+	//if (str[i] == '\0') ??
+		//return (NULL);
+	b = i;
+	ft_printf("b:%d;\n", b);
 	return (ft_substr(str, a, (b - a)));
 }
+
+/*
+e redirections dentro de aspas??
+
+- e mesmo necessario aquela verificacao do fim do input ser \0?
+- deixo estar b = i ou algum caso em que b = i - 1?
+
+hello w
+a = char 7 = [6]
+b = char 8 = [7]
+len 1
+portanto sim eu quero o b na char seguinte para garantir uma len correta
+b = i sempre
+*/
 
 char	*ft_str_find(char *str, char *lim)
 {
@@ -76,8 +93,10 @@ e só depois começar o parser pelo delimiter?
 int	input_redir(t_chunk *chunk, int i)
 {
 	i++;
-	if(chunk->og[i] == '<') // <<
+	ft_printf("Input redirection checker.\n");
+	if (chunk->og[i] == '<') // <<
 	{
+		ft_printf("heredoc input redirection checking.\n");
 		chunk->heredoc = 1;
 		//while ((chunk->og[i] == 9 || chunk->og[i] == 32) && chunk->og[i] != '\0')
 			//i++; // whitespaces + endstring
@@ -92,24 +111,32 @@ int	input_redir(t_chunk *chunk, int i)
 		if (chunk->infile == NULL)
 			return (-1);
 	}
-	else if(chunk->og[i] != '<') // <
-		chunk->infile = get_name(chunk->og, (i - 1));
+	else if (chunk->og[i] != '<') // <
+	{
+		ft_printf("simple input redirection checking.\n");
+		chunk->infile = get_name(chunk->og, i);
+	}
+	ft_printf("infile: '%s'\n", chunk->infile);
 	return (1);
 }
 
 int	output_redir(t_chunk *chunk, int i)
 {
 	i++;
+	ft_printf("Output redirection checker.\n");
 	if(chunk->og[i] == '>') // >>
 	{
+		ft_printf("append output redirection.\n");
 		chunk->append = 1;
 		chunk->outfile = get_name(chunk->og, i);
 	}
 	if(chunk->og[i] != '>') // >
 	{
+		ft_printf("truncate output redirection.\n");
 		chunk->append = 0;
-		chunk->outfile = get_name(chunk->og, (i - 1));
+		chunk->outfile = get_name(chunk->og, i);
 	}
+	ft_printf("outfile: '%s'\n", chunk->outfile);
 	return(1);
 }
 
