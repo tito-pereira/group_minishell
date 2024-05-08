@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/08 15:41:40 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:59:21 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,14 @@ void	get_positions(int *a, int *b, int *i, char *chunk)
 	*a = *i;
 	(*i)++;
 	while (chunk[*i] != 9 && chunk[*i] != 32 && chunk[*i] != '$'
-		&& chunk[*i] != '\0')
+		&& chunk[*i] != '\0' && chunk[*i] != 34)
 		(*i)++;
 	*b = (*i) - 1;
 	ft_printf("a:%d && b:%d\n", *a, *b);
 	/*
-	a = i;
-	while (execl.chunk[j].og[i] != 9 && execl.chunk[j].og[i] != 32
-		&& execl.chunk[j].og[i] != '$' && execl.chunk[j].og[i] != '\0')
-		i++;
-	b = i - 1;
+	se calhar acrescentar uma condicao de [i] != 34 por causa da
+	double quote
+	ha alguma env var que possua double quote? nao creio
 	*/
 }
 
