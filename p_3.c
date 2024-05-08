@@ -6,11 +6,15 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/01 12:48:55 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:41:40 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+(3) - environment variable expander with '$'
+*/
 
 /*
 nao esquecer que "" suporta $ mas '' já não
@@ -87,8 +91,7 @@ int	h_env_var(int *a, int *b, int *i, char **chunk, int *exit_stt)
 		{
 			ft_printf("New chunk is NULL\n");
 			perror("Error handling environment variable ($)");
-			//*exit_stt = 1;
-			return(0);
+			return (0);
 		}
 		ft_printf("New chunk: '%s'\n", *chunk);
 	}
@@ -96,10 +99,9 @@ int	h_env_var(int *a, int *b, int *i, char **chunk, int *exit_stt)
 	{
 		ft_printf("Spec is NULL\n");
 		perror("Error handling environment variable ($)");
-		//*exit_stt = 1;
-		return(0);
+		return (0);
 	}
-	return(1);
+	return (1);
 	/*
 	get_positions(&a, &b, &i, execl.chunk[j].og);
 	spec = get_spec(a, b, execl.chunk[j].og);

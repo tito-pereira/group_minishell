@@ -6,39 +6,38 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/08 14:03:56 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:35:17 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+(1) - valid pipe counter and divide in chunks
+*/
 
 char	**divide_pipes(t_execlist *execl, char *input)
 {
 	char	**og_group;
 	int		i;
 	int		beg;
+	int		end;
 
-	og_group = malloc((execl->valid_pipes + 1) * sizeof(char *));
+	og_group = malloc((execl->valid_cmds + 1) * sizeof(char *));
 	i = -1;
 	beg = 0;
-	if (execl->valid_pipes == 1)
-		og_group = ft_strdup();
-	else
+	while(++i < execl->valid_cmds)
 	{
-		while(++i < execl->valid_pipes)
-		{
-			if ()
-			og_group[i] = ft_substr(input, beg, (execl->pipe_loc[i] - beg));
-			beg = execl->pipe_loc[i];
-		}
+		end = ft_strlen(input);
+		if (execl->pipe_loc[i] != '\0')
+			end = execl->pipe_loc[i];
+		og_group[i] = ft_substr(input, beg, end - beg);
+		if (execl->pipe_loc[i] != '\0')
+			beg = execl->pipe_loc[i] + 1;
 	}
 	og_group[i] = NULL;
 	return (og_group);
 }
-
-/*
-se conseguir evitar a strdup topzao
-*/
 
 int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
 {
@@ -46,7 +45,6 @@ int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
 	int		i;
 
 	ft_printf("Inside chunk_create.\n");
-	//og_group = ft_split(input, '|');
 	og_group = divide_pipes(execl, input);
 	i = 0;
 	while (og_group[i] != NULL)
@@ -83,7 +81,7 @@ int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 		*exit_stt = 1;
 		return(0);
 	}
-	c = pipe_counter(input, execl);
+	c = pipe_counter(input, *execl);
 	if (c == -1)
 	{
 		perror("Invalid pipe placement");

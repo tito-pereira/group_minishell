@@ -6,14 +6,14 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 11:50:43 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/06 17:40:56 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:38:26 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-recebo o cmd_n_args dentro de cada chunk
+(5) - remove redirections from the valid commands && arguments char **
 
 acrescentar um novo step p_novo, pré ou pos p_4
 se calhar pos p_4 da mais jeito

@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /*
-(4) - separar em cmd_n_arg incluindo "" e '', ft_substr c posições
+(4) - commands && arguments separator including quote handlers
 
 (repeating) skip whitespace -> parse;
 
