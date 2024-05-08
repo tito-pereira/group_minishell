@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/06 17:01:10 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/08 13:54:24 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_execlist {
 	int		cmd_nmb;
 	int		pipe_nmb;
 	char	**my_envp;
+	int		valid_pipes;
+	int		*pipe_loc;
 }	t_execlist;
 
 // SIGNAL HANDLING
@@ -66,10 +68,11 @@ int		pipe_chunks(t_execlist **execl, char *input, int *exit_stt); // (1)
 int		redir_checker(t_execlist *execl, int *exit_stt); // (2)
 int		special_char(t_execlist *execl, int *exit_stt); // (3)
 int		arg_separator(t_execlist *execl, int *exit_stt); // (4)
-int		rmv_redirs(t_execlist *execl, int *exit_stt); // (4.5)
-int		arg_id(t_execlist *execl, int *exit_stt); // (5)
+int		rmv_redirs(t_execlist *execl, int *exit_stt); // (5)
+int		arg_id(t_execlist *execl, int *exit_stt); // (6)
 
 // PARSER SUPPORT
+int		pipe_counter(char *input, t_execlist *execl); // (1)
 int		input_redir(t_chunk *chunk, int i); // (2)
 int		output_redir(t_chunk *chunk, int i); // (2)
 char	*new_chnk(char *spec, char *old, int a, int b); // (3)

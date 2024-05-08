@@ -6,7 +6,7 @@
 #    By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:44:12 by marvin            #+#    #+#              #
-#    Updated: 2024/05/06 15:19:44 by tibarbos         ###   ########.fr        #
+#    Updated: 2024/05/08 13:53:12 by tibarbos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC= cc
 CFLAGS= -Wall -Wextra -Werror
 RM= rm -rf
 SRC= main.c free.c signals.c\
-	p_1.c p_2.c p_2a.c p_3.c p_3a.c p_4.c p_4a.c p_5.c p_6.c p_6a.c\
+	p_1.c p_1a.c p_2.c p_2a.c p_3.c p_3a.c p_4.c p_4a.c p_5.c p_6.c p_6a.c\
 	e_1.c
 OBJ= ${SRC:.c=.o}
 LIBS= -lreadline -L./mylib -lft

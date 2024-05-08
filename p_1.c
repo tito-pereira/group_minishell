@@ -6,42 +6,38 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/04/30 17:01:58 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:03:56 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-(1) - separar em chunks divididos por pipes
-(cada chunk vai ter um shell command diferente)
-*/
-
-int	pipe_counter(char *input)
+char	**divide_pipes(t_execlist *execl, char *input)
 {
-	int	c;
-	int	i;
+	char	**og_group;
+	int		i;
+	int		beg;
 
-	c = 0;
+	og_group = malloc((execl->valid_pipes + 1) * sizeof(char *));
 	i = -1;
-	while (input[++i] != '\0')
+	beg = 0;
+	if (execl->valid_pipes == 1)
+		og_group = ft_strdup();
+	else
 	{
-		if (input[i] == '|')
+		while(++i < execl->valid_pipes)
 		{
-			if (input[i + 1] == '|')
-				return (-1);
-			if (input[i + 1] != '|')
-				c++;
-			if (input[i + 1] == '\0')
-				return (-1);
+			if ()
+			og_group[i] = ft_substr(input, beg, (execl->pipe_loc[i] - beg));
+			beg = execl->pipe_loc[i];
 		}
 	}
-	return (c);
+	og_group[i] = NULL;
+	return (og_group);
 }
 
 /*
-if ||, error
-nao esta a dar esse error (ou retorno -1)
+se conseguir evitar a strdup topzao
 */
 
 int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
@@ -50,15 +46,14 @@ int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
 	int		i;
 
 	ft_printf("Inside chunk_create.\n");
-	og_group = ft_split(input, '|');
+	//og_group = ft_split(input, '|');
+	og_group = divide_pipes(execl, input);
 	i = 0;
 	while (og_group[i] != NULL)
 		i++;
 	if (i != execl->cmd_nmb)
 	{
 		perror("Pipe parsing error");
-		//free_exec(execl);
-		//exit (0);
 		*exit_stt = 1;
 		return(0);
 	}
@@ -69,15 +64,13 @@ int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
 		execl->chunk[i]->og = og_group[i];
 		ft_printf("chunk[%d] created;\n", i);
 	}
+	free (og_group);
 	return(1);
 }
 
-// transformar em retorno int
-//t_execlist	*pipe_chunks(char *input, int *exit_stt)
 int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 {
 	int			c;
-	//t_execlist	*execl;
 
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
 	ft_printf("Inside parsing (1): pipe_chunks;\n");
@@ -90,7 +83,7 @@ int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 		*exit_stt = 1;
 		return(0);
 	}
-	c = pipe_counter(input);
+	c = pipe_counter(input, execl);
 	if (c == -1)
 	{
 		perror("Invalid pipe placement");
@@ -111,32 +104,5 @@ int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 		for (int i = 0; (*execl)->chunk[i] != NULL; i++)
 			ft_printf("chunk[%d]->og: %s;\n", i, (*execl)->chunk[i]->og);
 	}
-	//return (execl);
 	return(1);
 }
-
-/*
-- pipe_counter (nao usa execl)
-- chunk_create (j usa execl)
-*/
-
-/*
-- recebe char *input original;
-- separa em char * chunks que dividem os vários pipes em chunks de comando
-- retorna a main struct execlist já com os varios chunks separados
-
-erros
-- presenca de ||
-- split / chunk nmb != cmd_nmd
-
-.como nao vou implementar o simbolo ||, nao suporto essa funcionalidade
-aqui e uso a ft_split sem ter isso em conta
-
-. colocar erros de pipe placement ou apenas erro de || e o
-resto eventualmente faz-se erros de execução de comandos?
-porque se ponho erro no [0], tmb tenho que por no [1], [2],
-etc, porque é muito cedo para colocar pipes, e tinha que fazer
-erros para ver se cada chunk tem apenas 1 ou mais comandos etc..
-assim é mais simples e apenas faço error check nos comandos,
-menos codigo, um bcd menos info, mas a mesma eficacia
-*/
