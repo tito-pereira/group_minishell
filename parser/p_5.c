@@ -37,7 +37,7 @@ int	arg_separator(t_execlist *execl, int *exit_stt)
 	int		ret;
 
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (4): arg_separator;\n");
+	ft_printf("Inside parsing (5): arg_separator;\n");
 	c = -1;
 	while (execl->chunk[++c] != NULL)
 	{

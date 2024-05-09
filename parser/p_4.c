@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_3.c                                              :+:      :+:    :+:   */
+/*   p_4.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 13:09:02 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:06:56 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	special_char(t_execlist *execl, int *exit_stt)
 	j = -1;
 	flag = 1;
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (3): special_char;\n");
+	ft_printf("Inside parsing (4): special_char;\n");
 	while (execl->chunk[++j] != NULL)
 	{
 		ft_printf("Chunk n°%d:\n", j);
