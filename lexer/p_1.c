@@ -6,14 +6,14 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/08 15:35:17 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 12:35:50 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
-(1) - valid pipe counter and divide in chunks
+(1) - valid pipe counter and divide in tokens
 */
 
 char	**divide_pipes(t_execlist *execl, char *input)

@@ -6,11 +6,11 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:52:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/08 15:18:51 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 12:35:56 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	pipe_atr_loop(t_execlist *execl, char *input, int *flag, int i)
 {

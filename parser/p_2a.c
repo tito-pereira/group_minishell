@@ -6,11 +6,11 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/08 18:28:57 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 12:50:44 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*get_name(char *str, int i)
 {
@@ -78,63 +78,69 @@ char	*heredoc_read(char *lim)
 {
 	char	*input;
 
-	input = readline("Write the input file's name here: ");
+	input = readline("heredoc> ");
 	if (!input)
 		return (NULL);
+	//add input to chest
+	//if (ft_strncmp(lim, input, 4096) == 0)
+		// done; break;
 	return (ft_str_find(input, lim));
 }
 
 /*
-esta ordem nao bate certo
-porque haveria eu de saltar à frente da primeira palavra
-e só depois começar o parser pelo delimiter?
+refazer a heredoc
 */
 
-int	input_redir(t_chunk *chunk, int i)
+int	input_redir(t_chunk *chunk, int *i)
 {
-	i++;
+	(*i)++;
 	ft_printf("Input redirection checker.\n");
-	if (chunk->og[i] == '<') // <<
+	if (chunk->og[*i] == '<') // <<
 	{
 		ft_printf("heredoc input redirection checking.\n");
 		chunk->heredoc = 1;
-		//while ((chunk->og[i] == 9 || chunk->og[i] == 32) && chunk->og[i] != '\0')
-			//i++; // whitespaces + endstring
-		//while (chunk->og[i] != 9 && chunk->og[i] != 32 && chunk->og[i] != '\0')
-			//i++; // non whitespaces + endstring
-		while ((chunk->og[i] == 9 || chunk->og[i] == 32) && chunk->og[i] != '\0')
-			i++; // whitespaces + endstring
-		if (chunk->og[i] == '\0')
+		while ((chunk->og[++(*i)] == 9 || chunk->og[*i] == 32)
+			&& chunk->og[*i] != '\0')
+			continue ; // whitespaces + endstring
+		if (chunk->og[*i] == '\0')
+		{
+			perror("Empty input redirection");
 			return (0);
-		chunk->delimiter = get_name(chunk->og, i);
+		}
+		chunk->delimiter = get_name(chunk->og, *i);
+		ft_printf("delimiter is '%s'\n", chunk->delimiter);
 		chunk->infile = heredoc_read(chunk->delimiter);
 		if (chunk->infile == NULL)
 			return (-1);
 	}
-	else if (chunk->og[i] != '<') // <
+	else if (chunk->og[*i] != '<') // <
 	{
 		ft_printf("simple input redirection checking.\n");
-		chunk->infile = get_name(chunk->og, i);
+		chunk->infile = get_name(chunk->og, *i);
 	}
 	ft_printf("infile: '%s'\n", chunk->infile);
 	return (1);
 }
 
-int	output_redir(t_chunk *chunk, int i)
+/*
+refazer o mecanismo de heredoc com a strjoin
+*/
+
+int	output_redir(t_chunk *chunk, int *i)
 {
-	i++;
+	(*i)++;
 	ft_printf("Output redirection checker.\n");
-	if(chunk->og[i] == '>') // >>
+	if(chunk->og[*i] == '>') // >>
 	{
 		ft_printf("append output redirection.\n");
 		chunk->append = 1;
-		chunk->outfile = get_name(chunk->og, i);
+		chunk->outfile = get_name(chunk->og, *i);
 	}
-	if(chunk->og[i] != '>') // >
+	if(chunk->og[*i] != '>') // >
 	{
 		ft_printf("truncate output redirection.\n");
 		chunk->append = 0;
-		chunk->outfile = get_name(chunk->og, i);
+		chunk->outfile = get_name(chunk->og, *i);
 	}
 	ft_printf("outfile: '%s'\n", chunk->outfile);
 	return(1);

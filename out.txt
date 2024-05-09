@@ -1,5 +1,1 @@
-Just as example text file
-i want to write stuff just because yes
-this is line 3
-and this is line 4 from inside the file
-ok i will end now
+5

@@ -6,11 +6,11 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 11:50:43 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/08 15:38:26 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 12:36:32 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
 (5) - remove redirections from the valid commands && arguments char **

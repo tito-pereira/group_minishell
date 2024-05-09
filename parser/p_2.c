@@ -6,20 +6,20 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/08 18:29:51 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 12:36:04 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
 (2) - ler e anotar redirections e file names em cada chunk
 */
 
-int	check_redir(t_execlist *execl, int i, int c, int *exit_stt)
+int	check_redir(t_execlist *execl, int *i, int c, int *exit_stt)
 {
 	//ft_printf("Inside check_redir;\n");
-	if (execl->chunk[c]->og[i] == '<' && c == 0)
+	if (execl->chunk[c]->og[*i] == '<' && c == 0)
 	{
 		if (input_redir(execl->chunk[c], i) == -1)
 		{
@@ -28,7 +28,7 @@ int	check_redir(t_execlist *execl, int i, int c, int *exit_stt)
 			return (0);
 		}
 	}
-	else if (execl->chunk[c]->og[i] == '>')
+	else if (execl->chunk[c]->og[*i] == '>')
 	{
 		if (output_redir(execl->chunk[c], i) == -1)
 		{
@@ -53,24 +53,23 @@ int	redir_checker(t_execlist *execl, int *exit_stt)
 		ft_printf("execl is NULL dumbass\n");
 	while (execl->chunk[++c] != NULL)
 	{
-		ft_printf("Loop [%d];\n", c);
+		//ft_printf("Loop [%d];\n", c);
 		execl->chunk[c]->infile = NULL;
-		ft_printf("infile: %s;\n", execl->chunk[c]->infile);
+		//ft_printf("infile: %s;\n", execl->chunk[c]->infile);
 		execl->chunk[c]->heredoc = 0;
-		ft_printf("heredoc: %d;\n", execl->chunk[c]->heredoc);
+		//ft_printf("heredoc: %d;\n", execl->chunk[c]->heredoc);
 		execl->chunk[c]->delimiter = NULL;
-		ft_printf("delimiter: %s;\n", execl->chunk[c]->delimiter);
+		//ft_printf("delimiter: %s;\n", execl->chunk[c]->delimiter);
 		execl->chunk[c]->outfile = NULL;
-		ft_printf("outfile: %s;\n", execl->chunk[c]->outfile);
+		//ft_printf("outfile: %s;\n", execl->chunk[c]->outfile);
 		execl->chunk[c]->append = 0;
-		ft_printf("append: %d;\n", execl->chunk[c]->append);
+		//ft_printf("append: %d;\n", execl->chunk[c]->append);
 		execl->chunk[c]->cmd_n_args = NULL;
-		ft_printf("cmd_n_args: %s;\n", execl->chunk[c]->cmd_n_args);
+		//ft_printf("cmd_n_args: %s;\n", execl->chunk[c]->cmd_n_args);
 		i = -1;
 		while (execl->chunk[c]->og[++i] != '\0')
 		{
-			//ft_printf("Inside while;\n");
-			if (check_redir(execl, i, c, exit_stt) == 0)
+			if (check_redir(execl, &i, c, exit_stt) == 0)
 				return (0);
 		}
 	}

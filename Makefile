@@ -6,7 +6,7 @@
 #    By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:44:12 by marvin            #+#    #+#              #
-#    Updated: 2024/05/08 13:53:12 by tibarbos         ###   ########.fr        #
+#    Updated: 2024/05/09 12:49:55 by tibarbos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,12 @@ NAME= minishell
 CC= cc
 CFLAGS= -Wall -Wextra -Werror
 RM= rm -rf
-SRC= main.c free.c signals.c\
-	p_1.c p_1a.c p_2.c p_2a.c p_3.c p_3a.c p_4.c p_4a.c p_5.c p_6.c p_6a.c\
-	e_1.c
+SRC= ./lexer/p_1.c ./lexer/p_1a.c \
+	./parser/p_2.c ./parser/p_2a.c ./parser/p_3.c ./parser/p_3a.c \
+	./parser/p_4.c ./parser/p_4a.c ./parser/p_5.c ./parser/p_6.c \
+	./parser/p_6a.c \
+	./executor/e_1.c \
+	main.c free.c signals.c
 OBJ= ${SRC:.c=.o}
 LIBS= -lreadline -L./mylib -lft
 

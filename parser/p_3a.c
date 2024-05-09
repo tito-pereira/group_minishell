@@ -6,11 +6,11 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:11:55 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/04/16 17:36:44 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 12:36:17 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*chnk_conditions(char *spec, char *first, char *secnd)
 {
