@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:12:29 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/09 13:36:03 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 14:34:54 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,23 @@ e se tiver multiplas redirections, vou ter que retirar tudo
 red vai ser um indice
 */
 
-int	verify_redir(t_chunk *chunk)
+int	verify_redir(char *str, int *a, int *b, int *i)
 {
-	int	i;
-
-	i = -1;
-	ft_printf("checking for redirs to remove\n");
-	while (chunk->cmd_n_args[++i] != NULL)
+	if (str[i] == '<' || chunk->og[i] == '>');
 	{
-		if (chunk->cmd_n_args[i][0] == '>'
-			|| chunk->cmd_n_args[i][0] == '<')
-			{
-				ft_printf("redir found in arg %d\n", i);
-				return (i);
-			}
+		a = i;
+		while ('>')
+			i++;
+		while (' ')
+			i++;
+		while ('asdsa')
+			i++;
+		b = i;
+		strdup (first)
 	}
-	ft_printf("no redirection found to remove\n");
-	return (-1);
 }
 
-void	remove_redir(t_chunk *chunk)
+void	chunk_redir(t_chunk *chunk)
 {
 	int	i;
 	int	a;
@@ -56,17 +53,14 @@ void	remove_redir(t_chunk *chunk)
 	i = -1;
 	while (chunk->og[++i] != '\0')
 	{
-		if (chunk->og[i] == '<' || chunk->og[i] == '>');
+		if (get_positions() == 1)
 		{
-			a = i;
-			while ('>')
-				i++;
-			while (' ')
-				i++;
-			while ('asdsa')
-				i++;
-			b = i;
-			strdup (first)
+			a = 0;
+			if (a != 0)
+				first = ft_substr(old, 0, a);
+			secnd = ft_substr(old, (b + 1), (ft_strlen(old) - b));
+			check_empty_strs(&first, &secnd);
+			new = chnk_conditions(spec, first, secnd);
 		}
 	}
 }
@@ -91,7 +85,7 @@ int	rmv_redirs(t_execlist *execl, int *exit_stt)
 		while (red != -1)
 		{
 			ft_printf("loop\n");
-			red = verify_redir(execl->chunk[i]);
+			red = chunk_redir(execl->chunk[i]);
 			if (red != -1)
 				remove_redir(execl->chunk[i], red);
 		}
