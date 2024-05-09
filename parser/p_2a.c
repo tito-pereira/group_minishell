@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 12:50:44 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:08:11 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,9 @@ char	*get_name(char *str, int i)
 		return (NULL);
 	a = i;
 	ft_printf("a:%d;\n", a);
-	while (str[i] != 9 && str[i] != 32 && str[i] != '\0')
+	while (str[i] != 9 && str[i] != 32 && str[i] != '\0'
+		&& str[i] != '>' && str[i] != '<')
 		i++;
-	//if (str[i] == '\0') ??
-		//return (NULL);
 	b = i;
 	ft_printf("b:%d;\n", b);
 	return (ft_substr(str, a, (b - a)));

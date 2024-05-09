@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 12:36:14 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:09:02 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 /*
 (3) - environment variable expander with '$'
+	- handles single && double quotes
+	- does not handle redirections (handled previously)
 */
 
 /*

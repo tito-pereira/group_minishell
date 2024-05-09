@@ -13,7 +13,9 @@
 #include "../minishell.h"
 
 /*
-(4) - commands && arguments separator including quote handlers
+(4) - commands && arguments separator by whitespaces
+	- handles single && double quotes
+	- does not handle redirections (handled previously)
 
 (repeating) skip whitespace -> parse;
 

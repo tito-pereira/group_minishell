@@ -6,14 +6,14 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 12:36:04 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:09:26 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
-(2) - ler e anotar redirections e file names em cada chunk
+(2) - reads and stores redirections and filenames inside each token
 */
 
 int	check_redir(t_execlist *execl, int *i, int c, int *exit_stt)
