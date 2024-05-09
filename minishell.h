@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 11:43:07 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:32:13 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ void	sig_repeat(int num);
 int		parse_central(t_execlist **execl, char *input, int *exit_stt);
 int		pipe_chunks(t_execlist **execl, char *input, int *exit_stt); // (1)
 int		redir_checker(t_execlist *execl, int *exit_stt); // (2)
-int		special_char(t_execlist *execl, int *exit_stt); // (3)
-int		arg_separator(t_execlist *execl, int *exit_stt); // (4)
-int		rmv_redirs(t_execlist *execl, int *exit_stt); // (5)
+int		scope_redirs(t_execlist *execl, int *exit_stt); // (3)
+int		special_char(t_execlist *execl, int *exit_stt); // (4)
+int		arg_separator(t_execlist *execl, int *exit_stt); // (5)
 int		arg_id(t_execlist *execl, int *exit_stt); // (6)
 
 // PARSER SUPPORT

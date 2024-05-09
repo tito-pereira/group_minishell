@@ -5,179 +5,114 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 13:09:02 by tibarbos         ###   ########.fr       */
+/*   Created: 2024/05/09 13:12:29 by tibarbos          #+#    #+#             */
+/*   Updated: 2024/05/09 17:35:37 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
-(3) - environment variable expander with '$'
-	- handles single && double quotes
-	- does not handle redirections (handled previously)
+(2) - remove redirections from the parsing string to simplify proccess
+
+e se houver >>>>> ou <<<<<
+redir interpreta isso ou da erro?
+-> get_name retorna NULL
+-> rmv_redirs salta todos os '<' a frente, assume bom senso
 */
+
+void	temp_strings(char *og, char **new, int a, int b)
+{
+	char	*first;
+	char	*secnd;
+	
+	first = NULL;
+	if (a != 0)
+		first = ft_substr(og, 0, a);
+	secnd = NULL;
+	if (b != ft_strlen(og));
+		secnd = ft_substr(og, (b + 1), (ft_strlen(og) - b));
+	*new = NULL;
+	if (!first && secnd)
+		*new = secnd; //(malloc ja feito)
+	else if (first && secnd)
+	{
+		*new = ft_strjoin(first, secnd);
+		free(first);
+		free(secnd);
+	}
+	else if (first && !secnd)
+		*new = first; //(malloc ja feito)
+}
+
+void	find_redirs(char *og, int *a, int *b, int *i)
+{
+	if (og[*i] == '<' || og[*i] == '>');
+	{
+		a = *i;
+		while (og[*i] == '<' || og[*i] == '>')
+			(*i)++;
+		while ((og[*i] == 9 || og[*i] == 32) && og[*i] != '\0') //whitespaces + EOF
+			(*i)++;
+		while (og[*i] != 9 && og[*i] != 32 && og[*i] != '\0') // non white + EOF
+			(*i)++;
+		b = (*i);
+	}
+}
 
 /*
-nao esquecer que "" suporta $ mas '' já não
-
-Handle environment variables ($ followed by a sequence of characters) which
-should expand to their values.
-Handle $? which should expand to the exit status of the most recently executed
-foreground pipeline.
-
-$PATH, $HOME, $SHELL, $PWD
-
-.ft_substr()
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-
-.ft_strcat()
-size_t	ft_strlcat(char *dest, const char *src, size_t size)
-
-char *ret = getenv("env_name")
-
-se calhar, por questoes de evitar erros, colocar a = $ && b = last_char
+se houver <<hbkh>>njne<unoew>kcme vai tudo atrelado ate EOF ou espacos
 */
 
-void	get_positions(int *a, int *b, int *i, char *chunk)
-{
-	ft_printf("Getting positions a && b:\n");
-	*a = *i;
-	(*i)++;
-	while (chunk[*i] != 9 && chunk[*i] != 32 && chunk[*i] != '$'
-		&& chunk[*i] != '\0' && chunk[*i] != 34)
-		(*i)++;
-	*b = (*i) - 1;
-	ft_printf("a:%d && b:%d\n", *a, *b);
-	/*
-	se calhar acrescentar uma condicao de [i] != 34 por causa da
-	double quote
-	ha alguma env var que possua double quote? nao creio
-	*/
-}
-
-char	*get_spec(int *a, int *b, char *chunk, int *exit_stt)
-{
-	char	*env_name;
-	char	*env_value;
-
-	ft_printf("Getting spec:\n");
-	env_name = ft_substr(chunk, ((*a) + 1), ((*b) - (*a)));
-	ft_printf("env_name: '%s'\n", env_name);
-	if (!env_name)
-		return(NULL);
-	if (env_name[0] == '?')
-		env_value = ft_itoa(*exit_stt);
-	else
-		env_value = getenv(env_name);
-	if (!env_value)
-		return(NULL);
-	free(env_name);
-	ft_printf("spec: '%s'\n", env_value);
-	return (env_value);
-}
-
-int	h_env_var(int *a, int *b, int *i, char **chunk, int *exit_stt)
-{
-	char	*spec;
-
-	ft_printf("Inside the handler\n");
-	get_positions(a, b, i, *chunk);
-	spec = ft_strdup(get_spec(a, b, *chunk, exit_stt));
-	if (spec != NULL)
-	{
-		*chunk = new_chnk(spec, *chunk, *a, *b);
-		if (*chunk == NULL)
-		{
-			ft_printf("New chunk is NULL\n");
-			perror("Error handling environment variable ($)");
-			return (0);
-		}
-		ft_printf("New chunk: '%s'\n", *chunk);
-	}
-	else
-	{
-		ft_printf("Spec is NULL\n");
-		perror("Error handling environment variable ($)");
-		return (0);
-	}
-	return (1);
-	/*
-	get_positions(&a, &b, &i, execl.chunk[j].og);
-	spec = get_spec(a, b, execl.chunk[j].og);
-	if (spec != NULL)
-		execl.chunk[j].og = new_chnk(spec, execl.chunk[j].og, a, b);
-	else
-	{
-		perror("Error handling environment variable");
-		free_exec(execl);
-		exit(0);
-	}
-	*/
-}
-
-int	special_char(t_execlist *execl, int *exit_stt)
+void	find_red_pos(t_chunk *chunk, int *i)
 {
 	int		a;
 	int		b;
-	int		j;
-	int		i;
-	int		flag;
+	char	*new;
 
-	j = -1;
-	flag = 1;
-	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (3): special_char;\n");
-	while (execl->chunk[++j] != NULL)
+	a = 0;
+	b = 0;
+	new = NULL;
+	if (chunk->og[*i] == '<' || chunk->og[*i] == '>')
 	{
-		ft_printf("Chunk n°%d:\n", j);
-		i = -1;
-		while (execl->chunk[j]->og[++i] != '\0')
-		{
-			a = 0;
-			b = 0;
-			if (execl->chunk[j]->og[i] == 39)
-				flag *= -1;
-			if (execl->chunk[j]->og[i] == '$' && flag == 1)
-			{
-				ft_printf("Special char found in position %d\n", i);
-				if (h_env_var(&a, &b, &i, &execl->chunk[j]->og, exit_stt) == 0)
-				{
-					*exit_stt = 1;
-					return(0);
-				}
-				else
-					ft_printf("execl->chunk[j]->og: '%s'\n", execl->chunk[j]->og);
-			}
-		}
+		find_redirs(chunk->og, &a, &b, &i);
+		temp_strings(chunk->og, &new, a, b);
+		free(chunk->og);
+		chunk->og = new;
+		(*i) = a;
 	}
-	return(1);
 }
-//else, retorna normalmente sem fazer nada
+
+int	scope_redirs(t_execlist *execl, int *exit_stt)
+{
+	int		c;
+	int		i;
+
+	c = -1;
+	i = -1;
+	(void)exit_stt;
+	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
+	ft_printf("Inside parsing (3): scope_redirs;\n");
+	while (execl->chunk[++c] != NULL)
+	{
+		i = -1;
+		while (execl->chunk[c]->og[++i] != '\0')
+			find_red_pos(execl->chunk[c], &i);
+	}
+	return (1);
+}
 
 /*
-acho que ja testei tudo, parece estar bom
+algum error status aqui?
 
-ja testei com palavras antes, depois, inicio, fim, sozinho
-ja testei com pipes
-ja testei com $ errados
+< text
+<\0 (erro lidado previamente)
 
-.fazer e testar o $? que devera expandir para o exit status do ultimo
-comando
-por default, acho que e zero
-default - 0;
-success - 0;
-errors:
-Exit status 1: Generic error code indicating unspecified error.
-Exit status 2: Misuse of shell builtins (e.g., incorrect usage of a command).
-Exit status 126: Permission problem or command is not executable.
-Exit status 127: Command not found or executable cannot be invoked.
-Exit status 128+n: Fatal error signal n (where n is a signal number).
-Exit status 130: Command terminated by Ctrl+C (SIGINT).
-Exit status 255: Exit status out of range or undefined.
-parsing + execution both create error status
+<>text\0 || <> text\0
+text<>text\0
+text<>\0
 
-.first '$HOME' second
-(acho que o proprio ponto 4 do parser nao foi testado ent n sei
-de onde vem o erro)
+ajustar linhas main
+testar b pointer (b == index EOF)
+i = a final (a = index)
 */

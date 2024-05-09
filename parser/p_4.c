@@ -1,133 +1,183 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_4.c                                              :+:      :+:    :+:   */
+/*   p_3.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 17:44:55 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/18 17:44:56 by marvin           ###   ########.fr       */
+/*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
+/*   Updated: 2024/05/09 13:09:02 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
-(4) - commands && arguments separator by whitespaces
+(3) - environment variable expander with '$'
 	- handles single && double quotes
 	- does not handle redirections (handled previously)
-
-(repeating) skip whitespace -> parse;
-
-. erros para '\0' estao contidos nas funcoes e retornam -1
-. retorna 0 sem alterações ou retorna 1 c alterações
-. correm seguidos porque só um vai retornar 1 c alterações
-erros para unclosed quotes aqui ou noutro sitio
-
-34 "
-39 '
-
-. talvez um erro em que cmp_sep e arg_c nao coincidem ?
 */
 
+/*
+nao esquecer que "" suporta $ mas '' já não
 
-int	arg_separator(t_execlist *execl, int *exit_stt)
+Handle environment variables ($ followed by a sequence of characters) which
+should expand to their values.
+Handle $? which should expand to the exit status of the most recently executed
+foreground pipeline.
+
+$PATH, $HOME, $SHELL, $PWD
+
+.ft_substr()
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+
+.ft_strcat()
+size_t	ft_strlcat(char *dest, const char *src, size_t size)
+
+char *ret = getenv("env_name")
+
+se calhar, por questoes de evitar erros, colocar a = $ && b = last_char
+*/
+
+void	get_positions(int *a, int *b, int *i, char *chunk)
 {
-	int		c;
-	int		ret;
-
-	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (4): arg_separator;\n");
-	c = -1;
-	while (execl->chunk[++c] != NULL)
-	{
-		ft_printf("Loop nª%d;\n", c);
-		ret = cmd_separator(execl->chunk[c]);
-		ft_printf("cmd_separator return == %d;\n", ret);
-		if (ret == 0)
-		{
-			perror("Empty pipe error");
-			*exit_stt = 1;
-			return(0);
-		}
-		else if (ret == -1)
-		{
-			//perror("Unclosed quotes error");
-			*exit_stt = 1;
-			return(0);
-		}
-	}
-	return(1);
-	/*ft_printf("Manual print:\n");
-	ft_printf("str[%d]: %s;\n", 0, execl->chunk[0]->cmd_n_args[0]);
-	ft_printf("str[%d]: %s;\n", 1, execl->chunk[0]->cmd_n_args[1]);
-	ft_printf("str[%d]: %s;\n", 2, execl->chunk[0]->cmd_n_args[2]);*/
+	ft_printf("Getting positions a && b:\n");
+	*a = *i;
+	(*i)++;
+	while (chunk[*i] != 9 && chunk[*i] != 32 && chunk[*i] != '$'
+		&& chunk[*i] != '\0' && chunk[*i] != 34)
+		(*i)++;
+	*b = (*i) - 1;
+	ft_printf("a:%d && b:%d\n", *a, *b);
+	/*
+	se calhar acrescentar uma condicao de [i] != 34 por causa da
+	double quote
+	ha alguma env var que possua double quote? nao creio
+	*/
 }
 
-
-/*
-verificação de vários erros
-- vários comandos (mais do que um built in)
-- nao contar com as redirections e saber retira-las
-*/
-
-/*
--------------------------------
-
-support function for my command separator
-instead of creating a command counter and a command parser
-in separate, and iterating over the entire input string twice,
-i created a dynamic resizer for the char **cmd_n_args
-- new malloc +1 size,
-- copies old to new,
-- adds new substring to last position,
-- free old cmd_n_args
-
-adicionar NULL no fim
-algo na numeração da atribuição do NULL nao esta a bater bem
-pq todos os elementos estao NULL agora
-o new[] imprime bem. o problema é com os frees.
-algo esta a tranformar os pointer em NULL ou a trocar a ordem deles
-
-atribuo os pointers diretamente new = pointer, em vez de duplicar
-burro do crl
-eu igualo os pointers mas dou free ao conteudo local na mesma
-*/
-
-void	add_arg(t_chunk *chunk, char **str)
+char	*get_spec(int *a, int *b, char *chunk, int *exit_stt)
 {
-	int		c;
-	char	**new;
+	char	*env_name;
+	char	*env_value;
 
-	c = 0;
-	ft_printf("Adding new arg to cmd_n_args;\nThis bad boy: '%s'\n", *str);
-	if (chunk->cmd_n_args == NULL)
+	ft_printf("Getting spec:\n");
+	env_name = ft_substr(chunk, ((*a) + 1), ((*b) - (*a)));
+	ft_printf("env_name: '%s'\n", env_name);
+	if (!env_name)
+		return(NULL);
+	if (env_name[0] == '?')
+		env_value = ft_itoa(*exit_stt);
+	else
+		env_value = getenv(env_name);
+	if (!env_value)
+		return(NULL);
+	free(env_name);
+	ft_printf("spec: '%s'\n", env_value);
+	return (env_value);
+}
+
+int	h_env_var(int *a, int *b, int *i, char **chunk, int *exit_stt)
+{
+	char	*spec;
+
+	ft_printf("Inside the handler\n");
+	get_positions(a, b, i, *chunk);
+	spec = ft_strdup(get_spec(a, b, *chunk, exit_stt));
+	if (spec != NULL)
 	{
-		ft_printf("First arg;\n");
-		chunk->cmd_n_args = malloc(2 * sizeof(char *));
-		chunk->cmd_n_args[0] = *str;
-		chunk->cmd_n_args[1] = NULL;
+		*chunk = new_chnk(spec, *chunk, *a, *b);
+		if (*chunk == NULL)
+		{
+			ft_printf("New chunk is NULL\n");
+			perror("Error handling environment variable ($)");
+			return (0);
+		}
+		ft_printf("New chunk: '%s'\n", *chunk);
 	}
 	else
 	{
-		ft_printf("Already existing args;\n");
-		while (chunk->cmd_n_args[c] != NULL)
-			c++;
-		ft_printf("How many cmd_n_args then? %d;\n", c);
-		new = malloc((c + 2) * sizeof(char *));
-		c = -1;
-		while (chunk->cmd_n_args[++c] != NULL)
-			new[c] = ft_strdup(chunk->cmd_n_args[c]);
-		new[c] = *str;
-		new[c + 1] = NULL;
-		ft_printf("Manual print:\n");
-		if (new[c])
-			ft_printf("new[%d]: %s;\n", c, new[c]);
-		if (new[c + 1] == NULL)
-			ft_printf("new[%d]: %s;\n", (c + 1), new[c + 1]);
-		if (new[c + 2] == NULL)
-			ft_printf("new[%d] exists and is NULL\n", (c + 2));
-		free_db(chunk->cmd_n_args);
-		chunk->cmd_n_args = new;
+		ft_printf("Spec is NULL\n");
+		perror("Error handling environment variable ($)");
+		return (0);
 	}
+	return (1);
+	/*
+	get_positions(&a, &b, &i, execl.chunk[j].og);
+	spec = get_spec(a, b, execl.chunk[j].og);
+	if (spec != NULL)
+		execl.chunk[j].og = new_chnk(spec, execl.chunk[j].og, a, b);
+	else
+	{
+		perror("Error handling environment variable");
+		free_exec(execl);
+		exit(0);
+	}
+	*/
 }
+
+int	special_char(t_execlist *execl, int *exit_stt)
+{
+	int		a;
+	int		b;
+	int		j;
+	int		i;
+	int		flag;
+
+	j = -1;
+	flag = 1;
+	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
+	ft_printf("Inside parsing (3): special_char;\n");
+	while (execl->chunk[++j] != NULL)
+	{
+		ft_printf("Chunk n°%d:\n", j);
+		i = -1;
+		while (execl->chunk[j]->og[++i] != '\0')
+		{
+			a = 0;
+			b = 0;
+			if (execl->chunk[j]->og[i] == 39)
+				flag *= -1;
+			if (execl->chunk[j]->og[i] == '$' && flag == 1)
+			{
+				ft_printf("Special char found in position %d\n", i);
+				if (h_env_var(&a, &b, &i, &execl->chunk[j]->og, exit_stt) == 0)
+				{
+					*exit_stt = 1;
+					return(0);
+				}
+				else
+					ft_printf("execl->chunk[j]->og: '%s'\n", execl->chunk[j]->og);
+			}
+		}
+	}
+	return(1);
+}
+//else, retorna normalmente sem fazer nada
+
+/*
+acho que ja testei tudo, parece estar bom
+
+ja testei com palavras antes, depois, inicio, fim, sozinho
+ja testei com pipes
+ja testei com $ errados
+
+.fazer e testar o $? que devera expandir para o exit status do ultimo
+comando
+por default, acho que e zero
+default - 0;
+success - 0;
+errors:
+Exit status 1: Generic error code indicating unspecified error.
+Exit status 2: Misuse of shell builtins (e.g., incorrect usage of a command).
+Exit status 126: Permission problem or command is not executable.
+Exit status 127: Command not found or executable cannot be invoked.
+Exit status 128+n: Fatal error signal n (where n is a signal number).
+Exit status 130: Command terminated by Ctrl+C (SIGINT).
+Exit status 255: Exit status out of range or undefined.
+parsing + execution both create error status
+
+.first '$HOME' second
+(acho que o proprio ponto 4 do parser nao foi testado ent n sei
+de onde vem o erro)
+*/

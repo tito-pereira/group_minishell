@@ -1,269 +1,138 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_4a.c                                             :+:      :+:    :+:   */
+/*   p_3a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 17:45:01 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 12:36:28 by tibarbos         ###   ########.fr       */
+/*   Created: 2024/04/16 13:11:55 by tibarbos          #+#    #+#             */
+/*   Updated: 2024/05/09 12:36:17 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+char	*chnk_conditions(char *spec, char *first, char *secnd)
+{
+	char	*new;
+	char	*tmp;
+	
+	ft_printf("Choosing new chunk conditions\n");
+	new = NULL;
+	if (first != NULL)
+		ft_printf("first: '%s'\n", first);
+	if (secnd != NULL)
+		ft_printf("secnd: '%s'\n", secnd);
+	if (first && secnd)
+	{
+		ft_printf("first && secnd\n");
+		tmp = ft_strjoin(first, spec);
+		new = ft_strjoin(tmp, secnd);
+	}
+	else if (!first && secnd)
+	{
+		ft_printf("!first && secnd\n");
+		new = ft_strjoin(spec, secnd);
+	}
+	else if (first && !secnd)
+	{
+		ft_printf("first && !secnd\n");
+		new = ft_strjoin(first, spec);
+	}
+	else if (!first && !secnd)
+	{
+		ft_printf("!first && !secnd\n");
+		new = ft_strdup(spec);
+	}
+	return(new);
+}
 /*
-arg separator
-- entre whitespaces
-- entre quotes duplas
-- entre quotes singulares
+//tmp = ft_strlcat(first, spec, 1024);
+//new = ft_strlcat(tmp, secnd, 1024);
 
-separar em args e comandos
+//new = ft_strlcat(spec, secnd, 1024);
 
-nao posso usar split porque whitespaces nao sao so espacos tmb contam com os
-tabs
-tenho que fazer substrs manuais para esta coisa
-mas nao consigo dividir 9 e 32
+//new = ft_strlcat(first, spec, 1024);
 
-- spaces / ! spaces
-- "" (onde '' contam como literals)
-- '' (onde "" contam como literals)
+// new = spec;
+size_t	ft_strlcat(char *dest, const char *src, size_t size)
 
-a && b positioning:
-- scroll whitespaces
-- find chars
-
-non_white_cnt
-non_white_prs
-text\0 (Y)
-text""text (Y)
-text"" (Y)
-text"text\0 (X)
-
-""text
-text""
-conta tudo como um só arg
-
-- non whitespaces -> whitespaces
-	unclosed tabs error
-- quotes -> quotes + whitespaces
-
-acho que nem sequer preciso do int beg. vai retornar -1 e vai,
-vai fechar o programa, é um bocado inutil
+if (first && secnd)
+{
+	tmp = ft_strcat(first, spec);
+	new = ft_strcat(tmp, secnd);
+}
+else if (!first && secnd)
+	new = ft_strcat(spec, secnd);
+else if (first && !secnd)
+	new = ft_strcat(first, spec);
+else if (!first && !secnd)
+	new = spec;
 */
 
-int	quote_handler(int option, char c, int *qt, int *qts)
+void	check_empty_strs(char **first, char **secnd)
 {
-	if (option == 1)
+	if (*first[0] == '\0')
 	{
-		if (c == 39)
-			*qt *= -1;
-		else if (c == 34)
-			*qts *= -1;
+		ft_printf("first will be NULL\n");
+		free(*first);
+		*first = NULL;
 	}
-	else if (option == 2 && (*qt == -1 || *qts == -1))
+	if (*secnd[0] == '\0')
 	{
-		if (*qt == -1)
-			perror("Unclosed single quote error");
-		else if (*qts == -1)
-			perror("Unclosed double quotes error");
-		return (-1);
+		ft_printf("secnd will be NULL\n");
+		free(*secnd);
+		*secnd = NULL;
 	}
-	return (1);
+}
+
+char	*new_chnk(char *spec, char *old, int a, int b)
+{
+	char	*first;
+	char	*secnd;
+	char	*new;
+
+	ft_printf("Creating new chunk:\n");
+	first = ft_substr(old, 0, a);
+	secnd = ft_substr(old, (b + 1), (ft_strlen(old) - b));
+	check_empty_strs(&first, &secnd);
+	new = chnk_conditions(spec, first, secnd);
+	ft_printf("just to check, new is '%s'\n", new);
+	if (first)
+	{
+		ft_printf("freeing first\n");
+		free(first);
+	}
+	if (secnd)
+	{
+		ft_printf("freeing secnd\n");
+		free(secnd);
+	}
+	ft_printf("freeing spec\n");
+	free(spec);
+	if (new == NULL)
+		return(NULL);
+	ft_printf("old: '%s'\n", old);
+	ft_printf("freeing old\n");
+	free(old);
+	ft_printf("new: '%s'\n", new);
+	return(new);
 }
 
 /*
-decline (return 0):
-. non whitespace + non endstring from previous parsing;
-. single + double quotes;
+check if ft_substr retorna NULL ou str vazia
+ya o substr vem vazio
 
-while:
-. non whitespace (9 && 32);
-. non endstring;
+eu nao aloco nova memoria no strlcat do new
+se der free a first, secnd ou spec dou free ao new
 
-error_check:
-. unclosed quotes
-
-if:
-. whitespace + endstring - good return
+first = ft_substr(0, a, execl.chunk[j].og);
+secnd = ft_substr(b, ft_strlen(execl.chunk[j].og), execl.chunk[j].og);
+tmp = ft_strcat(first, spec);
+new = ft_strcat(tmp, secnd);
+if (*a > 0)
+	first = (0, a, chunk);
+if (*b < ft_strlen(chunk))
+	secnd = ft_substr(b, ft_strlen(chunk), chunk);
+ft_strcat(first, spec, secnd);
 */
-
-int	non_white(int *a, int *b, t_chunk *chunk, int *i)
-{
-	//int	beg;
-	int	quote;
-	int	quotes;
-
-	//beg = *a;
-	quote = 1;
-	quotes = 1;
-	if (chunk->og[*i] == 34 || chunk->og[*i] == 39)
-		return(0);
-	*a = *i;
-	while(chunk->og[*i] != 9 && chunk->og[*i] != 32 && chunk->og[*i] != '\0')
-	{
-		quote_handler(1, chunk->og[*i], &quote, &quotes);
-		(*i)++;
-	}
-	if (quote_handler(2, chunk->og[*i], &quote, &quotes) == -1)
-		return (-1);
-	//if(chunk.og[*i] == 34 || chunk.og[*i] == 39 || chunk.og[*i] == 9
-		//|| chunk.og[*i] == 32 || chunk.og[*i] == '\0')
-	if (chunk->og[*i] == 9 || chunk->og[*i] == 32 || chunk->og[*i] == '\0')
-		*b = *i - 1;
-	return(1);
-}
-
-/*
-decline (return 0):
-. non whitespace + non endstring from previous parsing;
-. non single quote;
-
-while:
-. non single quote;
-. non endstring;
-
-if:
-. endstring - return error;
-. single quote - good return;
-*/
-
-int	single_quote(int *a, int *b, t_chunk *chunk, int *i)
-{
-	ft_printf("Parsing single quotes\n");
-	//int beg = *a;
-	if (chunk->og[*i] != 39)
-		return(0);
-	(*i)++;
-	*a = *i;
-	while(chunk->og[*i] != 39 && chunk->og[*i] != '\0')
-		(*i)++;
-	if(chunk->og[*i] == '\0')
-	{
-		//*a = beg;
-		perror("Unclosed single quotes error");
-		return(-1);
-	}
-	*b = *i;
-	if (*b == *a)
-	{
-		perror("Empty single quotes error");
-		return(-1);
-	}
-	if (chunk->og[*i] == 39)
-		*b = (*i - 1);
-	return(1);
-}
-
-/*
-decline (return 0):
-. non whitespace + non endstring from previous parsing;
-. non double quote;
-
-while:
-. non double quote;
-. non endstring;
-
-if:
-. endstring - return error;
-. double quote - good return;
-*/
-
-int	double_quote(int *a, int *b, t_chunk *chunk, int *i)
-{
-	ft_printf("Parsing double quotes\n");
-	//int beg = *a;
-	if (chunk->og[*i] != 34)
-		return(0);
-	(*i)++;
-	*a = *i;
-	while(chunk->og[*i] != 34 && chunk->og[*i] != '\0')
-		(*i)++;
-	if(chunk->og[*i] == '\0')
-	{
-		//*a = beg;
-		perror("Unclosed double quotes error");
-		return(-1);
-	}
-	*b = *i;
-	if (*b == *a)
-	{
-		perror("Empty double quotes error");
-		return(-1);
-	}
-	if (chunk->og[*i] == 34)
-		*b = (*i - 1);
-	return(1);
-}
-
-/*
-double quotes ficam inseridas no arg
-
-a >> 1 -> \0 ou "
-
-if \0, error
-if " && b == a, error
-if " && b > a, success
-
-(b nunca fica atras de a
-no maximo, b == a)
-
-perror
-
-. o a nao precisa de retornar ao inicio pq eu vou matar o processo
-anyway
-. nem sei se preciso daquela verificacao de inicio, ja esta assegurada
-pelo cmd_separator
-PRECISAS SIM, o loop inteiro entra em todas as verificacoes entao é
-importante ter essa condicao de saida
-
-""<stuff>\0
-<stuff>""\0
-<stuff>""<stuff>\0
-"uwencewncjw\0
-
-if a == b, error porque empty quotes?
-
-32 - space
-34 - double quotes
-39 - single quotes
-*/
-
-int	cmd_separator(t_chunk *chunk)
-{
-	int		i;
-	int		a;
-	int		b;
-	char	*sub;
-
-	i = -1;
-	a = 0;
-	b = 0;
-	ft_printf("Inside cmd_separator;\n");
-	ft_printf("cmd_n_args: %s;\n", chunk->cmd_n_args);
-	/*int	w = 0;
-	while (chunk->cmd_n_args[w] != NULL)
-		w++;
-	ft_printf("cmd_n_args has %d elements;\n", w);*/
-	while (chunk->og[++i]) //non endstring
-	{
-		ft_printf("parsing char[%c] on position[%d];\n", chunk->og[i], i);
-		if (chunk->og[i] != 9 && chunk->og[i] != 32) //non whtspcs
-		{
-			if (non_white(&a, &b, chunk, &i) == -1)
-				return (-1); //unclosed quotes ?
-			if (single_quote(&a, &b, chunk, &i) == -1)
-				return (-1); //unclosed quotes
-			if (double_quote(&a, &b, chunk, &i) == -1)
-				return (-1); //unclosed quotes
-			ft_printf("a == [%d] && b == [%d]\n", a, b);
-			sub = ft_substr(chunk->og, a, (b - a + 1));
-			add_arg(chunk, &sub);
-		}
-		if (chunk->og[i] == '\0')
-			return (1);
-	}
-	if (a == b && chunk->cmd_n_args == NULL) //significa que todos retornaram zero, os -1 ja sairam fora
-		return (0); //endstring , empty
-	return (1);
-}

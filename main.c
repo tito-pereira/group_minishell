@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/07 12:02:46 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:32:53 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,11 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt)
 	if (flag == 1)
 		flag = redir_checker(*execl, exit_stt);
 	if (flag == 1)
+		flag = scope_redirs(*execl, exit_stt);
+	if (flag == 1)
 		flag = special_char(*execl, exit_stt);
 	if (flag == 1)
 		flag = arg_separator(*execl, exit_stt);
-	if (flag == 1)
-		flag = rmv_redirs(*execl, exit_stt);
 	if (flag == 1)
 		flag = arg_id(*execl, exit_stt);
 	ft_printf("Finished parsing with flag %d\n", flag);

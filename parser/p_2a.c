@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 13:08:11 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:51:14 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,48 +46,45 @@ portanto sim eu quero o b na char seguinte para garantir uma len correta
 b = i sempre
 */
 
-char	*ft_str_find(char *str, char *lim)
+void	heredoc_chest(char **chest, char **input)
 {
-	int		i;
-	int		j;
-	char	*ret;
-
-	i = 0;
-	j = 0;
-	while (str[i] != '\0')
+	char	*old;
+	
+	if (!(*chest))
+		*chest = ft_strdup(*input);
+	else
 	{
-		j = 0;
-		while (str[i + j] == lim[j])
-		{
-			j++;
-			if (lim[j] == '\0')
-			{
-				ret = ft_substr(str, 0, i);
-				//free (str);
-				return (ret);
-			}
-		}
-		i++;
+		old = *chest;
+		*chest = ft_strjoin(*chest, *input);
+		free (old);
 	}
-	//free (str);
-	return (NULL);
+	free(*input);
 }
 
 char	*heredoc_read(char *lim)
 {
 	char	*input;
+	char	*chest;
 
-	input = readline("heredoc> ");
-	if (!input)
-		return (NULL);
-	//add input to chest
-	//if (ft_strncmp(lim, input, 4096) == 0)
-		// done; break;
-	return (ft_str_find(input, lim));
+	input = NULL;
+	chest = NULL;
+	while (1)
+	{
+		input = readline("heredoc> ");
+		if (!input)
+			return (NULL);
+		if (ft_strncmp(lim, input, 4096) == 0)
+		{
+			free(input);
+			break ;
+		}
+		heredoc_chest(&chest, &input);
+	}
+	return (chest);
 }
 
 /*
-refazer a heredoc
+heredoc_read vai retornar mas é o input inteiro e nao um filename
 */
 
 int	input_redir(t_chunk *chunk, int *i)
@@ -122,7 +119,8 @@ int	input_redir(t_chunk *chunk, int *i)
 }
 
 /*
-refazer o mecanismo de heredoc com a strjoin
+assim posso manter a heredoc original e apenas mudar o executor
+com a flag heredoc
 */
 
 int	output_redir(t_chunk *chunk, int *i)
@@ -145,3 +143,27 @@ int	output_redir(t_chunk *chunk, int *i)
 	return(1);
 }
 
+/*char	*ft_str_find(char *str, char *lim)
+{
+	int		i;
+	int		j;
+	char	*ret;
+
+	i = 0;
+	j = 0;
+	while (str[i] != '\0')
+	{
+		j = 0;
+		while (str[i + j] == lim[j])
+		{
+			j++;
+			if (lim[j] == '\0')
+			{
+				ret = ft_substr(str, 0, i);
+				return (ret);
+			}
+		}
+		i++;
+	}
+	return (NULL);
+}*/

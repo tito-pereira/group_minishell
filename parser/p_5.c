@@ -1,116 +1,133 @@
-/* ************************************************************************** */
+	/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_5.c                                              :+:      :+:    :+:   */
+/*   p_4.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/06 11:50:43 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/09 12:36:32 by tibarbos         ###   ########.fr       */
+/*   Created: 2024/03/18 17:44:55 by marvin            #+#    #+#             */
+/*   Updated: 2024/03/18 17:44:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
-(5) - remove redirections from the valid commands && arguments char **
+(4) - commands && arguments separator by whitespaces
+	- handles single && double quotes
+	- does not handle redirections (handled previously)
 
-acrescentar um novo step p_novo, pré ou pos p_4
-se calhar pos p_4 da mais jeito
-ve os args todos
-ve str[0] == '<' || str[0] == '>'
-alona novo char ** c tamanho - 2
-retira esse arg e o proximo
-free na antiga e retorna a nova char *
+(repeating) skip whitespace -> parse;
 
-e se tiver multiplas redirections, vou ter que retirar tudo
+. erros para '\0' estao contidos nas funcoes e retornam -1
+. retorna 0 sem alterações ou retorna 1 c alterações
+. correm seguidos porque só um vai retornar 1 c alterações
+erros para unclosed quotes aqui ou noutro sitio
 
-red vai ser um indice
+34 "
+39 '
+
+. talvez um erro em que cmp_sep e arg_c nao coincidem ?
 */
 
-int	verify_redir(t_chunk *chunk)
-{
-	int	i;
 
-	i = -1;
-	ft_printf("checking for redirs to remove\n");
-	while (chunk->cmd_n_args[++i] != NULL)
-	{
-		if (chunk->cmd_n_args[i][0] == '>'
-			|| chunk->cmd_n_args[i][0] == '<')
-			{
-				ft_printf("redir found in arg %d\n", i);
-				return (i);
-			}
-	}
-	ft_printf("no redirection found to remove\n");
-	return (-1);
-}
-
-void	remove_redir(t_chunk *chunk, int red)
+int	arg_separator(t_execlist *execl, int *exit_stt)
 {
-	char	**new;
-	int		i;
 	int		c;
+	int		ret;
 
-	i = 0;
-	ft_printf("lets get this bad boy out\n");
-	while (chunk->cmd_n_args[i] != NULL)
-		i++;
-	ft_printf("total args is [%d]\n", (i - 1));
-	ft_printf("gonna remove [%d] and [%d]\n", red, (red + 1));
-	new = malloc((i - 1) * sizeof(char *));
-	i = -1;
-	c = 0;
-	while (++i != red)
-	{
-		new[c++] = chunk->cmd_n_args[i];
-		ft_printf("new[%d] = cmd[%d] = '%s'\n", (c - 1), i, new[c - 1]);
-	}
-	if (i == red)
-		i++;
-	while (chunk->cmd_n_args[++i] != NULL)
-	{
-		new[c++] = chunk->cmd_n_args[i];
-		ft_printf("new[%d] = cmd[%d] = '%s'\n", (c - 1), i, new[c - 1]);
-	}
-	ft_printf("new[%d] will be NULL\n", c);
-	new[c] = NULL;
-	if (chunk->cmd_n_args[red])
-		free(chunk->cmd_n_args[red]);
-	if (chunk->cmd_n_args[red])
-		free(chunk->cmd_n_args[red + 1]);
-	chunk->cmd_n_args = new;
-	ft_printf("removal finished\n");
-}
-
-/*
-nao esquecer a alocacao de memoria do p_4 para futuros testes
-no entanto
-
-tenho que colocar o i no sitio correto aqui
-*/
-
-int	rmv_redirs(t_execlist *execl, int *exit_stt)
-{
-	int	i;
-	int	red;
-
-	i = -1;
-	red = 0;
-	(void)exit_stt;
 	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (5): rmv_redirs;\n");
-	while (execl->chunk[++i] != NULL)
+	ft_printf("Inside parsing (4): arg_separator;\n");
+	c = -1;
+	while (execl->chunk[++c] != NULL)
 	{
-		ft_printf("chunk[%d]\n", i);
-		while (red != -1)
+		ft_printf("Loop nª%d;\n", c);
+		ret = cmd_separator(execl->chunk[c]);
+		ft_printf("cmd_separator return == %d;\n", ret);
+		if (ret == 0)
 		{
-			ft_printf("loop\n");
-			red = verify_redir(execl->chunk[i]);
-			if (red != -1)
-				remove_redir(execl->chunk[i], red);
+			perror("Empty pipe error");
+			*exit_stt = 1;
+			return(0);
+		}
+		else if (ret == -1)
+		{
+			//perror("Unclosed quotes error");
+			*exit_stt = 1;
+			return(0);
 		}
 	}
-	return (1);
+	return(1);
+	/*ft_printf("Manual print:\n");
+	ft_printf("str[%d]: %s;\n", 0, execl->chunk[0]->cmd_n_args[0]);
+	ft_printf("str[%d]: %s;\n", 1, execl->chunk[0]->cmd_n_args[1]);
+	ft_printf("str[%d]: %s;\n", 2, execl->chunk[0]->cmd_n_args[2]);*/
+}
+
+
+/*
+verificação de vários erros
+- vários comandos (mais do que um built in)
+- nao contar com as redirections e saber retira-las
+*/
+
+/*
+-------------------------------
+
+support function for my command separator
+instead of creating a command counter and a command parser
+in separate, and iterating over the entire input string twice,
+i created a dynamic resizer for the char **cmd_n_args
+- new malloc +1 size,
+- copies old to new,
+- adds new substring to last position,
+- free old cmd_n_args
+
+adicionar NULL no fim
+algo na numeração da atribuição do NULL nao esta a bater bem
+pq todos os elementos estao NULL agora
+o new[] imprime bem. o problema é com os frees.
+algo esta a tranformar os pointer em NULL ou a trocar a ordem deles
+
+atribuo os pointers diretamente new = pointer, em vez de duplicar
+burro do crl
+eu igualo os pointers mas dou free ao conteudo local na mesma
+*/
+
+void	add_arg(t_chunk *chunk, char **str)
+{
+	int		c;
+	char	**new;
+
+	c = 0;
+	ft_printf("Adding new arg to cmd_n_args;\nThis bad boy: '%s'\n", *str);
+	if (chunk->cmd_n_args == NULL)
+	{
+		ft_printf("First arg;\n");
+		chunk->cmd_n_args = malloc(2 * sizeof(char *));
+		chunk->cmd_n_args[0] = *str;
+		chunk->cmd_n_args[1] = NULL;
+	}
+	else
+	{
+		ft_printf("Already existing args;\n");
+		while (chunk->cmd_n_args[c] != NULL)
+			c++;
+		ft_printf("How many cmd_n_args then? %d;\n", c);
+		new = malloc((c + 2) * sizeof(char *));
+		c = -1;
+		while (chunk->cmd_n_args[++c] != NULL)
+			new[c] = ft_strdup(chunk->cmd_n_args[c]);
+		new[c] = *str;
+		new[c + 1] = NULL;
+		ft_printf("Manual print:\n");
+		if (new[c])
+			ft_printf("new[%d]: %s;\n", c, new[c]);
+		if (new[c + 1] == NULL)
+			ft_printf("new[%d]: %s;\n", (c + 1), new[c + 1]);
+		if (new[c + 2] == NULL)
+			ft_printf("new[%d] exists and is NULL\n", (c + 2));
+		free_db(chunk->cmd_n_args);
+		chunk->cmd_n_args = new;
+	}
 }
