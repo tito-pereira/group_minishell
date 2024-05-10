@@ -6,34 +6,15 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:38 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 12:35:30 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/10 11:31:11 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
-typedef struct s_chunk {
-	char	*infile; // (2) redir_checker
-	int		heredoc; // (2) redir_checker
-	char	*delimiter; // (2) redir_checker
-	char	*outfile; // (2) redir_checker
-	int		append; // (2) redir_checker
-	char	*og; // (1) parse_execl
-	char	**cmd_n_args; // (4) arg_separator
-	char	*path; // (5) arg_id
-	int		inpipe; // (5) arg_id
-	int		inpfd; // executor
-	int		outpipe; //acho que já não é necessário
-	int		outpfd; // executor
-	int		blt; // (5) arg_id
-}	t_chunk;
-
-provavelmente ver melhor os outputs, ja nao me lembro o que fiz
-e estao incompletos
-
-colocar o error stt especifico 126? depois do execve
-caso mudar para isso, significa que o execve falhou
+ou seja, vou ter que correr comandos simultaneamente
+isso significa varios processos simultaneos + varios pipes simultaneos
 */
 
 void	get_exec_str(t_chunk *chunk, char ***exec_str)
@@ -199,55 +180,4 @@ Exit status 126: Permission problem or command is not executable.
 (after cada execve)
 
 .mudar as t_mini para um int *error
-*/
-
-//----------------------------------------------------------------
-
-/*
-close(fd[0]); //assume posicao de escrita do pipe
-			if (execl->chunk[i]->infile != NULL && execl->chunk[i]->inpipe == 1) //1, infile redir valido
-			{
-				redir[0] = open(execl->chunk[i]->infile, O_RDONLY);
-				dup2(redir[0], STDIN_FILENO);
-				close(redir[0]); //depois de dup, fecha-se
-			}
-			else if (i > 0) //resto, inpipe redir invalido, comando nº>1, recebe smp pipe
-			{
-				dup2(execl->chunk[i]->inpfd, STDIN_FILENO);
-				close (execl->chunk[i]->inpfd); // se tiver que ser usado, é usado antes daqui
-			}
-			//acho que se fecha o original depois da dup certo?
-			// else, normal input sem dup
-			//------------------//
-			if (execl->chunk[i]->outfile != NULL) //1, outfile redir
-			{
-				if (execl->chunk[i]->append == 1)
-					redir[1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
-				else
-					redir[1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
-				if ((i + 1) < execl->cmd_nmd) //outfile inside pipeline
-					execl->chunk[i + 1]->inpfd = redir[1];
-				dup2(redir[1], STDOUT_FILENO);
-				close(redir[1]); //depois de dup, fecha-se
-				//close(fd[1]);
-			}
-			if ((i + 1) < execl->cmd_nmb) //2, next chunk redir
-			{
-				execl->chunk[i + 1]->inpfd = fd[1];
-				if (execl->chunk[i]->outfile == NULL)
-					redir[1] = (outra ponta do pipe);
-				dup2(fd[1], STDOUT_FILENO);
-				//close(fd[1]);
-			}
-
-
-wait(0);
-		close(fd[1]); //para assumir a ponta de leitura do pipe
-		if ((i + 1) == execl->cmd_nmb) //ultimo comando
-			close(fd[0]);
-		else
-			execl->chunk[i + 1]->inpfd = fd[0]; //override ao outfile inside pipeline
-		free(fd);
-		if (execl->chunk[i]->blt == 1) //if builtin, dou malloc antes
-			free_db(exec_str);
 */

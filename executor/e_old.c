@@ -1,61 +1,106 @@
-/*
-c = chunk iteration;
-pid, fd, pipe, fork = execve e conexao de pipes
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   e_old.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/10 11:32:48 by tibarbos          #+#    #+#             */
+/*   Updated: 2024/05/10 11:32:48 by tibarbos         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-diferentes condicoes pipe flags e redirs para definir os dups
-*/
+#include "../minishell.h"
 
-int	exec_chunk(t_execlist *execl)
+void	exec_chunk(t_execlist *execl, char **exec_str, int *error_stt)
 {
-	int	*fd;
-	int	pid;
-	int	c;
-
-	c = execl.current;
-	fd = malloc (2 * sizeof(int));
-	pipe(fd);
-	pid = fork();
-	if (pid == 0)
+	int		pid;
+	int		i;
+	
+	i = -1;
+	ft_printf("inside exec_chunk\n");
+	while (execl->chunk[++i] != NULL && *error_stt != 126)
 	{
-		close (fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		if (inpipe == 1) // inpipe valido
-			dup2(execl.chunk[c].inpfd, STDIN_FILENO);
-		else if (execl->chunk[c]->inpipe == 0 && infile != NULL)
-			dup2(open(execl.chunk[c].infile, O_RDONLY), STDIN_FILENO);
-		if (outfile != NULL)
-			dup2(open(execl.chunk[c].outfile, O_RDONLY), STDOUT_FILENO);
-		if (outpipe != NULL)
-			execl.chunk[c + 1].inpfd = execl.chunk[c].outpfd; //a ser usado no comando seguinte
-		execve(execl.chunk[c].cmd_n_args[0], execl.chunk[c].cmd_n_args, execl->my_envp);
-	}
-	wait(0);
-	close(fd[1]);
-	return (fd[0]);
-}
-
-
-/*
-pega no fd do ultimo pipe fd e copia tudo (getnextline) para o STDOUT
-por alguma razao fiz este que apenas printa tudo no stdout???
-*/
-
-void	last_output(int last)
-{
-	char	*ret;
-	int		sig;
-
-	sig = 1;
-	while (sig == 1)
-	{
-		ret = get_next_line(last);
-		if (ret != NULL)
+		pipe(fd);
+		pid[i] = fork();
+		if (getpid())
 		{
-			ft_printf("%s\n", ret);
-			free(ret);
+			input_options(execl, fd, redir, i);
+			output_options(execl, fd, redir, i);
 		}
-		else
-			sig = 0;
 	}
-	close(last);
 }
+
+/*
+execl->valid_cmds;
+
+int	*pid = (int *)malloc(execl->valid_cmds * sizeof(int));
+int	**fd = (int *)malloc(execl->valid_cmds * sizeof(int));
+int	*redir = (int *)malloc((execl->valid_cmds * 2) * sizeof(int));
+char	***exec_str = (char ***)malloc(execl->valid_cmds * sizeof(char **));
+...caso seja preciso inicializar...
+int i;
+i = -1;
+while (++i < (execl->valid_cmds * 2))
+	redir[i] = -1;
+int	j;
+i = -1;
+while (++i < execl->valid_cmds)
+{
+	j = -1;
+	while (++j < 2)
+		fd[i][j] = -1;
+}
+...................................
+
+tenho que reaproveitar as ideias do executor original, o loop, para fazer um
+tratamento previo onde defino, em cada chunk,
+
+nao preocupar com frees, apenas, no fim de tudo, dou free aos tres:
+pid = (int *)malloc;
+fd = (int **)malloc;
+redir = (int *)malloc;
+exec_str = (char ***)malloc;
+-> loop de atribuicao de dups e pipes;
+-> correr em simultaneo todos os processos;
+free(pid);
+free(fd);
+free(redir);
+free(exec_str);
+
+nao tenho acesso ao pid. so tenho pid == 0 em forks e waits
+crio 1, passo 0;
+i++;
+if (i < execl->valid-cmds)
+{
+	create another
+	if (pid = 0)
+	{
+		new_
+	}
+}
+if (i < execl->valid-cmds)
+	wait(0);
+
+read, get_next_line, dup2, tudo o que for ler de pipes
+desde que a ponta de escrita esteja vazia, esperam pelo fim da escrita
+
+para alem disso, comandos tipo ls que nao precisem de input, saltam essa
+parte e simplesmente correm
+
+resumindo, esta implementacao em si ja vai resultar porque os comandos ja tem
+esses mecanismos incluidos
+also, depois de executar, o pipe fecha sozinho, por isso nem tenho q me preocupar
+em fechar a ponta de escrita, ele executa e fecha e espera sozinho, top
+*/
+
+/*
+------------------------------------------------
+aquela parte esta feita, falta agora outra: open/closes de pipes e files
+
+redirs - in/out files (redirs acho que se fecham sozinhos)
+fds - pipes
+ja sei
+abro os pipes todos no main process previamente, tal como as redirs
+e depois dentro de cada processo fecho os relativos in && out pipes para os "atribuir"
+*/
