@@ -6,11 +6,16 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/10 15:24:59 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/10 17:14:53 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+/*
+nao esquecer do heredoc
+pode haver um pipe antes do primeiro comando com os heredocs
+*/
 
 void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 {
@@ -54,8 +59,8 @@ especificos ao processo em que sao chamados
 
 void	exec_action(t_execlist *execl, int **fd, int **redir, int i, char **exec_str)
 {
-	prep_input(execl, fd, redir, i);
-	prep_output(execl, fd, redir, i);
+	exec_input(execl, fd, redir, i);
+	exec_output(execl, fd, redir, i);
 	execve(exec_str[0], exec_str, *(execl->my_envp));
 }
 
