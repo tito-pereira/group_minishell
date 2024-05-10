@@ -127,7 +127,7 @@ void	add_arg(t_chunk *chunk, char **str)
 			ft_printf("new[%d]: %s;\n", (c + 1), new[c + 1]);
 		if (new[c + 2] == NULL)
 			ft_printf("new[%d] exists and is NULL\n", (c + 2));
-		free_db(chunk->cmd_n_args);
+		free_db_str(&(chunk->cmd_n_args));
 		chunk->cmd_n_args = new;
 	}
 }

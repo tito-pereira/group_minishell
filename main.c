@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 17:32:53 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:30:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	sig_repeat_two(int num)
 void	global_checker(t_execlist *execl)
 {
 	if (global_sig == 2) //ctrl C
-		free_exec(execl);
+		free_exec(&execl);
 }
 
 int	main()
@@ -186,11 +186,11 @@ int	main()
 		if (parse_central(&execl, input, &exit_stt) == 1)
 		{
 			print_exec(execl);
-			if (exec_central(execl, &exit_stt) == 1)
-				exit_stt = 0;
+			//if (exec_central(execl, &exit_stt) == 1)
+				//exit_stt = 0;
 		}
-		if (execl)
-			free_exec(execl);
+		//if (execl)
+			//free_exec(execl);
 		//else, free execl maybe, retry input
 		//error_stt apenas fica gravado
 		//free(input);

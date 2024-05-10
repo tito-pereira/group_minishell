@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_6a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:40:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/09 12:36:42 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:27:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	*get_path(char *name, int option)
 	}
 	wait(0);
 	ft_printf("execve finished\n");
-	free_db(env);
+	free_db_str(&env);
 	close(fd[1]);
 	path = get_next_line(fd[0]);
 	ft_printf("get_next_line return: '%s'\n", path);

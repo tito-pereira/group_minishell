@@ -6,35 +6,32 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 13:01:23 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/05 21:53:19 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/11 00:42:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
-
-/*
+#include "builtin.h"
 
 int	main(int ac, char **av, char **envp)
 {
 	int	builtin;
 
-	if (av[1] == 1)
+	builtin = ft_atoi(av[1]);
+	if (builtin == 1)
 		ft_cd((t_mini *)av[2], (char **)av[3], envp);
-	else if (av[1] == 2)
+	else if (builtin == 2)
 		ft_echo((t_mini *)av[2], envp);
-	else if (av[1] == 3)
+	else if (builtin == 3)
 		ft_env((t_mini *)av[2], (char **)av[3], envp);
-    else if (av[1] == 4)
+    else if (builtin == 4)
 		ft_exit((t_mini *)av[2], envp);
-    else if (av[1] == 5)
+    else if (builtin == 5)
 		ft_export((t_mini *)av[2], (char **)av[3], envp);
-    else if (av[1] == 6)
+    else if (builtin == 6)
 		ft_pwd((t_mini *)av[2], (char **)av[3], envp);
-    else if (av[1] == 7)
+    else if (builtin == 7)
 		ft_unset((t_mini *)av[2], (char **)av[3], envp);
 }
-
-*/
 
 /*
 .mudar as t_mini para um int *error

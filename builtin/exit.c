@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:13 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/04/30 13:03:03 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:38:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "builtin.h"
 
 void	exit_handler(const char *msg, int code)
 {

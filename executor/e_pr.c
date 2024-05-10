@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_pr.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/10 17:51:12 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/10 23:18:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,4 +125,5 @@ talvez fazer prep das exec_str aqui idk
 
 as execs ja estao feitas
 tirando as exec_str, ver se ha alguma ponta solta que falte
+(agora ja perdi o fio à meada, só mesmo testando)
 */

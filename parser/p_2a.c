@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_2a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 17:51:14 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/09 23:46:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ void	heredoc_chest(char **chest, char **input)
 		*chest = ft_strdup(*input);
 	else
 	{
+		old = *chest;
+		*chest = ft_strjoin(*chest, "\n");
+		free (old);
 		old = *chest;
 		*chest = ft_strjoin(*chest, *input);
 		free (old);

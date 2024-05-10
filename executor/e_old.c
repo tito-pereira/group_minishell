@@ -12,22 +12,6 @@
 
 #include "../minishell.h"
 
-///////////////////////////////
-
-void	process_end(t_execlist *execl, char **exec_str, int **fd, int i)
-{
-	close(fd[i][1]); //para assumir a ponta de leitura do pipe
-	if ((i + 1) == execl->cmd_nmb) //ultimo comando
-		close(fd[i][0]);
-	else
-		execl->chunk[i + 1]->inpfd = fd[i][0]; //override ao outfile inside pipeline
-	free(fd);
-	if (execl->chunk[i]->blt == 1) //if builtin, dou malloc antes
-		free_db(exec_str); // tirar isto
-	if (has child)
-		wait(0);
-}
-
 /////////////////////////
 
 void	init_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
@@ -62,6 +46,47 @@ void	end_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 	}
 }
 
+////////////////////////////////
+
+/*
+vindo do step 6:
+
+se for builtin: (+ 1)
+- cmd_n_args vem inalterado
+- chunk->path vem com o path para o meu executavel de builtins
+
+se for terminal: (+ 0)
+- cmd_n_args ja vem modificado com o path em primeiro lugar
+*/
+
+void	get_exec_str(t_chunk *chunk, char ***exec_str)
+{
+	int	i;
+	int	c;
+
+	c = -1;
+	while (execl->chunk[++c] != NULL)
+	{
+		i = 0;
+		while (execl->chunk[c]->cmd_n_args[i] != NULL)
+			i++;
+		exec_str[c] = malloc((i + 1 + chunk->blt) * sizeof(char *));
+		if (execl->chunk[c]->blt == 1)
+			exec_str[c][0] = ft_strdup(chunk->path);
+		i = -1;
+		while (execl->chunk[c]->cmd_n_args[++i] != NULL)
+			exec_str[c][i + chunk->blt]\
+			= ft_strdup(execl->chunk[c]->cmd_n_args[i]);
+		exec_str[c][i] = NULL;
+	}
+}
+
+/*
+quero dar malloc a tudo talvez? para facilitar o raciocionio e ser
+mais simples
+*/
+////////////////////////////////
+
 int	exec_main(t_execlist *execl, int *error_stt)
 {
 	int		**fd;
@@ -89,10 +114,13 @@ int	exec_main(t_execlist *execl, int *error_stt)
 }
 
 /*
-prep_input && prep_output (open/close)
-exec_input && exec_output (dup2/execve)
-ou
-tudo junto?
+inicializa tudo (exec_str, fd, redirs)
+prep exec_str ()
+real time exec:
+- cria todos os pipes e atribui nos fds
+- todas as exec_actions fecham em loop tudo o que devem
+- sao feitas as dup2 ao mm tempo que se fecha
+- usam o exec_str diretamente feito antes
 */
 
 /*

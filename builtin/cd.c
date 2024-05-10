@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:04 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/01 14:29:37 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:08:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "builtin.h"
 
 void	go_to_dir(t_mini *ms, char *dir, char **env)
 {

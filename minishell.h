@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 17:32:13 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:25:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,10 @@ char	**create_envp(void);
 int		exec_central(t_execlist *execl, int *error_stt);
 
 // FREE
-void	free_db(char **str);
-void	free_chunk(t_chunk *chunk);
-void	free_exec(t_execlist *exec);
+void	free_str(char **str);
+void	free_db_str(char ***str);
+void	free_chunk(t_chunk **chunk);
+void	free_exec(t_execlist **exec);
 char	*free_ptr(char *ptr);
 char	**free_mat(char **mat);
 

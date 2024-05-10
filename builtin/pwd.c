@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:17 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/04/30 13:02:34 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:38:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "builtin.h"
 
 void ft_pwd(t_mini *ms, char **cmd, char **envp)
 {
