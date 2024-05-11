@@ -59,7 +59,7 @@ se for terminal: (+ 0)
 - cmd_n_args ja vem modificado com o path em primeiro lugar
 */
 
-void	get_exec_str(t_chunk *chunk, char ***exec_str)
+void	get_exec_str(t_execlist *execl, char ***exec_str)
 {
 	int	i;
 	int	c;
@@ -70,21 +70,17 @@ void	get_exec_str(t_chunk *chunk, char ***exec_str)
 		i = 0;
 		while (execl->chunk[c]->cmd_n_args[i] != NULL)
 			i++;
-		exec_str[c] = malloc((i + 1 + chunk->blt) * sizeof(char *));
+		exec_str[c] = malloc((i + 1 + execl->chunk[c]->blt) * sizeof(char *));
 		if (execl->chunk[c]->blt == 1)
-			exec_str[c][0] = ft_strdup(chunk->path);
+			exec_str[c][0] = ft_strdup(execl->chunk[c]->path);
 		i = -1;
 		while (execl->chunk[c]->cmd_n_args[++i] != NULL)
-			exec_str[c][i + chunk->blt]\
+			exec_str[c][i + execl->chunk[c]->blt]\
 			= ft_strdup(execl->chunk[c]->cmd_n_args[i]);
 		exec_str[c][i] = NULL;
 	}
 }
 
-/*
-quero dar malloc a tudo talvez? para facilitar o raciocionio e ser
-mais simples
-*/
 ////////////////////////////////
 
 int	exec_main(t_execlist *execl, int *error_stt)
@@ -107,7 +103,7 @@ int	exec_main(t_execlist *execl, int *error_stt)
 		return (0);
 	}
 	init_exec(execl, fd, redir, exec_str);
-	prep_loop(execl, fd, redir, exec_str);
+	get_exec_str(execl, exec_str);
 	exec_loop(execl, fd, redir, exec_str);
 	end_exec(execl, fd, redir, exec_str);
 	return (1);

@@ -6,17 +6,13 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/10 17:14:53 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:48:17 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
-nao esquecer do heredoc
-pode haver um pipe antes do primeiro comando com os heredocs
-*/
-
 void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 {
 	close(fd[i][0]); //assume posicao de escrita do pipe
@@ -48,14 +44,9 @@ void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
 	}
 	close(fd[i][1]);
 }
-
-/*
-estes nao vao ser tao grandes quanto os prep
-aqui faco as dup2 + exec, nada demais
-
-a parte importante de separar é mesmo porque cada dup2 e execve tem de ser
-especificos ao processo em que sao chamados
 */
+
+////////////////////////////////////////////
 
 void	exec_action(t_execlist *execl, int **fd, int **redir, int i, char **exec_str)
 {

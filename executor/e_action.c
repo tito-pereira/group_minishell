@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   e_pr.c                                             :+:      :+:    :+:   */
+/*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/10 23:18:20 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/11 10:49:32 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// PREP
-
-/*
-serao os redirs mesmo necessarios
-sera a prep necessaria
-o que eu faco aqui? so se for para atribuir algo ao redir, porque
-os redirs nem sempre sao usados
-e os fd so podem ser fechados diretamente no exec
-ou faco mesmo tipo infd, outfd
-ou faco tudo diretamente no exec
-*/
 
 void    close_non_related(t_execlist *execl, int **fd, int i)
 {
@@ -107,23 +95,3 @@ void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
 	close(fd[i + 1][1]);
 }
 // if last comand, da os frees, salta tudo, e usa STDOUT 
-
-void	prep_loop(t_execlist *execl, int **fd, int **redir, char **exec_str)
-{
-    int i;
-
-    i = -1;
-	while (execl->chunk[++i] != NULL)
-	{
-		prep_input(execl, fd, redir, i);
-		prep_output(execl, fd, redir, i);
-	}
-}
-
-/*
-talvez fazer prep das exec_str aqui idk
-
-as execs ja estao feitas
-tirando as exec_str, ver se ha alguma ponta solta que falte
-(agora ja perdi o fio à meada, só mesmo testando)
-*/

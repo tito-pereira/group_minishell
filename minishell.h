@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 00:25:14 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/11 10:52:48 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,10 @@ int		chunk_id(t_chunk *chunk, char *prog, int opt); // (5)
 char	**create_envp(void);
 
 // EXECUTOR
-int		exec_central(t_execlist *execl, int *error_stt);
+int		exec_main(t_execlist *execl, int *error_stt);
+void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str);
+void	exec_input(t_execlist *execl, int **fd, int **redir, int i);
+void	exec_output(t_execlist *execl, int **fd, int **redir, int i);
 
 // FREE
 void	free_str(char **str);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:44:12 by marvin            #+#    #+#              #
-#    Updated: 2024/05/11 00:29:27 by marvin           ###   ########.fr        #
+#    Updated: 2024/05/11 10:51:27 by tibarbos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC= ./parser/p_1.c ./parser/p_1a.c \
 	./parser/p_4.c ./parser/p_4a.c ./parser/p_5.c ./parser/p_5a.c \
 	./parser/p_6.c ./parser/p_6a.c \
 	main.c free.c signals.c
-#	./executor/e_old.c ./executor/e_ex.c ./executor/e_pr.c \
+#	./executor/e_main.c ./executor/e_loop.c ./executor/e_action.c \
 	main.c free.c signals.c
 OBJ= ${SRC:.c=.o}
 LIBS= -lreadline -L./mylib -lft
