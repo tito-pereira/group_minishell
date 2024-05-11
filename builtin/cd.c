@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:04 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 11:14:56 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:31:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	go_to_dir(t_mini *ms, char *dir, char **env)
 	char	**exp;
 	char	*temp;
 
-	temp = NULL; //'\0';
+	temp = NULL;
 	exp = ft_calloc(3, sizeof(char *));
 	exp[0] = ft_strdup("export");
 	if (chdir(dir) == 0)
@@ -32,8 +32,8 @@ void	go_to_dir(t_mini *ms, char *dir, char **env)
 		ft_putstr_fd(NPROMPT": cd: No such file or directory", 2);
 		ms->error = 69;
 	}
-	free_str(&temp);
-	free_db_str(&exp);
+	temp = free_str(temp);
+	exp = free_db_str(exp);
 }
 
 char	*home_dir(char **env)

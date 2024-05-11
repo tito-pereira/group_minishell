@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:19 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 11:48:02 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:35:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	remove_var(char *var, char **envp)
 		i++;
 	if (envp && envp[i])
 	{
-		free_str(&(envp[i]));
+		envp[i] = free_str(envp[i]);
 		envp[i] = envp[i + 1];
 		i++;
 		while (envp[i])
@@ -35,7 +35,7 @@ void	remove_var(char *var, char **envp)
 		}
 		envp[i] = NULL;
 	}
-	free_str(&temp_var);
+	temp_var = free_str(temp_var);
 }
 
 void	ft_unset(t_mini *ms, char **cmd, char **envp)

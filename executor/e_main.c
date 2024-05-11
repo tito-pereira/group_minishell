@@ -56,7 +56,7 @@ void	end_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 	ft_printf("Ending the executor function.\n");
 	while (++i < execl->valid_cmds)
 	{
-		free_db_str(&exec_str[i]);
+		exec_str[i] = free_db_str(exec_str[i]);
 		free(redir[i]);
 		close(fd[i][0]);
 		close(fd[i][1]);

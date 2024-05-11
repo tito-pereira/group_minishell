@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:13 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 11:45:35 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:33:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,20 @@ void	ft_exit(char **cmd)
 
 	if (!cmd[1])
 	{
-		free_db_str(&cmd);
+		cmd = free_db_str(cmd);
 		exit_handler(NULL, 0);
 	}
 	if (is_only_zeros(cmd[1]))
 	{
-		free_db_str(&cmd);
+		cmd = free_db_str(cmd);
 		exit_handler(NULL, 0);
 	}
 	if (!cmd[2] && is_valid(cmd[1]))
 	{
 		code = ft_atoi(cmd[1]);
-		free_db_str(&cmd);
+		cmd = free_db_str(cmd);
 		exit_handler("exited with code: ", code);
 	}
-	free_db_str(&cmd);
+	cmd = free_db_str(cmd);
 	exit_handler("-" NPROMPT ": exit: too many arguments", 2);
 }

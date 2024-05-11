@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 15:00:20 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:41:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void	sig_repeat_two(int num)
 void	global_checker(t_execlist *execl)
 {
 	if (global_sig == 2) //ctrl C
-		free_exec(&execl);
+		free_exec(execl);
 }
 
 int	main()

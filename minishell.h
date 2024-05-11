@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 15:48:28 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:38:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,10 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i);
 void	exec_output(t_execlist *execl, int **fd, int **redir, int i);
 
 // FREE
-void	free_str(char **str);
-void	free_db_str(char ***str);
-void	free_chunk(t_chunk **chunk);
-void	free_exec(t_execlist **exec);
+char	*free_str(char *str);
+char	**free_db_str(char **str);
+void	free_chunk(t_chunk *chunk);
+void	free_exec(t_execlist *exec);
 
 // BUILT-IN
 void	ft_cd(t_mini *ms, char **cmd, char **env);
