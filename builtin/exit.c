@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:13 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 00:38:14 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/11 11:45:35 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "../minishell.h"
 
 void	exit_handler(const char *msg, int code)
 {
@@ -22,31 +22,6 @@ void	exit_handler(const char *msg, int code)
 		ft_putendl_fd("See you soon, human!", 1);
 	rl_clear_history();
 	exit (code);
-}
-
-int	ft_atoi(const char *str)
-{
-	int	i;
-	int	n;
-	int	x;
-
-	i = 0;
-	n = 1;
-	x = 0;
-	while ((str[i] == 32) || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+' )
-	{
-		if (str[i] == '-' )
-			n = -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9' )
-	{
-		x = (x * 10) + (str[i] - 48);
-		i++;
-	}
-	return (x * n);
 }
 
 int	is_only_zeros(char	*nbr)
@@ -84,20 +59,20 @@ void	ft_exit(char **cmd)
 
 	if (!cmd[1])
 	{
-		free_mat(cmd);
+		free_db_str(&cmd);
 		exit_handler(NULL, 0);
 	}
 	if (is_only_zeros(cmd[1]))
 	{
-		free_mat(cmd);
+		free_db_str(&cmd);
 		exit_handler(NULL, 0);
 	}
 	if (!cmd[2] && is_valid(cmd[1]))
 	{
 		code = ft_atoi(cmd[1]);
-		free_mat(cmd);
+		free_db_str(&cmd);
 		exit_handler("exited with code: ", code);
 	}
-	cmd = free_mat(cmd);
+	free_db_str(&cmd);
 	exit_handler("-" NPROMPT ": exit: too many arguments", 2);
 }

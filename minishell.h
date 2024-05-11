@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 10:52:48 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 11:44:34 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,16 @@ typedef struct s_execlist {
 valid_cmds && cmd_nmb vai dar ao mesmo
 */
 
+typedef struct s_mini
+{
+    char    *input;
+    char    *prompt;
+    char    **envp;
+    //t_token *token;
+    char    error;
+    char    exit;
+}   t_mini;
+
 // SIGNAL HANDLING
 void	sig_handler_one(void);
 void	sig_handler_two(void);
@@ -97,7 +107,16 @@ void	free_str(char **str);
 void	free_db_str(char ***str);
 void	free_chunk(t_chunk **chunk);
 void	free_exec(t_execlist **exec);
-char	*free_ptr(char *ptr);
-char	**free_mat(char **mat);
+//char	*free_ptr(char *ptr);
+//char	**free_mat(char **mat);
+
+// BUILT-IN
+void	ft_cd(t_mini *ms, char **cmd, char **env);
+void	ft_echo(t_mini *ms, char **cmd);
+void	ft_env(t_mini *ms, char **cmd, char **envp);
+void	ft_exit(char **cmd);
+void	ft_export(t_mini *ms, char **cmd, char **envp);
+void    ft_pwd(t_mini *ms, char **cmd, char **envp);
+void	ft_unset(t_mini *ms, char **cmd, char **envp);
 
 #endif

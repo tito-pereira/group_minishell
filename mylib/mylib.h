@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 18:03:15 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/12/26 18:03:18 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 11:29:47 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "./print/ft_printf.h"
 
 //int		ft_printf(const char *s, ...);
-//char	*get_next_line(int fd);
+//char	    *get_next_line(int fd);
 //funções auxiliares do libft
 
 #endif

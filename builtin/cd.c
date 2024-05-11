@@ -6,11 +6,11 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:04 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 10:22:13 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 11:14:56 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "../minishell.h"
 
 void	go_to_dir(t_mini *ms, char *dir, char **env)
 {
@@ -32,8 +32,8 @@ void	go_to_dir(t_mini *ms, char *dir, char **env)
 		ft_putstr_fd(NPROMPT": cd: No such file or directory", 2);
 		ms->error = 69;
 	}
-	temp = free_ptr(temp);
-	exp = free_mat(exp);
+	free_str(&temp);
+	free_db_str(&exp);
 }
 
 char	*home_dir(char **env)

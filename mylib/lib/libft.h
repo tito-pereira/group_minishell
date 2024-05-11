@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:33:31 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/28 13:54:31 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:56:38 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 int		ft_isascii(int c);
 int		ft_isprint(int c);
+int		ft_atoi(const char *str);
 size_t	ft_strlen(const char *str);
 void	*ft_memset(void *dest, int c, size_t len);
 void	*ft_bzero(void *dest, size_t len);

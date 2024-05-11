@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:15 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 00:38:21 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/11 11:47:10 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "../minishell.h"
 
 int	get_var_pos(char *var, char **envp)
 {
@@ -26,7 +26,7 @@ int	get_var_pos(char *var, char **envp)
 	var_pos = 0;
 	while (envp[var_pos] && ft_strncmp(temp_var, envp[var_pos], var_len + 1))
 		var_pos++;
-	temp_var = free_ptr(temp_var);
+	free_str(&temp_var);
 	return (var_pos);
 }
 
@@ -40,12 +40,12 @@ void	update_var(char *var, int var_pos, char **envp)
 		temp_envp[var_pos] = var;
 		while (var_pos--)
 			temp_envp[var_pos] = envp[var_pos];
-		envp = free_mat(envp);
+		free_db_str(&envp);
 		envp = temp_envp;
 	}
 	else
 	{
-		envp[var_pos] = free_ptr(envp[var_pos]);
+		free_str(&(envp[var_pos]));
 		envp[var_pos] = ft_strdup(var);
 	}
 }
