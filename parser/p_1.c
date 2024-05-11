@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 12:35:50 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:30:06 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
 	char	**og_group;
 	int		i;
 
-	ft_printf("Inside chunk_create.\n");
+	//ft_printf("Inside chunk_create.\n"); //
 	og_group = divide_pipes(execl, input);
 	i = 0;
 	while (og_group[i] != NULL)
@@ -60,7 +60,7 @@ int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
 	{
 		execl->chunk[i] = malloc(sizeof(t_chunk));
 		execl->chunk[i]->og = og_group[i];
-		ft_printf("chunk[%d] created;\n", i);
+		//ft_printf("chunk[%d] created;\n", i); //
 	}
 	free (og_group);
 	return(1);
@@ -70,10 +70,10 @@ int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 {
 	int			c;
 
-	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (1): pipe_chunks;\n");
-	if (*execl == NULL)
-		ft_printf("execl is NULL dumbass\n");
+	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n"); //
+	//ft_printf("Inside parsing (1): pipe_chunks;\n"); //
+	//if (*execl == NULL) //
+		//ft_printf("execl is NULL dumbass\n"); //
 	*execl = malloc(sizeof(t_execlist));
 	if (!(*execl))
 	{
@@ -93,14 +93,14 @@ int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 	(*execl)->pipe_nmb = c;
 	(*execl)->my_envp = create_envp();
 	(*execl)->chunk[c + 1] = NULL;
-	ft_printf("Pipe counter: %d;\n", c);
+	//ft_printf("Pipe counter: %d;\n", c); //
 	if (chunk_create(input, *execl, exit_stt) == 0)
 		return(0);
-	if (*execl)
+	/*if (*execl)
 	{
 		ft_printf("execl exists and has %d chunks:\n", (*execl)->cmd_nmb);
 		for (int i = 0; (*execl)->chunk[i] != NULL; i++)
 			ft_printf("chunk[%d]->og: %s;\n", i, (*execl)->chunk[i]->og);
-	}
+	}*/
 	return(1);
 }

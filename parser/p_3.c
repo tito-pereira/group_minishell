@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:12:29 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/09 18:09:52 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:33:29 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,14 @@ int	scope_redirs(t_execlist *execl, int *exit_stt)
 	c = -1;
 	i = -1;
 	(void)exit_stt;
-	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (3): scope_redirs;\n");
+	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");//
+	//ft_printf("Inside parsing (3): scope_redirs;\n");//
 	while (execl->chunk[++c] != NULL)
 	{
 		i = -1;
 		while (execl->chunk[c]->og[++i] != '\0')
 			find_red_pos(execl->chunk[c], &i);
-		ft_printf("Final chunk[%d]->og:%s;\n", c, execl->chunk[c]->og);
+		//ft_printf("Final chunk[%d]->og:%s;\n", c, execl->chunk[c]->og);//
 	}
 	return (1);
 }

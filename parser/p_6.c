@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:35:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/09 12:36:38 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:42:56 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_absolute(t_chunk *chunk)
 
 int	check_builtin(char *arg)
 {
-	ft_printf("Checking if builtin or not:\n");
+	//ft_printf("Checking if builtin or not:\n");//
 	if (ft_strncmp("echo", arg, 256) == 0
 		|| ft_strncmp("cd", arg, 256) == 0
 		|| ft_strncmp("pwd", arg, 256) == 0
@@ -45,10 +45,10 @@ int	check_builtin(char *arg)
 		|| ft_strncmp("env", arg, 256) == 0
 		|| ft_strncmp("exit", arg, 256) == 0)
 	{
-		ft_printf("Builtin confirmed.\n");
+		//ft_printf("Builtin confirmed.\n");//
 		return (1);
 	}
-	ft_printf("Not builtin.\n");
+	//ft_printf("Not builtin.\n");//
 	return (0);
 }
 
@@ -58,11 +58,11 @@ int	arg_id(t_execlist *execl, int *exit_stt)
 	int	r;
 
 	i = -1;
-	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (6): arg_id;\n");
+	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");//
+	//ft_printf("Inside parsing (6): arg_id;\n");//
 	while (execl->chunk[++i] != NULL)
 	{
-		ft_printf("Getting command id from chunk n°%d:\n", i);
+		//ft_printf("Getting command id from chunk n°%d:\n", i);//
 		if (i == 0)
 			execl->chunk[i]->inpipe = 1;
 		if (check_absolute(execl->chunk[i]) == 0)
@@ -80,7 +80,7 @@ int	arg_id(t_execlist *execl, int *exit_stt)
 			}
 		}
 	}
-	ft_printf("Finished the arg id parsing.\n");
+	//ft_printf("Finished the arg id parsing.\n");//
 	return(1);
 }
 

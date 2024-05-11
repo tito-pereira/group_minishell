@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_4a.c                                             :+:      :+:    :+:   */
+/*   p_5a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:45:01 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 12:36:28 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:37:26 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ if:
 
 int	single_quote(int *a, int *b, t_chunk *chunk, int *i)
 {
-	ft_printf("Parsing single quotes\n");
+	//ft_printf("Parsing single quotes\n");//
 	//int beg = *a;
 	if (chunk->og[*i] != 39)
 		return(0);
@@ -171,7 +171,7 @@ if:
 
 int	double_quote(int *a, int *b, t_chunk *chunk, int *i)
 {
-	ft_printf("Parsing double quotes\n");
+	//ft_printf("Parsing double quotes\n");//
 	//int beg = *a;
 	if (chunk->og[*i] != 34)
 		return(0);
@@ -239,15 +239,15 @@ int	cmd_separator(t_chunk *chunk)
 	i = -1;
 	a = 0;
 	b = 0;
-	ft_printf("Inside cmd_separator;\n");
-	ft_printf("cmd_n_args: %s;\n", chunk->cmd_n_args);
+	//ft_printf("Inside cmd_separator;\n");//
+	//ft_printf("cmd_n_args: %s;\n", chunk->cmd_n_args);//
 	/*int	w = 0;
 	while (chunk->cmd_n_args[w] != NULL)
 		w++;
 	ft_printf("cmd_n_args has %d elements;\n", w);*/
 	while (chunk->og[++i]) //non endstring
 	{
-		ft_printf("parsing char[%c] on position[%d];\n", chunk->og[i], i);
+		//ft_printf("parsing char[%c] on position[%d];\n", chunk->og[i], i);//
 		if (chunk->og[i] != 9 && chunk->og[i] != 32) //non whtspcs
 		{
 			if (non_white(&a, &b, chunk, &i) == -1)
@@ -256,7 +256,7 @@ int	cmd_separator(t_chunk *chunk)
 				return (-1); //unclosed quotes
 			if (double_quote(&a, &b, chunk, &i) == -1)
 				return (-1); //unclosed quotes
-			ft_printf("a == [%d] && b == [%d]\n", a, b);
+			//ft_printf("a == [%d] && b == [%d]\n", a, b);//
 			sub = ft_substr(chunk->og, a, (b - a + 1));
 			add_arg(chunk, &sub);
 		}

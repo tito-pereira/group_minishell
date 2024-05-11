@@ -14,36 +14,44 @@
 
 /////////////////////////
 
-void	init_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
+void	init_exec(t_execlist *execl, int **fd, int **redir)//, char ***exec_str)
 {
 	int i;
 	int	j;
 	
 	i = -1;
+	ft_printf("Initializing the executor function.\n");
 	while (++i < execl->valid_cmds)
 	{
-		exec_str[i] = NULL;
+		ft_printf("i: %d < cmds: %d\n", i, execl->valid_cmds);
+		redir[i] = malloc(2 * sizeof(int));
+		fd[i] = malloc(2 * sizeof(int));
 		j = -1;
 		while (++j < 2)
 		{
+			ft_printf("j: %d\n", j);
 			redir[i][j] = -1;
+			ft_printf("redir[%d][%d]: %d\n", i, j, redir[i][j]);
 			fd[i][j] = -1;
+			ft_printf("fd[%d][%d]: %d\n", i, j, fd[i][j]);
 		}
 	}
+	ft_printf("Everything initialized.\n");
 }
 
 void	end_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 {
 	int i;
-	int	j;
 	
 	i = -1;
+	ft_printf("Ending the executor function.\n");
 	while (++i < execl->valid_cmds)
 	{
-		free_db(exec_str[i]);
+		free_db_str(&exec_str[i]);
 		free(redir[i]);
 		free(fd[i]);
 	}
+	ft_printf("All frees done.\n");
 }
 
 ////////////////////////////////
@@ -65,6 +73,7 @@ void	get_exec_str(t_execlist *execl, char ***exec_str)
 	int	c;
 
 	c = -1;
+	ft_printf("Creating all the exec_str structs.\n");
 	while (execl->chunk[++c] != NULL)
 	{
 		i = 0;
@@ -79,16 +88,19 @@ void	get_exec_str(t_execlist *execl, char ***exec_str)
 			= ft_strdup(execl->chunk[c]->cmd_n_args[i]);
 		exec_str[c][i] = NULL;
 	}
+	ft_printf("All the exec_str created.\n");
 }
 
 ////////////////////////////////
 
-int	exec_main(t_execlist *execl, int *error_stt)
+int	exec_main(t_execlist *execl, int *exit_stt)
 {
 	int		**fd;
 	int		**redir;
 	char	***exec_str;
 
+	ft_printf("Inside the executor:\n");
+	(void)exit_stt;
 	fd = (int **)malloc(execl->valid_cmds * sizeof(int));
 	redir = (int **)malloc((execl->valid_cmds * 2) * sizeof(int));
 	exec_str = (char ***)malloc(execl->valid_cmds * sizeof(char **));
@@ -102,7 +114,8 @@ int	exec_main(t_execlist *execl, int *error_stt)
 			free(exec_str);
 		return (0);
 	}
-	init_exec(execl, fd, redir, exec_str);
+	ft_printf("All mallocs succesfull\n");
+	init_exec(execl, fd, redir); //exec_str);
 	get_exec_str(execl, exec_str);
 	exec_loop(execl, fd, redir, exec_str);
 	end_exec(execl, fd, redir, exec_str);

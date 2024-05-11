@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/11 10:49:32 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:07:46 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void    write_heredoc(t_execlist *execl, char *str, int **fd, int i)
 		close(fd[i + 1][0]);
 		close(fd[i + 1][1]);
 		close(fd[i][0]);
-		write(fd, str, ft_strlen(str));
+		write(fd[i][1], str, ft_strlen(str));
 		close(fd[i][1]);
     }
     wait(0);

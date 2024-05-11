@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_3a.c                                             :+:      :+:    :+:   */
+/*   p_4a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:11:55 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/09 12:36:17 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:35:19 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,31 @@ char	*chnk_conditions(char *spec, char *first, char *secnd)
 	char	*new;
 	char	*tmp;
 	
-	ft_printf("Choosing new chunk conditions\n");
+	//ft_printf("Choosing new chunk conditions\n");//
 	new = NULL;
-	if (first != NULL)
+	/*if (first != NULL)
 		ft_printf("first: '%s'\n", first);
 	if (secnd != NULL)
-		ft_printf("secnd: '%s'\n", secnd);
+		ft_printf("secnd: '%s'\n", secnd);*/
 	if (first && secnd)
 	{
-		ft_printf("first && secnd\n");
+		//ft_printf("first && secnd\n");//
 		tmp = ft_strjoin(first, spec);
 		new = ft_strjoin(tmp, secnd);
 	}
 	else if (!first && secnd)
 	{
-		ft_printf("!first && secnd\n");
+		//ft_printf("!first && secnd\n");//
 		new = ft_strjoin(spec, secnd);
 	}
 	else if (first && !secnd)
 	{
-		ft_printf("first && !secnd\n");
+		//ft_printf("first && !secnd\n");//
 		new = ft_strjoin(first, spec);
 	}
 	else if (!first && !secnd)
 	{
-		ft_printf("!first && !secnd\n");
+		//ft_printf("!first && !secnd\n");//
 		new = ft_strdup(spec);
 	}
 	return(new);
@@ -74,13 +74,13 @@ void	check_empty_strs(char **first, char **secnd)
 {
 	if (*first[0] == '\0')
 	{
-		ft_printf("first will be NULL\n");
+		//ft_printf("first will be NULL\n");//
 		free(*first);
 		*first = NULL;
 	}
 	if (*secnd[0] == '\0')
 	{
-		ft_printf("secnd will be NULL\n");
+		//ft_printf("secnd will be NULL\n");//
 		free(*secnd);
 		*secnd = NULL;
 	}
@@ -92,30 +92,30 @@ char	*new_chnk(char *spec, char *old, int a, int b)
 	char	*secnd;
 	char	*new;
 
-	ft_printf("Creating new chunk:\n");
+	//ft_printf("Creating new chunk:\n");//
 	first = ft_substr(old, 0, a);
 	secnd = ft_substr(old, (b + 1), (ft_strlen(old) - b));
 	check_empty_strs(&first, &secnd);
 	new = chnk_conditions(spec, first, secnd);
-	ft_printf("just to check, new is '%s'\n", new);
+	//ft_printf("just to check, new is '%s'\n", new);//
 	if (first)
 	{
-		ft_printf("freeing first\n");
+		//ft_printf("freeing first\n");//
 		free(first);
 	}
 	if (secnd)
 	{
-		ft_printf("freeing secnd\n");
+		//ft_printf("freeing secnd\n");//
 		free(secnd);
 	}
-	ft_printf("freeing spec\n");
+	//ft_printf("freeing spec\n");//
 	free(spec);
 	if (new == NULL)
 		return(NULL);
-	ft_printf("old: '%s'\n", old);
-	ft_printf("freeing old\n");
+	//ft_printf("old: '%s'\n", old);//
+	//ft_printf("freeing old\n");//
 	free(old);
-	ft_printf("new: '%s'\n", new);
+	//ft_printf("new: '%s'\n", new);//
 	return(new);
 }
 

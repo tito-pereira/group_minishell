@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 13:09:26 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:31:17 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int	check_redir(t_execlist *execl, int *i, int c, int *exit_stt)
 {
-	//ft_printf("Inside check_redir;\n");
+	//ft_printf("Inside check_redir;\n"); //
 	if (execl->chunk[c]->og[*i] == '<' && c == 0)
 	{
 		if (input_redir(execl->chunk[c], i) == -1)
@@ -45,12 +45,12 @@ int	redir_checker(t_execlist *execl, int *exit_stt)
 	int	i;
 	int	c;
 
-	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (2): redir_checker;\n");
+	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n"); //
+	//ft_printf("Inside parsing (2): redir_checker;\n"); //
 	c = -1;
-	ft_printf("Is it here?\n");
-	if (execl == NULL)
-		ft_printf("execl is NULL dumbass\n");
+	//ft_printf("Is it here?\n"); //
+	//if (execl == NULL) //
+		//ft_printf("execl is NULL dumbass\n"); //
 	while (execl->chunk[++c] != NULL)
 	{
 		//ft_printf("Loop [%d];\n", c);

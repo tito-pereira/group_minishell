@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/09 18:06:56 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:33:54 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,11 @@ int	special_char(t_execlist *execl, int *exit_stt)
 
 	j = -1;
 	flag = 1;
-	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (4): special_char;\n");
+	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");//
+	//ft_printf("Inside parsing (4): special_char;\n");//
 	while (execl->chunk[++j] != NULL)
 	{
-		ft_printf("Chunk n°%d:\n", j);
+		//ft_printf("Chunk n°%d:\n", j);//
 		i = -1;
 		while (execl->chunk[j]->og[++i] != '\0')
 		{
@@ -140,14 +140,14 @@ int	special_char(t_execlist *execl, int *exit_stt)
 				flag *= -1;
 			if (execl->chunk[j]->og[i] == '$' && flag == 1)
 			{
-				ft_printf("Special char found in position %d\n", i);
+				//ft_printf("Special char found in position %d\n", i);//
 				if (h_env_var(&a, &b, &i, &execl->chunk[j]->og, exit_stt) == 0)
 				{
 					*exit_stt = 1;
 					return(0);
 				}
-				else
-					ft_printf("execl->chunk[j]->og: '%s'\n", execl->chunk[j]->og);
+				//else
+					//ft_printf("execl->chunk[j]->og: '%s'\n", execl->chunk[j]->og);//
 			}
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 00:30:06 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/11 12:44:00 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ void	print_exec(t_execlist *execl)
 	for (int i = 0; execl->chunk[i] != NULL; i++) {
 		ft_printf("Chunk nª%d\n", i);
 		print_db_char(execl->chunk[i]->cmd_n_args);
-		//ft_printf("Other info:\nInpipe: %d;", execl->chunk[i]->inpipe);
+		if (execl->chunk[i]->path)
+			ft_printf("PATH: %s;\n", execl->chunk[i]->path);
+		else
+			ft_printf("PATH: NULL;\n");;
 		ft_printf("Heredoc: %d;\nAppend: %d;\n", execl->chunk[i]->heredoc, execl->chunk[i]->append);
 		ft_printf("-.-.-.-.-.-.-.-.-.-.\n-.-.-.-.-.-.-.-.-.-.\n");
 	}
@@ -113,7 +116,7 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt)
 {
 	int			flag;
 
-	ft_printf("Inside parsing.\n");
+	//ft_printf("Inside parsing.\n");//
 	flag = null_input(input, exit_stt);
 	if (flag == 1)
 		flag = pipe_chunks(execl, input, exit_stt);
@@ -127,7 +130,7 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt)
 		flag = arg_separator(*execl, exit_stt);
 	if (flag == 1)
 		flag = arg_id(*execl, exit_stt);
-	ft_printf("Finished parsing with flag %d\n", flag);
+	//ft_printf("Finished parsing with flag %d\n", flag);//
 	return (flag);
 }
 
@@ -177,20 +180,20 @@ int	main()
 		//if (global_checker(execl) == 1)
 			//continue;
 		sig_handler_two();
-		ft_printf("Testing.\nInput = '%s';\n", input);
-		if (ft_strncmp(input, "exit", 10) == 0)
+		//ft_printf("Testing.\nInput = '%s';\n", input);//
+		/*if (ft_strncmp(input, "exit", 10) == 0)
 		{
 			ft_printf("Closing minishell...\n");
 			exit(0);
-		}
+		}*/
 		if (parse_central(&execl, input, &exit_stt) == 1)
 		{
 			print_exec(execl);
-			//if (exec_central(execl, &exit_stt) == 1)
-				//exit_stt = 0;
+			if (exec_main(execl, &exit_stt) == 1)
+				exit_stt = 0;
 		}
-		//if (execl)
-			//free_exec(execl);
+		if (execl)
+			free_exec(&execl);
 		//else, free execl maybe, retry input
 		//error_stt apenas fica gravado
 		//free(input);

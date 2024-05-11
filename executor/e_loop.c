@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   e_ex.c                                             :+:      :+:    :+:   */
+/*   e_loop.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/11 10:48:17 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:06:27 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	exec_action(t_execlist *execl, int **fd, int **redir, int i, char **exec_st
 {
 	exec_input(execl, fd, redir, i);
 	exec_output(execl, fd, redir, i);
-	execve(exec_str[0], exec_str, *(execl->my_envp));
+	execve(exec_str[0], exec_str, execl->my_envp);
 }
 
 void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_str)

@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 11:44:34 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:01:51 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,6 @@ void	free_str(char **str);
 void	free_db_str(char ***str);
 void	free_chunk(t_chunk **chunk);
 void	free_exec(t_execlist **exec);
-//char	*free_ptr(char *ptr);
-//char	**free_mat(char **mat);
 
 // BUILT-IN
 void	ft_cd(t_mini *ms, char **cmd, char **env);

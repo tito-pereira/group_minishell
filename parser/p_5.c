@@ -36,14 +36,14 @@ int	arg_separator(t_execlist *execl, int *exit_stt)
 	int		c;
 	int		ret;
 
-	ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("Inside parsing (5): arg_separator;\n");
+	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");//
+	//ft_printf("Inside parsing (5): arg_separator;\n");//
 	c = -1;
 	while (execl->chunk[++c] != NULL)
 	{
-		ft_printf("Loop nª%d;\n", c);
+		//ft_printf("Loop nª%d;\n", c);//
 		ret = cmd_separator(execl->chunk[c]);
-		ft_printf("cmd_separator return == %d;\n", ret);
+		//ft_printf("cmd_separator return == %d;\n", ret);//
 		if (ret == 0)
 		{
 			perror("Empty pipe error");
@@ -52,7 +52,7 @@ int	arg_separator(t_execlist *execl, int *exit_stt)
 		}
 		else if (ret == -1)
 		{
-			//perror("Unclosed quotes error");
+			perror("Unclosed quotes error");
 			*exit_stt = 1;
 			return(0);
 		}
@@ -100,33 +100,33 @@ void	add_arg(t_chunk *chunk, char **str)
 	char	**new;
 
 	c = 0;
-	ft_printf("Adding new arg to cmd_n_args;\nThis bad boy: '%s'\n", *str);
+	//ft_printf("Adding new arg to cmd_n_args;\nThis bad boy: '%s'\n", *str);//
 	if (chunk->cmd_n_args == NULL)
 	{
-		ft_printf("First arg;\n");
+		//ft_printf("First arg;\n");//
 		chunk->cmd_n_args = malloc(2 * sizeof(char *));
 		chunk->cmd_n_args[0] = *str;
 		chunk->cmd_n_args[1] = NULL;
 	}
 	else
 	{
-		ft_printf("Already existing args;\n");
+		//ft_printf("Already existing args;\n");//
 		while (chunk->cmd_n_args[c] != NULL)
 			c++;
-		ft_printf("How many cmd_n_args then? %d;\n", c);
+		//ft_printf("How many cmd_n_args then? %d;\n", c);//
 		new = malloc((c + 2) * sizeof(char *));
 		c = -1;
 		while (chunk->cmd_n_args[++c] != NULL)
 			new[c] = ft_strdup(chunk->cmd_n_args[c]);
 		new[c] = *str;
 		new[c + 1] = NULL;
-		ft_printf("Manual print:\n");
-		if (new[c])
+		//ft_printf("Manual print:\n");//
+		/*if (new[c])
 			ft_printf("new[%d]: %s;\n", c, new[c]);
 		if (new[c + 1] == NULL)
 			ft_printf("new[%d]: %s;\n", (c + 1), new[c + 1]);
 		if (new[c + 2] == NULL)
-			ft_printf("new[%d] exists and is NULL\n", (c + 2));
+			ft_printf("new[%d] exists and is NULL\n", (c + 2));*/
 		free_db_str(&(chunk->cmd_n_args));
 		chunk->cmd_n_args = new;
 	}

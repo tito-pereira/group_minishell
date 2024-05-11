@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:52:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/09 12:35:56 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:30:39 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ int	pipe_counter(char *input, t_execlist *execl)
 	flag[0] = 1;
 	flag[1] = 1;
 	execl->valid_cmds = 1;
-	ft_printf("Inside pipe counter.\n");
+	//ft_printf("Inside pipe counter.\n"); //
 	if (pipe_cnt_loop(execl, input, flag, i, &c) == -1)
 		return (-1);
-	ft_printf("%d valid cmds counted.\n", execl->valid_cmds);
+	//ft_printf("%d valid cmds counted.\n", execl->valid_cmds); //
 	execl->pipe_loc = malloc((execl->valid_cmds + 1) * sizeof(int));
 	i = -1;
 	flag[0] = 1;
