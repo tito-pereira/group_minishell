@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 12:44:00 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 15:00:20 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,8 +192,8 @@ int	main()
 			if (exec_main(execl, &exit_stt) == 1)
 				exit_stt = 0;
 		}
-		if (execl)
-			free_exec(&execl);
+		//if (execl)
+			//free_exec(&execl);
 		//else, free execl maybe, retry input
 		//error_stt apenas fica gravado
 		//free(input);

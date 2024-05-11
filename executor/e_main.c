@@ -14,10 +14,11 @@
 
 /////////////////////////
 
-void	init_exec(t_execlist *execl, int **fd, int **redir)//, char ***exec_str)
+void	init_exec(t_execlist *execl, int **fd, int **redir)
 {
 	int i;
 	int	j;
+	int	ret;
 	
 	i = -1;
 	ft_printf("Initializing the executor function.\n");
@@ -35,8 +36,16 @@ void	init_exec(t_execlist *execl, int **fd, int **redir)//, char ***exec_str)
 			fd[i][j] = -1;
 			ft_printf("fd[%d][%d]: %d\n", i, j, fd[i][j]);
 		}
+		ret = pipe(fd[i]);
+		if (ret == 0)
+		{
+			ft_printf("pipe[%d] success\n", i);
+			ft_printf("fd[%d][0]: %d\nfd[%d][1]: %d\n", i, fd[i][0], i, fd[i][1]);
+		}
+		else
+			ft_printf("pipe[%d] failed\n", i);
 	}
-	ft_printf("Everything initialized.\n");
+	ft_printf("fd && redir initialized.\n");
 }
 
 void	end_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
@@ -86,19 +95,19 @@ void	get_exec_str(t_execlist *execl, char ***exec_str)
 		if (execl->chunk[c]->blt == 1)
 		{
 			exec_str[c][0] = ft_strdup(execl->chunk[c]->path);
-			ft_printf("exec_str[%d][0]:%s;\n", c, exec_str[c][0]);
+			ft_printf("BUILTIN:\nexec_str[%d][0]:%s;\n", c, exec_str[c][0]);
 		}
 		i = -1;
 		while (execl->chunk[c]->cmd_n_args[++i] != NULL)
 		{
-			exec_str[c][i + execl->chunk[c]->blt]\
-			= ft_strdup(execl->chunk[c]->cmd_n_args[i]);
-			ft_printf("exec_str[%d][%d]:%s;\n", c, (i + execl->chunk[c]->blt), exec_str[c][0]);
+			exec_str[c][i + execl->chunk[c]->blt] = ft_strdup(execl->chunk[c]->cmd_n_args[i]);
+			ft_printf("exec_str[%d][%d]:%s ", c, (i + execl->chunk[c]->blt), exec_str[c][i + execl->chunk[c]->blt]);
+			ft_printf("= execl->chunk[%d]->cmd_n_args[%d]:%s;\n", c, i, execl->chunk[c]->cmd_n_args[i]);
+		}
 		exec_str[c][i + execl->chunk[c]->blt] = NULL;
 		ft_printf("exec_str[%d][%d]:NULL;\n", c, (i + execl->chunk[c]->blt));
 	}
 	ft_printf("All the exec_str created.\n");
-	}
 }
 
 ////////////////////////////////
@@ -125,10 +134,10 @@ int	exec_main(t_execlist *execl, int *exit_stt)
 		return (0);
 	}
 	ft_printf("All mallocs succesfull\n");
-	init_exec(execl, fd, redir); //exec_str);
-	get_exec_str(execl, exec_str);
-	exec_loop(execl, fd, redir, exec_str);
-	end_exec(execl, fd, redir, exec_str);
+	init_exec(execl, fd, redir); // V
+	get_exec_str(execl, exec_str); // V
+	exec_loop(execl, fd, redir, exec_str); // X
+	end_exec(execl, fd, redir, exec_str); // X
 	return (1);
 }
 

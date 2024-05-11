@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 12:01:51 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 15:48:28 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ typedef struct s_mini
     char    *input;
     char    *prompt;
     char    **envp;
-    //t_token *token;
     char    error;
     char    exit;
 }   t_mini;
