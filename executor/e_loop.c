@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   e_loop.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/11 17:41:34 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/12 01:26:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 ////////////////////////////////////////////
+void	print_db(char **str)
+{
+	int i = -1;
+	while (str[++i] != NULL)
+		ft_printf("%s\n", str[i]);
+}
 
 void	exec_action(t_execlist *execl, int **fd, int **redir, int i, char **exec_str)
 {
@@ -20,8 +26,14 @@ void	exec_action(t_execlist *execl, int **fd, int **redir, int i, char **exec_st
 	exec_input(execl, fd, redir, i);
 	exec_output(execl, fd, redir, i);
 	//ft_printf("----------------- LETS EXECUTE -----------------\n");
+	//ft_printf("my_envp:\n");
+	//print_db(execl->my_envp);
+	//ft_printf("\nnormal envp:\n");
+	//print_db(__environ);
+	ft_printf("\nexec str:\n");
+	print_db(exec_str);
 	execve(exec_str[0], exec_str, execl->my_envp);
-	//ft_printf("EXECVE FAILED\n");
+	ft_printf("EXECVE FAILED\n");
 }
 
 void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_str)
