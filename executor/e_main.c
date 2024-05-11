@@ -77,18 +77,28 @@ void	get_exec_str(t_execlist *execl, char ***exec_str)
 	while (execl->chunk[++c] != NULL)
 	{
 		i = 0;
+		ft_printf("Command[%d]\n", c);
 		while (execl->chunk[c]->cmd_n_args[i] != NULL)
 			i++;
+		ft_printf("Size[%d]: %d\n", c, i);
 		exec_str[c] = malloc((i + 1 + execl->chunk[c]->blt) * sizeof(char *));
+		ft_printf("Malloc[%d]: %d\n", c, (i + 1 + execl->chunk[c]->blt));
 		if (execl->chunk[c]->blt == 1)
+		{
 			exec_str[c][0] = ft_strdup(execl->chunk[c]->path);
+			ft_printf("exec_str[%d][0]:%s;\n", c, exec_str[c][0]);
+		}
 		i = -1;
 		while (execl->chunk[c]->cmd_n_args[++i] != NULL)
+		{
 			exec_str[c][i + execl->chunk[c]->blt]\
 			= ft_strdup(execl->chunk[c]->cmd_n_args[i]);
-		exec_str[c][i] = NULL;
+			ft_printf("exec_str[%d][%d]:%s;\n", c, (i + execl->chunk[c]->blt), exec_str[c][0]);
+		exec_str[c][i + execl->chunk[c]->blt] = NULL;
+		ft_printf("exec_str[%d][%d]:NULL;\n", c, (i + execl->chunk[c]->blt));
 	}
 	ft_printf("All the exec_str created.\n");
+	}
 }
 
 ////////////////////////////////
