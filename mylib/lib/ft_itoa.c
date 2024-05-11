@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 11:14:32 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/01 13:07:11 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:32:52 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,3 @@ char	*ft_itoa(int n)
 	ft_reverse(ret);
 	return (ret);
 }
-
-/*int main()
-{
-    int n = -2147483648;
-    printf("result:%s\n", ft_itoa(n));
-}*/

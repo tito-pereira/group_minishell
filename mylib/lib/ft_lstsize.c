@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 12:43:27 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/25 15:48:14 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:33:13 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,3 @@ int	ft_lstsize(t_list *lst)
 	}
 	return (i);
 }
-
-/*int	main()
-{}
-*/
-
-/*
-Turn in files -
-Parameters lst: The beginning of the list.
-Return value The length of the list
-External functs. None
-Description Counts the number of nodes in a list.
-*/

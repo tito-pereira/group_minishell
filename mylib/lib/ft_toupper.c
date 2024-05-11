@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 12:45:20 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/21 13:38:13 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:30:32 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,3 @@ int	ft_toupper(int c)
 		c -= 32;
 	return (c);
 }
-
-/*int main()
-{
-    char    c = 'd';
-    printf("%c\n", ft_toupper(c));
-}*/

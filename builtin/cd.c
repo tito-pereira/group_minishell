@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:04 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 00:08:42 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/11 10:22:13 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	go_to_dir(t_mini *ms, char *dir, char **env)
 	char	**exp;
 	char	*temp;
 
-	temp = '\0';
+	temp = NULL; //'\0';
 	exp = ft_calloc(3, sizeof(char *));
 	exp[0] = ft_strdup("export");
 	if (chdir(dir) == 0)

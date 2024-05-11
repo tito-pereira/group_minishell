@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 10:44:26 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/12/26 16:30:30 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:29:24 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,3 @@ char	*ft_strdup(char *src)
 	dest[i] = '\0';
 	return (dest);
 }
-
-/*int main()
-{
-    char    str[] = "look we are the same string!";
-    printf("original string: %s\n", str);
-    printf("duplicate string: %s\n", ft_strdup(str));
-}*/
-
-/*
-[crash]: you didn't protect your malloc return
-podia usar um strcpy diretamente aqui*/

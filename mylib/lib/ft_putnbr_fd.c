@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:27:45 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/24 14:49:32 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:28:50 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,3 @@ void	ft_putnbr_fd(int n, int fd)
 	else
 		ft_putchar_fd((n + 48), fd);
 }
-
-/*int main()
-{
-    int a = -15384;
-    ft_putnbr_fd(a);
-    ft_putchar_fd('\n');
-}*/

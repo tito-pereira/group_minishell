@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 11:15:05 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/28 13:09:42 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:30:47 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	substr = ft_sup(substr, ((char *)s), start, len);
 	return (substr);
 }
-
-/*int main()
-{
-    char    s[] = "uma duas tres palavras";
-    int start = 4;
-    size_t  len = 127635;
-    printf("%s\n", ft_substr(s, start, len));
-}*/
-
-/*
-[fail]: your substr does not work when start >= ft_strlen(s)
-Error in test 5: ft_substr("hola", 0, 18446744073709551615): not enough memory 
-allocated, needed: 5, reserved: 0
-Error in test 5: ft_substr("hola", 0, 18446744073709551615): 
-Memory leak: 0x561a7c72e8b0 - 8192 bytes
-You failed to free the memory allocated at:
-
-com malloc cria uma substring
-retorna essa string a partir do start
-e com len maximo de tamanho
-retorna NULL se nao houver nada
-
-len, size t, = size * sizeof*/

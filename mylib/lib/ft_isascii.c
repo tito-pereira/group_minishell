@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 12:40:04 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/21 13:36:12 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:26:07 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,3 @@ int	ft_isascii(int c)
 		return (1);
 	return (0);
 }
-
-/*int main()
-{
-    char    c = '\n';
-    printf("%d", ft_isascii(c));
-    printf("\n");
-}*/

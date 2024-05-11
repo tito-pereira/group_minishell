@@ -6,18 +6,16 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 19:06:19 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/05/23 17:24:45 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:37:07 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-typedef unsigned int	t_big;
-
-t_big	ft_hbx_set_size(t_big n)
+unsigned int	ft_hbx_set_size(unsigned int n)
 {
-	t_big	counter;
-	t_big	tmp;
+	unsigned int	counter;
+	unsigned int	tmp;
 
 	counter = 1;
 	tmp = 1;
@@ -34,9 +32,9 @@ t_big	ft_hbx_set_size(t_big n)
 
 char	*ft_hbx_reverse(char *str)
 {
-	t_big	i;
-	t_big	size;
-	t_big	tmp;
+	unsigned int	i;
+	unsigned int	size;
+	unsigned int	tmp;
 
 	i = 0;
 	size = 0;
@@ -53,10 +51,11 @@ char	*ft_hbx_reverse(char *str)
 	return (str);
 }
 
-char	*ft_hbx_support(char *ret, t_big tmp, t_big i, t_big n)
+char	*ft_hbx_support(char *ret, unsigned int tmp, unsigned int i, \
+	unsigned int n)
 {
-	t_big	k;
-	char	b;
+	unsigned int	k;
+	char			b;
 
 	if (n == 0)
 		ret[0] = '0';
@@ -73,9 +72,9 @@ char	*ft_hbx_support(char *ret, t_big tmp, t_big i, t_big n)
 
 char	*ft_hbx_itoa(unsigned int n)
 {
-	t_big	i;
-	t_big	tmp;
-	char	*ret;
+	unsigned int	i;
+	unsigned int	tmp;
+	char			*ret;
 
 	i = 0;
 	tmp = n;

@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:08:24 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/28 13:53:59 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:33:42 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,3 @@ size_t	ft_strlen(const char *str)
 		i++;
 	return (i);
 }
-
-/*int main(void)
-{
-    char    str[] = "123456789012345678901";
-
-    printf("%zu\n", ft_strlen(str));
-}*/

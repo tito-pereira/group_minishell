@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 17:20:12 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/05/19 12:29:51 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:33:35 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	str[i] = '\0';
 	return (str);
 }
-
-/*int main()
-{
-    char    s1[] = "este programa ";
-    char    s2[] = "funciona!";
-    printf("%s\n", ft_strjoin(s1, s2));
-}*/
-
-/*
-malloc
-return - The new string.
-     - NULL if the allocation fails
-Allocates (with malloc(3)) and returns a new
-string, which is the result of the concatenation
-of ’s1’ and ’s2
-
-um stress qualquer de warnings
-*/

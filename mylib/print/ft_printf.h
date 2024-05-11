@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:53:47 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/05/23 18:40:32 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:37:44 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_putnbr_pos(int n, int *c);
 void	ft_put_uns_nbr(unsigned int n, int *c);
 char	check_letter_p(long unsigned int i);
 void	ft_putphex_c(long unsigned int n, int *c);
-char	*f_itoa(int n); //aqui, ft_itoa
+char	*f_itoa(int n);
 char	*ft_long_itoa(unsigned int n);
 char	*ft_hbx_itoa(unsigned int n);
 char	*ft_hx_itoa(unsigned int n);

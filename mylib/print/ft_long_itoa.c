@@ -6,18 +6,16 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 19:46:38 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/05/23 17:43:10 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:40:52 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-typedef unsigned int	t_big;
-
-t_big	ft_l_set_size(t_big n)
+unsigned int	ft_l_set_size(unsigned int n)
 {
-	t_big	counter;
-	t_big	tmp;
+	unsigned int	counter;
+	unsigned int	tmp;
 
 	counter = 1;
 	tmp = 1;
@@ -34,9 +32,9 @@ t_big	ft_l_set_size(t_big n)
 
 char	*ft_l_reverse(char *str)
 {
-	t_big	i;
-	t_big	size;
-	t_big	tmp;
+	unsigned int	i;
+	unsigned int	size;
+	unsigned int	tmp;
 
 	i = 0;
 	size = 0;
@@ -53,7 +51,8 @@ char	*ft_l_reverse(char *str)
 	return (str);
 }
 
-char	*ft_l_support(char *ret, t_big tmp, t_big i, t_big n)
+char	*ft_l_support(char *ret, unsigned int tmp, unsigned int i, \
+	unsigned int n)
 {
 	if (n == 0)
 		ret[0] = '0';
@@ -68,9 +67,9 @@ char	*ft_l_support(char *ret, t_big tmp, t_big i, t_big n)
 
 char	*ft_long_itoa(unsigned int n)
 {
-	t_big	i;
-	t_big	tmp;
-	char	*ret;
+	unsigned int	i;
+	unsigned int	tmp;
+	char			*ret;
 
 	i = 0;
 	tmp = n;

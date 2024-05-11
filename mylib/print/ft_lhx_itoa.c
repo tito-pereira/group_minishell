@@ -6,18 +6,16 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:18:44 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/05/21 19:53:30 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:39:27 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-typedef long unsigned int	t_big;
-
-t_big	ft_lhx_set_size(t_big n)
+long unsigned int	ft_lhx_set_size(long unsigned int n)
 {
-	t_big	counter;
-	t_big	tmp;
+	long unsigned int	counter;
+	long unsigned int	tmp;
 
 	counter = 1;
 	tmp = 1;
@@ -34,9 +32,9 @@ t_big	ft_lhx_set_size(t_big n)
 
 char	*ft_lhx_reverse(char *str)
 {
-	t_big	i;
-	t_big	size;
-	t_big	tmp;
+	long unsigned int	i;
+	long unsigned int	size;
+	long unsigned int	tmp;
 
 	i = 0;
 	size = 0;
@@ -53,10 +51,11 @@ char	*ft_lhx_reverse(char *str)
 	return (str);
 }
 
-char	*ft_lhx_support(char *ret, t_big tmp, t_big i, t_big n)
+char	*ft_lhx_support(char *ret, long unsigned int tmp, \
+	long unsigned int i, long unsigned int n)
 {
-	t_big	k;
-	char	b;
+	long unsigned int	k;
+	char				b;
 
 	if (n == 0)
 		ret[0] = '0';
@@ -73,9 +72,9 @@ char	*ft_lhx_support(char *ret, t_big tmp, t_big i, t_big n)
 
 char	*ft_lhx_itoa(long unsigned int n)
 {
-	t_big	i;
-	t_big	tmp;
-	char	*ret;
+	long unsigned int	i;
+	long unsigned int	tmp;
+	char				*ret;
 
 	i = 0;
 	tmp = n;

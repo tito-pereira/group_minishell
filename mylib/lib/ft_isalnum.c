@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 12:32:33 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/23 17:26:56 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:32:42 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,3 @@ int	ft_isalnum(int c)
 		return (1);
 	return (0);
 }
-
-/*int main()
-{
-    char    c = '\n';
-    printf("%d", ft_isalnum(c));
-    printf("\n");
-}*/

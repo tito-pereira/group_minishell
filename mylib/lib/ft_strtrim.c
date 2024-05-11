@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 18:18:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/28 18:59:12 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:30:58 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,35 +100,3 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (NULL);
 	return (trim);
 }
-
-/*int main()
-{
-	char	s1[] = "   \t  \n\n \t\t  \n\n\nHello
-	\t  Please\n Trim me !\n   \n \n \t\t\n  ";
-	char	s2[] = " \n\t";
-    printf("(trim)%s(trim)\n", ft_strtrim(s1, s2));
-}*/
-
-/*
-[crash]: you dont protect your malloc return
-
-
-[crash]: you dont protect your malloc return
- Test code:
- 	char *s1 = "   \t  \n\n \t\t  \n\n\nHello \t
-	  Please\n Trim me !\n   \n \n \t\t\n  ";
- 
- 	char *ret = ft_strtrim(s1, " \n\t");
- 	if (ret == ((void*)0))
- 		exit(TEST_SUCCESS);
- 	exit(TEST_FAILED);
-
-malloc
-s1: The string to be trimmed.
-set: The reference set of characters to trim
-return - The trimmed string.
-     - NULL if the allocation fails
-Allocates (with malloc(3)) and returns a copy of
-’s1’ with the characters specified in ’set’ removed
-from the beginning and the end of the string.
-*/

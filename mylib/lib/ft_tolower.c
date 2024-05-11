@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 12:45:45 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/23 19:48:41 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:34:15 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,3 @@ int	ft_tolower(int c)
 		c += 32;
 	return (c);
 }
-
-/*int main()
-{
-    char    c = 'G';
-    printf("%c\n", ft_tolower(c));
-}*/

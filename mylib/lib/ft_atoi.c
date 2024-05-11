@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:26:01 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/28 13:50:16 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:22:58 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,3 @@ int	ft_atoi(const char *str)
 	}
 	return (sign * tmp);
 }
-
-/*int main()
-{
-    char    str[] = "   -1243abc";
-
-    printf("%d\n", ft_atoi(str));
-}*/

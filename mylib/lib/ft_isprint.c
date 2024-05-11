@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 12:33:49 by tibarbos          #+#    #+#             */
-/*   Updated: 2023/04/24 13:49:30 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:26:18 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,3 @@ int	ft_isprint(int c)
 		return (1);
 	return (0);
 }
-
-/*int main()
-{
-    int i = 127;
-    printf("%d", ft_isprint(i));
-    printf("%c", 127);
-    printf("\n---\n");
-}*/
