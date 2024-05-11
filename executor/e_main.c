@@ -58,6 +58,8 @@ void	end_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 	{
 		free_db_str(&exec_str[i]);
 		free(redir[i]);
+		close(fd[i][0]);
+		close(fd[i][1]);
 		free(fd[i]);
 	}
 	ft_printf("All frees done.\n");

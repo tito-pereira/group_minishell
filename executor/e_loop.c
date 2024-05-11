@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/11 17:34:46 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 17:41:34 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_s
 	}
 	else
 	{
-		ft_printf("lets wait for first one[%d]\n", i);
+		//ft_printf("lets wait for first one[%d]\n", i);
 		pid = wait(0);
 		//ft_printf("----------------- DONE EXECUTE -----------------\n");
 		//printf("Waiting for own process[%d] to finish with status %d\n", i, pid);
 		if ((i + 1) < execl->valid_cmds)
 		{
-			ft_printf("lets wait for scnd one[%d]\n", i);
+			//ft_printf("lets wait for scnd one[%d]\n", i);
 			wait(0);
 			//ft_printf("Waiting for child process[%d] to finish\n", (i + 1));
 		}

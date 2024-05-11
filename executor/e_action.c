@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/11 17:02:33 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/11 18:01:25 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 	//ft_printf("preparing input for exec\n");
     close_non_related(execl, fd, i);
 	close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
+	//ft_printf("In input, closed(fd[%d][1] = %d)\n", i, fd[i][1]);
 	if (execl->chunk[i]->heredoc == 1 && execl->chunk[i]->inpipe == 1) //1, heredoc valido
 	{
         write_heredoc(execl, execl->chunk[i]->infile, fd, i);
@@ -73,7 +74,7 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
         dup2(fd[i][0], STDIN_FILENO); //last pipe, fd[i - 1][0];
 	}
     close(fd[i][0]);
-	//ft_printf("input prepared for exec\n");
+	//ft_printf("In input, closed(fd[%d][0] = %d)\n", i, fd[i][0]);
 }
 
 void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
