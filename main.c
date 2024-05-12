@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 22:41:11 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/12 18:25:05 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ char	**create_envp(void)
 	char	**my_envp;
 	int		i;
 
-	i = -1;
-	while (__environ[++i] != NULL)
+	i = 0;
+	while (__environ[i] != NULL)
 		i++;
 	my_envp = malloc((i + 1) * sizeof(char *));
 	i = -1;
@@ -142,6 +142,7 @@ podem alterar o seu valor sem mandar pointers para a frente e p trás
 usar SIGPIPE para detetar EOF conditions (ctrl D)
 */
 
+/*
 void	sig_repeat(int num)
 {
 	(void)num;
@@ -160,7 +161,7 @@ void	global_checker(t_execlist *execl)
 {
 	if (global_sig == 2) //ctrl C
 		free_exec(execl);
-}
+}*/
 
 int	main()
 {
@@ -173,13 +174,13 @@ int	main()
 	execl = NULL;
 	while (1)
 	{
-		sig_handler_one(); //modifies the default sigactions
+		// sig_handler_one(); //modifies the default sigactions
 		//if (global_checker(execl) == 1)
 			//continue;
 		input = ft_read(); //with signal treatment included
 		//if (global_checker(execl) == 1)
 			//continue;
-		sig_handler_two();
+		// sig_handler_two();
 		//ft_printf("Testing.\nInput = '%s';\n", input);//
 		/*if (ft_strncmp(input, "exit", 10) == 0)
 		{

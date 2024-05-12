@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/12 15:18:12 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/12 17:26:25 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,13 @@ out X        out X      out V
 o_l X        o_l X      o_l V
 
 testar ls|ls|ls
--> nao ha pipes
+-> nao ha dups
 -> nao houve mais erros
--> um dos outputs nao aparece
+-> um dos outputs nao aparece (relativo, c mais comandos aparece)
 (acho que o ultimo é que repete mesmo output) (nop)
 (dois outputs normais e um redirected ffs)
+
+vou tentar desligar os dups todos
 */
 
 void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str)

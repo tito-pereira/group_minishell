@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 12:31:17 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/12 19:04:17 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	redir_checker(t_execlist *execl, int *exit_stt)
 		execl->chunk[c]->outfile = NULL;
 		//ft_printf("outfile: %s;\n", execl->chunk[c]->outfile);
 		execl->chunk[c]->append = 0;
+		execl->chunk[c]->inpipe = 0;
 		//ft_printf("append: %d;\n", execl->chunk[c]->append);
 		execl->chunk[c]->cmd_n_args = NULL;
 		//ft_printf("cmd_n_args: %s;\n", execl->chunk[c]->cmd_n_args);

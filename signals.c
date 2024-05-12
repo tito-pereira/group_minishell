@@ -12,12 +12,8 @@
 
 #include "minishell.h"
 
+
 /*
-void	sig_f_exit(int num)
-{
-	num = 1;
-	global_sig = num;
-}*/
 
 void	sig_handler_one(void)
 {
@@ -43,7 +39,7 @@ void	sig_handler_two(void)
 	//sigaction(EOF, &sa_f_exit, NULL); //ctrl D
 	sigaction(SIGQUIT, &sa_ign, NULL); //ctrl barra
 }
-
+*/
 /*
 
 ja sei

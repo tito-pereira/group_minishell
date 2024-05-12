@@ -122,9 +122,9 @@ int	exec_main(t_execlist *execl, int *exit_stt)
 
 	ft_printf("Inside the executor:\n");
 	(void)exit_stt;
-	fd = (int **)malloc(execl->valid_cmds * sizeof(int));
-	redir = (int **)malloc((execl->valid_cmds * 2) * sizeof(int));
-	exec_str = (char ***)malloc(execl->valid_cmds * sizeof(char **));
+	fd = (int **)ft_calloc(execl->valid_cmds, sizeof(int *));
+	redir = (int **)ft_calloc((execl->valid_cmds * 2), sizeof(int *));
+	exec_str = (char ***)ft_calloc(execl->valid_cmds, sizeof(char **));
 	if (!fd || !redir || !exec_str)
 	{
 		if (fd)

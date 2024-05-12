@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/12 15:28:52 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/12 19:05:06 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,10 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
 {
 	//ft_printf("preparing output for exec[%d]\n", i);
-	if (fd[i + 1] != NULL)
+	if ((i + 1) < execl->valid_cmds)
 	{
 		close(fd[i + 1][0]);
-		//ft_printf("In output, closed(fd[%d][0] = %d)\n", (i + 1), fd[i + 1][0]);
 	}
-	ft_printf("preparing output for exec[%d]\n", i);
 	if (execl->chunk[i]->outfile != NULL) //1, outfile
 	{
 		ft_printf("inside outfile [%d]\n", i);
@@ -122,9 +120,9 @@ void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
 	{
 		//ft_printf("pipe pipeline output [%d]\n", i);
 		//ft_printf("dup2(fd[%d][1] = %d, STDOUT_FILENO = %d);\n", (i + 1), fd[i + 1][1], STDOUT_FILENO);
-		//dup2(fd[i + 1][1], STDOUT_FILENO);
+		dup2(fd[i + 1][1], STDOUT_FILENO);
 	}
-	if (fd[i + 1] != NULL)
+	if ((i + 1) < execl->valid_cmds)
 	{
 		//ft_printf("last cmd [%d]\n", i);
 		close(fd[i + 1][1]);
