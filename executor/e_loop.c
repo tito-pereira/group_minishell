@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/12 13:08:24 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:18:12 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,15 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_s
 {
 	int	pid;
 
-	//ft_printf("Launching command[%d](cmds %d)\n", i, execl->valid_cmds);
 	if ((i + 1) < execl->valid_cmds)
 	{
 		i++;
-		//ft_printf("creating next command[%d](cmds %d)\n", i, execl->valid_cmds);
+		//ft_printf("launching other [%d]\n", (i - 1));
 		pid = fork();
 		if (pid == 0)
 		{
 			exec_launch(execl, fd, redir, i, exec_str);
+			//ft_printf("out of launch [%d]\n", i);
 			exit(0);
 		}
 		i--;
@@ -58,40 +58,43 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_s
 	{
 		exec_input(execl, fd, redir, i);
 		exec_output(execl, fd, redir, i);
+		//ft_printf("exec action [%d]\n", i);
 		execve(exec_str[i][0], exec_str[i], execl->my_envp);
-		ft_printf("exec action failed [%d]\n", i);
+		//ft_printf("action failed [%d]\n", i);
 	}
 	else
 	{
-		ft_printf("lets wait for first one[%d]\n", i);
+		//ft_printf("lets wait for first one[%d]\n", i);
 		pid = wait(0);
-		//ft_printf("----------------- DONE EXECUTE -----------------\n");
-		//printf("Waiting for own process[%d] to finish with status %d\n", i, pid);
 		if ((i + 1) < execl->valid_cmds)
 		{
-			ft_printf("lets wait for scnd one[%d]\n", i);
+			//ft_printf("lets wait for scnd one[%d]\n", i);
 			wait(0);
-			//ft_printf("Waiting for child process[%d] to finish\n", (i + 1));
 		}
-		ft_printf("launch done and waited [%d]\n", i);
+		//ft_printf("launch done and waited [%d]\n", i);
 	}
-	ft_printf("exec launch out [%d]\n", i);
+	exit(0);
+	//ft_printf("exec launch out [%d]\n", i);
 }
 
 /*
 ls -1 |cat|cat
 
-lets wait for first one[0]
-lets wait for first one[1]
-lets wait for first one[2]
-lets wait for scnd one[0]
-launch done and waited [2]
-exec launch out [2]
-lets wait for scnd one[1]
+ls -1         cat       cat
+launch V    launch V   launch X 
+action V    action V   action V
+command[0] command[1] command[2]
+wait1 (V)   wait1(V)   wait(V)
+wait2 (X)   wait2(X)   wait(X)
+out X        out X      out V
+o_l X        o_l X      o_l V
 
-o wait for second one fica constantemente preso
-sera que posso usar varios waits?
-ou sera outra merda qq
+testar ls|ls|ls
+-> nao ha pipes
+-> nao houve mais erros
+-> um dos outputs nao aparece
+(acho que o ultimo é que repete mesmo output) (nop)
+(dois outputs normais e um redirected ffs)
 */
 
 void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str)
