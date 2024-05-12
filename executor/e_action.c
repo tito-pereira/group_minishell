@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/12 01:29:48 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/12 12:43:09 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@ void    close_non_related(t_execlist *execl, int **fd, int i)
     {
         if (c != i && c != (i + 1))
         {
-            close(fd[i][0]);
-            close(fd[i][1]);
+			//ft_printf("if (%d != %i && c != (i + 1))\n", c, i);
+            close(fd[c][0]);
+            close(fd[c][1]);
+			//ft_printf("closed fd[%d][0] = %d\n", c, fd[c][0]);
+			//ft_printf("closed fd[%d][1] = %d\n", c, fd[c][1]);
         }
     }
 }
@@ -54,7 +57,7 @@ void    write_heredoc(t_execlist *execl, char *str, int **fd, int i)
 
 void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 {
-	//ft_printf("preparing input for exec\n");
+	//ft_printf("preparing input for exec[%d]\n", i);
     close_non_related(execl, fd, i);
 	close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
 	//ft_printf("In input, closed(fd[%d][1] = %d)\n", i, fd[i][1]);
@@ -84,9 +87,12 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 
 void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
 {
-	//ft_printf("preparing output for exec\n");
-	if (fd[i + 1])
+	//ft_printf("preparing output for exec[%d]\n", i);
+	if (fd[i + 1] != NULL)
+	{
 		close(fd[i + 1][0]);
+		//ft_printf("In output, closed(fd[%d][0] = %d)\n", (i + 1), fd[i + 1][0]);
+	}
 	if (execl->chunk[i]->outfile != NULL) //1, outfile
 	{
 		if (execl->chunk[i]->append == 1) //append
@@ -116,11 +122,12 @@ void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
 		//ft_printf("dup2(fd[%d][1] = %d, STDOUT_FILENO = %d);\n", (i + 1), fd[i + 1][1], STDOUT_FILENO);
 		dup2(fd[i + 1][1], STDOUT_FILENO); //not even necessary maybe
 	}
-	if (fd[i + 1])
+	if (fd[i + 1] != NULL)
 	//if ((i + 1) == execl->valid_cmds)
 	{
-		ft_printf("last cmd [%d]\n", i);
+		//ft_printf("last cmd [%d]\n", i);
 		close(fd[i + 1][1]);
+		//ft_printf("In output, closed(fd[%d][1] = %d)\n", (i + 1), fd[i + 1][1]);
 	}
 	//else
 		//ft_printf("last output [%d]\n", i);
