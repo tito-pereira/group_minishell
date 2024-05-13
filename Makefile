@@ -6,7 +6,7 @@
 #    By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:44:12 by marvin            #+#    #+#              #
-#    Updated: 2024/05/11 11:58:49 by tibarbos         ###   ########.fr        #
+#    Updated: 2024/05/13 13:34:27 by tibarbos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRC= ./parser/p_1.c ./parser/p_1a.c \
 	./parser/p_4.c ./parser/p_4a.c ./parser/p_5.c ./parser/p_5a.c \
 	./parser/p_6.c ./parser/p_6a.c \
 	./executor/e_main.c ./executor/e_loop.c ./executor/e_action.c \
+	./executor/e_close.c \
 	main.c free.c signals.c
 OBJ= ${SRC:.c=.o}
 LIBS= -lreadline -L./mylib -lft

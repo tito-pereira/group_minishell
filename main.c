@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/12 18:25:05 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:04:19 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,11 +182,11 @@ int	main()
 			//continue;
 		// sig_handler_two();
 		//ft_printf("Testing.\nInput = '%s';\n", input);//
-		/*if (ft_strncmp(input, "exit", 10) == 0)
+		if (ft_strncmp(input, "exit", 10) == 0)
 		{
 			ft_printf("Closing minishell...\n");
 			exit(0);
-		}*/
+		}
 		if (parse_central(&execl, input, &exit_stt) == 1)
 		{
 			print_exec(execl);

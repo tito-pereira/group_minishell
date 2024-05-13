@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/13 02:35:45 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/13 13:26:32 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int		chunk_id(t_chunk *chunk, char *prog, int opt); // (5)
 
 // OTHER
 char	**create_envp(void);
+void	close_pipes(t_execlist *execl, int **fd, int i, int rel, int non_rel);
 
 // EXECUTOR
 int		exec_main(t_execlist *execl, int *error_stt);
@@ -106,8 +107,6 @@ char	*free_str(char *str);
 char	**free_db_str(char **str);
 void	free_chunk(t_chunk *chunk);
 void	free_exec(t_execlist *exec);
-
-void    close_non_related(t_execlist *execl, int **fd, int i);
 
 // BUILT-IN
 void	ft_cd(t_mini *ms, char **cmd, char **env);

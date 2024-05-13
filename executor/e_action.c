@@ -3,40 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/13 02:37:19 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/13 13:43:00 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void    close_non_related(t_execlist *execl, int **fd, int i)
-{
-    int c;
-    
-    c = -1;
-	//(void) i;
-	while (execl->chunk[++c] != NULL)
-	//while (++c < execl->valid_cmds)
-    {
-        if (c != i && c != (i + 1))
-        {
-			//ft_printf("if (%d != %i && c != (i + 1))\n", c, i);
-			close(fd[c][0]);
-			close(fd[c][1]);
-			//ft_printf("closed fd[%d][0] = %d\n", c, fd[c][0]);
-			//ft_printf("closed fd[%d][1] = %d\n", c, fd[c][1]);
-        }
-    }
-}
-
-/*
-closes:
-input - (all - i - (i + 1)) + i;
-output - (i + 1);
-*/
 
 void    write_heredoc(t_execlist *execl, char *str, int **fd, int i)
 {
@@ -46,30 +20,28 @@ void    write_heredoc(t_execlist *execl, char *str, int **fd, int i)
 	pid = fork();
     if (pid == 0)
     {
-		close_non_related(execl, fd, i);
-		if ((i + 1) < execl->valid_cmds)
+		//close_pipes(execl, fd, i, 0, 1);
+		//acho que nao e preciso fechar os non-related porque, neste caso, o
+		//parent process ja fechou ao entrar no exec_input
+		/*if ((i + 1) < execl->valid_cmds)
 		{
 			close(fd[i + 1][0]);
 			close(fd[i + 1][1]);
 		}
 		close(fd[i][0]);
 		write(fd[i][1], str, ft_strlen(str));
-		close(fd[i][1]);
+		close(fd[i][1]);*/
+		write(fd[i][1], str, ft_strlen(str));
+		close_pipes(execl, fd, i, 1, 0);
 		exit(0);
     }
     wait(0);
 }
 
-/*
-closes_non_related: 
-input - (all - i - (i + 1)) + i;
-output - (i + 1);
-*/
-
 void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 {
 	//ft_printf("preparing input for exec[%d]\n", i);
-    close_non_related(execl, fd, i);
+    close_pipes(execl, fd, i, 0, 1);
 	//close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
 	//ft_printf("In input, closed(fd[%d][1] = %d)\n", i, fd[i][1]);
 	if (execl->chunk[i]->heredoc == 1 && execl->chunk[i]->inpipe == 1) //1, heredoc valido

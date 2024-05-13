@@ -62,6 +62,9 @@ void	end_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 		close(fd[i][1]);
 		free(fd[i]);
 	}
+	free(redir);
+	free(fd);
+	free(exec_str);
 	ft_printf("All frees done.\n");
 }
 
