@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_loop.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/12 17:26:25 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/13 02:40:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,6 @@ void	print_db(char **str)
 	while (str[++i] != NULL)
 		ft_printf("%s\n", str[i]);
 }
-
-/*void	exec_action(t_execlist *execl, int **fd, int **redir, int i, char **exec_str)
-{
-	//ft_printf("exec action on cmd[%d]\n", i);
-	exec_input(execl, fd, redir, i);
-	exec_output(execl, fd, redir, i);
-	//ft_printf("----------------- LETS EXECUTE -----------------\n");
-	//ft_printf("my_envp:\n");
-	//print_db(execl->my_envp);
-	//ft_printf("\nnormal envp:\n");
-	//print_db(__environ);
-	//ft_printf("\nexec str:\n");
-	//print_db(exec_str);
-	execve(exec_str[0], exec_str, execl->my_envp);
-	ft_printf("EXECVE FAILED\n");
-}*/
 
 void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_str)
 {
@@ -49,7 +33,7 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_s
 		{
 			exec_launch(execl, fd, redir, i, exec_str);
 			//ft_printf("out of launch [%d]\n", i);
-			exit(0);
+			//exit(0);
 		}
 		i--;
 	}
@@ -58,18 +42,33 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_s
 	{
 		exec_input(execl, fd, redir, i);
 		exec_output(execl, fd, redir, i);
-		//ft_printf("exec action [%d]\n", i);
+		close(fd[i][0]);
+		close(fd[i][1]);
+		if ((i + 1) < execl->valid_cmds)
+		{
+			close(fd[i + 1][0]);
+			close(fd[i + 1][1]);
+		}
 		execve(exec_str[i][0], exec_str[i], execl->my_envp);
+		exit(0);
 		//ft_printf("action failed [%d]\n", i);
 	}
 	else
 	{
+		close_non_related(execl, fd, i);
+		close(fd[i][0]);
+		close(fd[i][1]);
+		if ((i + 1) < execl->valid_cmds)
+		{
+			close(fd[i + 1][0]);
+			close(fd[i + 1][1]);
+		}
 		//ft_printf("lets wait for first one[%d]\n", i);
-		pid = wait(0);
+		pid = wait(NULL);
 		if ((i + 1) < execl->valid_cmds)
 		{
 			//ft_printf("lets wait for scnd one[%d]\n", i);
-			wait(0);
+			wait(NULL);
 		}
 		//ft_printf("launch done and waited [%d]\n", i);
 	}
@@ -79,7 +78,7 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_s
 
 /*
 ls -1 |cat|cat
-
+ls|ls|ls|cat|ls|ls|ls
 ls -1         cat       cat
 launch V    launch V   launch X 
 action V    action V   action V
@@ -109,6 +108,14 @@ void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 	pid = fork();
 	if (pid == 0)
 		exec_launch(execl, fd, redir, i, exec_str);
-	wait(0);
+	close_non_related(execl, fd, i);
+	close(fd[i][0]);
+	close(fd[i][1]);
+	if ((i + 1) < execl->valid_cmds)
+	{
+		close(fd[i + 1][0]);
+		close(fd[i + 1][1]);
+	}
+	wait(NULL);
 	ft_printf("\n\n\nexec_loop finished.\n");
 }
