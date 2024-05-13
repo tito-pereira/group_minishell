@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 12:33:02 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:22:10 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,25 @@ void	heredoc_chest(char **chest, char **input)
 	else
 	{
 		old = *chest;
+		*chest = ft_strjoin(*chest, *input);
+		free (old);
+	}
+	old = *chest;
+	*chest = ft_strjoin(*chest, "\n");
+	free(old);
+	free(*input);
+}
+
+/*
+void	old_heredoc_chest(char **chest, char **input)
+{
+	char	*old;
+	
+	if (!(*chest))
+		*chest = ft_strdup(*input);
+	else
+	{
+		old = *chest;
 		*chest = ft_strjoin(*chest, "\n");
 		free (old);
 		old = *chest;
@@ -62,7 +81,7 @@ void	heredoc_chest(char **chest, char **input)
 		free (old);
 	}
 	free(*input);
-}
+}*/
 
 char	*heredoc_read(char *lim)
 {
