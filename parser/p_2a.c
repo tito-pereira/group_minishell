@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/13 15:22:10 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:55:53 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@ char	*get_name(char *str, int i)
 	int	a;
 	int	b;
 
-	//ft_printf("Getting file name:\n"); //
+	ft_printf("Getting file name:\n"); //
 	while (str[i] == 9 || str[i] == 32)
 		i++;
 	if (str[i] == '\0')
 		return (NULL);
 	a = i;
-	// ft_printf("a:%d;\n", a); //
+	ft_printf("a:%d;\n", a); //
 	while (str[i] != 9 && str[i] != 32 && str[i] != '\0'
 		&& str[i] != '>' && str[i] != '<')
 		i++;
 	b = i;
-	//ft_printf("b:%d;\n", b); //
+	ft_printf("b:%d;\n", b); //
 	return (ft_substr(str, a, (b - a)));
 }
 
@@ -148,20 +148,23 @@ com a flag heredoc
 int	output_redir(t_chunk *chunk, int *i)
 {
 	(*i)++;
-	//ft_printf("Output redirection checker.\n"); //
+	ft_printf("Output redirection checker.\n"); //
 	if(chunk->og[*i] == '>') // >>
 	{
-		//ft_printf("append output redirection.\n");//
+		(*i)++;
+		ft_printf("append output redirection.\n");//
 		chunk->append = 1;
 		chunk->outfile = get_name(chunk->og, *i);
+		(*i)--;
 	}
 	if(chunk->og[*i] != '>') // >
 	{
-		//ft_printf("truncate output redirection.\n");//
+		ft_printf("truncate output redirection.\n");//
 		chunk->append = 0;
 		chunk->outfile = get_name(chunk->og, *i);
 	}
-	//ft_printf("outfile: '%s'\n", chunk->outfile);//
+	ft_printf("append: '%d'\n", chunk->append);//
+	ft_printf("outfile: '%s'\n", chunk->outfile);//
 	return(1);
 }
 

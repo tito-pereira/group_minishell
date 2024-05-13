@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/13 13:43:00 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:14:50 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,35 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 	//ft_printf("In input, closed(fd[%d][0] = %d)\n", i, fd[i][0]);
 }
 
+void	exec_output(t_execlist *execl, int **fd, int **redir, int i, \
+	char ***exec_str)
+{
+	int	pid;
+
+	pid = -2;
+	if (execl->chunk[i]->outfile != NULL) //1, outfile
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			close_pipes(execl, fd, i, 1, 0); //o pai ja fechou 0,1
+			if (execl->chunk[i]->append == 1) //append
+				redir[i][1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
+			else // truncate
+				redir[i][1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
+			dup2(redir[i][1], STDOUT_FILENO);
+			close(redir[i][1]); //depois de dup, fecha-se
+			execve(exec_str[i][0], exec_str[i], execl->my_envp);
+			exit(0);
+		}
+		if ((i + 1) < execl->cmd_nmb) //outfile inside pipeline
+			dup2(fd[i + 1][1], STDOUT_FILENO);
+	}
+	else if ((i + 1) < execl->valid_cmds && execl->chunk[i]->outfile == NULL) //2, inside pipeline, non outfile
+		dup2(fd[i + 1][1], STDOUT_FILENO);
+}
+
+/*
 void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
 {
 	//ft_printf("preparing output for exec[%d]\n", i);
@@ -87,10 +116,11 @@ void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
 			redir[i][1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		}
 		dup2(redir[i][1], STDOUT_FILENO);
+		//ft_printf("dup2(redir[%d][1] = %d, %d)\n", i, redir[i][1], STDOUT_FILENO);
 		close(redir[i][1]); //depois de dup, fecha-se
 		if ((i + 1) < execl->cmd_nmb) //outfile inside pipeline
 		{
-			//ft_printf("outfile pipeline output [%d]\n", i);
+			//ft_printf("next is pipeline output [%d]\n", i);
 			close(fd[i + 1][1]);
 			fd[i + 1][1] = redir[i][1];
 			//ft_printf("do you get out?\n");
@@ -111,3 +141,4 @@ void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
 	}
 	//ft_printf("last cmd || out of output [%d]\n", i);
 }
+*/

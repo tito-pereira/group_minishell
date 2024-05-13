@@ -1,8 +1,71 @@
-wassup$
-this is a test file$
-testing line 3$
-and now testing line 4$
-i really need to get a life$
-testing line 6$
-i think im DONE$
+wassup
+this is a test file
+testing line 3
+and now testing line 4
+i really need to get a life
+testing line 6
+i think im DONE
+byewassup
+this is a test file
+testing line 3
+and now testing line 4
+i really need to get a life
+testing line 6
+i think im DONE
+byewassup
+this is a test file
+testing line 3
+and now testing line 4
+i really need to get a life
+testing line 6
+i think im DONE
+byewassup
+this is a test file
+testing line 3
+and now testing line 4
+i really need to get a life
+testing line 6
+i think im DONE
+byewassup
+this is a test file
+testing line 3
+and now testing line 4
+i really need to get a life
+testing line 6
+i think im DONE
+byewassup
+this is a test file
+testing line 3
+and now testing line 4
+i really need to get a life
+testing line 6
+i think im DONE
+byewassup
+this is a test file
+testing line 3
+and now testing line 4
+i really need to get a life
+testing line 6
+i think im DONE
+byewassup
+this is a test file
+testing line 3
+and now testing line 4
+i really need to get a life
+testing line 6
+i think im DONE
+byewassup
+this is a test file
+testing line 3
+and now testing line 4
+i really need to get a life
+testing line 6
+i think im DONE
+byewassup
+this is a test file
+testing line 3
+and now testing line 4
+i really need to get a life
+testing line 6
+i think im DONE
 bye

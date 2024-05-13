@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/13 14:14:02 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/13 19:01:13 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_s
 	if (pid == 0)
 	{
 		exec_input(execl, fd, redir, i);
-		exec_output(execl, fd, redir, i);
+		exec_output(execl, fd, redir, i, exec_str);
 		close_pipes(execl, fd, i, 1, 0);
 		/*close(fd[i][0]);
 		close(fd[i][1]);

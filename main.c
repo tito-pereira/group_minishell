@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/13 13:04:19 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/13 19:12:21 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	print_exec(t_execlist *execl)
 	for (int i = 0; execl->chunk[i] != NULL; i++) {
 		ft_printf("Chunk nª%d\n", i);
 		print_db_char(execl->chunk[i]->cmd_n_args);
-		if (execl->chunk[i]->path)
+		if (execl->chunk[i]->blt == 1)
 			ft_printf("PATH: %s;\n", execl->chunk[i]->path);
 		else
 			ft_printf("PATH: NULL;\n");;
