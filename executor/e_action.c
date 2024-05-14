@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/13 18:14:50 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/14 02:59:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void    write_heredoc(t_execlist *execl, char *str, int **fd, int i)
 	pid = fork();
     if (pid == 0)
     {
-		//close_pipes(execl, fd, i, 0, 1);
-		//acho que nao e preciso fechar os non-related porque, neste caso, o
+		//---close_pipes(execl, fd, i, 0, 1);
+		//---acho que nao e preciso fechar os non-related porque, neste caso, o
 		//parent process ja fechou ao entrar no exec_input
 		/*if ((i + 1) < execl->valid_cmds)
 		{
@@ -83,12 +83,19 @@ void	exec_output(t_execlist *execl, int **fd, int **redir, int i, \
 			if (execl->chunk[i]->append == 1) //append
 				redir[i][1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
 			else // truncate
+			{
+				//ft_printf("outfile truncate output\n");
 				redir[i][1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
+				//ft_printf("redir[%d][1] = %d\n", i, redir[i][1]);
+			}
 			dup2(redir[i][1], STDOUT_FILENO);
+			//ft_printf("dup2(redir[%d][1] = %d, %d)\n", i, redir[i][1], STDOUT_FILENO);
 			close(redir[i][1]); //depois de dup, fecha-se
+			//ft_printf("close(redir[%d][1] = %d)\n", i, redir[i][1]);
 			execve(exec_str[i][0], exec_str[i], execl->my_envp);
 			exit(0);
 		}
+		wait(NULL);
 		if ((i + 1) < execl->cmd_nmb) //outfile inside pipeline
 			dup2(fd[i + 1][1], STDOUT_FILENO);
 	}
