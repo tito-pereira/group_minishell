@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/14 17:05:08 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/14 18:46:06 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,61 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
         dup2(fd[i][0], STDIN_FILENO); //last pipe, fd[i - 1][0];
 		//ft_printf("dup2(fd[%d][0] = %d, STDIN_FILENO = %d);\n", i, fd[i][0], STDIN_FILENO);
 	}
-    close(fd[i][0]);
+	if (execl->chunk[i]->outfile == NULL)
+    	close(fd[i][0]);
 	//ft_printf("In input, closed(fd[%d][0] = %d)\n", i, fd[i][0]);
+}
+
+char	*empty_pipe(int fd)
+{
+	char	*shovel;
+	char	*chest;
+	char	*old;
+
+	shovel = get_next_line(fd);
+	chest = NULL;
+	while (shovel != NULL)
+	{
+		if (!chest)
+			chest = ft_strdup(shovel);
+		else
+		{
+			old = chest;
+			chest = ft_strjoin(chest, shovel);
+			free(shovel);
+			shovel = NULL;
+			free(old);
+		}
+		shovel = get_next_line(fd);
+	}
+	ft_printf("final_chest:%s;\n", chest);
+	return (chest);
+}
+
+void	temp_pipe(int *nfd, int pid, char *buff)
+{
+	pipe(nfd);
+	pid = fork();
+	if (pid == 0)
+	{
+		close(nfd[0]);
+		ft_printf("buff:%s;", buff);
+		write(nfd[1], buff, ft_strlen(buff));
+		close(nfd[1]);
+		exit(0);
+	}
+	close(nfd[1]);
+	wait(NULL);
+	dup2(nfd[0], STDIN_FILENO);
+	close(nfd[0]);
 }
 
 void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
-	int	pid;
-	int	tmp;
+	int		pid;
+	int		tmp;
+	char	*buff;
+	int		*nfd;
 
 	pid = -2; //ls > tmp1 | cat > tmp2 | cat > tmp3 | cat > tmp4
 	tmp = 0;
@@ -79,54 +126,100 @@ void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
 		close(fd[i + 1][0]);
 	if (execl->chunk[i]->outfile != NULL) //1, outfile
 	{
+		buff = NULL;
+		if (i != 0) //inpipe, infile, heredoc
+			buff = empty_pipe(fd[i][0]);
+		nfd = ft_calloc(2, sizeof(int));
 		pid = fork();
 		if (pid == 0)
 		{
-			ft_printf("inside redir [%d] fd = %d\n", i, fd[i + 1][1]);
-			//close_pipes(execl, fd, i, 1, 0);
 			if ((i + 1) < execl->valid_cmds)
 				close(fd[i + 1][1]);
+			if (buff)
+				temp_pipe(nfd, pid, buff);
 			if (execl->chunk[i]->append == 1) //append redir[i][1]
 				tmp = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
 			else // truncate
-			{
-				//ft_printf("truncate [%d]\n", i);
 				tmp = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
-				//ft_printf("redir[%d][1] = %d\n", i, redir[i][1]);
-			}
 			dup2(tmp, STDOUT_FILENO);
-			//ft_printf("dup2(redir[%d][1] = %d, %d)\n", i, redir[i][1], STDOUT_FILENO);
 			close(tmp); //depois de dup, fecha-se
-			//ft_printf("close(redir[%d][1] = %d)\n", i, redir[i][1]);
 			execve(exec_str[i][0], exec_str[i], execl->my_envp);
-			//exit(0);
 		}
 		wait(NULL);
 		if ((i + 1) < execl->valid_cmds) //outfile inside pipeline
 		{
-			ft_printf("inside pipeline [%d], fd = %d\n", i, fd[i + 1][1]);
+			if (buff)
+				temp_pipe(nfd, pid, buff);
 			dup2(fd[i + 1][1], STDOUT_FILENO);
-			ft_printf("im working bitch [%d]\n", i);
 			close(fd[i + 1][1]);
+			if (buff)
+				free(buff);
+			free(nfd);
 			execve(exec_str[i][0], exec_str[i], execl->my_envp);
-			ft_printf("action failed [%d]\n", i);
-			exit(0);
-			//ft_printf("dup2(fd[%d][1] = %d, STDOUT_FILENO = %d);\n", (i + 1), fd[i + 1][1], STDOUT_FILENO);
 		}
 		else
+		{
+			if (buff)
+				free(buff);
+			free(nfd);
 			exit(0);
+		}
 	}
 	else if ((i + 1) < execl->valid_cmds && execl->chunk[i]->outfile == NULL) //2, inside pipeline, non outfile
-	{
-		//ft_printf("tonos [%d]\n", i);
 		dup2(fd[i + 1][1], STDOUT_FILENO);
-	}
 	if ((i + 1) < execl->valid_cmds)
-	{
-		ft_printf("closing [%d]\n", i);
 		close(fd[i + 1][1]);
-	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 void	exec_output(t_execlist *execl, int **fd, int **redir, int i)
