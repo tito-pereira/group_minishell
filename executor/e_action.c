@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/14 02:59:05 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/14 17:05:08 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 {
 	//ft_printf("preparing input for exec[%d]\n", i);
     close_pipes(execl, fd, i, 0, 1);
-	//close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
+	close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
 	//ft_printf("In input, closed(fd[%d][1] = %d)\n", i, fd[i][1]);
 	if (execl->chunk[i]->heredoc == 1 && execl->chunk[i]->inpipe == 1) //1, heredoc valido
 	{
@@ -64,43 +64,68 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
         dup2(fd[i][0], STDIN_FILENO); //last pipe, fd[i - 1][0];
 		//ft_printf("dup2(fd[%d][0] = %d, STDIN_FILENO = %d);\n", i, fd[i][0], STDIN_FILENO);
 	}
-    //close(fd[i][0]);
+    close(fd[i][0]);
 	//ft_printf("In input, closed(fd[%d][0] = %d)\n", i, fd[i][0]);
 }
 
-void	exec_output(t_execlist *execl, int **fd, int **redir, int i, \
-	char ***exec_str)
+void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
 	int	pid;
+	int	tmp;
 
-	pid = -2;
+	pid = -2; //ls > tmp1 | cat > tmp2 | cat > tmp3 | cat > tmp4
+	tmp = 0;
+	if ((i + 1) < execl->valid_cmds)
+		close(fd[i + 1][0]);
 	if (execl->chunk[i]->outfile != NULL) //1, outfile
 	{
 		pid = fork();
 		if (pid == 0)
 		{
-			close_pipes(execl, fd, i, 1, 0); //o pai ja fechou 0,1
-			if (execl->chunk[i]->append == 1) //append
-				redir[i][1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
+			ft_printf("inside redir [%d] fd = %d\n", i, fd[i + 1][1]);
+			//close_pipes(execl, fd, i, 1, 0);
+			if ((i + 1) < execl->valid_cmds)
+				close(fd[i + 1][1]);
+			if (execl->chunk[i]->append == 1) //append redir[i][1]
+				tmp = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
 			else // truncate
 			{
-				//ft_printf("outfile truncate output\n");
-				redir[i][1] = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
+				//ft_printf("truncate [%d]\n", i);
+				tmp = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
 				//ft_printf("redir[%d][1] = %d\n", i, redir[i][1]);
 			}
-			dup2(redir[i][1], STDOUT_FILENO);
+			dup2(tmp, STDOUT_FILENO);
 			//ft_printf("dup2(redir[%d][1] = %d, %d)\n", i, redir[i][1], STDOUT_FILENO);
-			close(redir[i][1]); //depois de dup, fecha-se
+			close(tmp); //depois de dup, fecha-se
 			//ft_printf("close(redir[%d][1] = %d)\n", i, redir[i][1]);
 			execve(exec_str[i][0], exec_str[i], execl->my_envp);
-			exit(0);
+			//exit(0);
 		}
 		wait(NULL);
-		if ((i + 1) < execl->cmd_nmb) //outfile inside pipeline
+		if ((i + 1) < execl->valid_cmds) //outfile inside pipeline
+		{
+			ft_printf("inside pipeline [%d], fd = %d\n", i, fd[i + 1][1]);
 			dup2(fd[i + 1][1], STDOUT_FILENO);
+			ft_printf("im working bitch [%d]\n", i);
+			close(fd[i + 1][1]);
+			execve(exec_str[i][0], exec_str[i], execl->my_envp);
+			ft_printf("action failed [%d]\n", i);
+			exit(0);
+			//ft_printf("dup2(fd[%d][1] = %d, STDOUT_FILENO = %d);\n", (i + 1), fd[i + 1][1], STDOUT_FILENO);
+		}
+		else
+			exit(0);
 	}
 	else if ((i + 1) < execl->valid_cmds && execl->chunk[i]->outfile == NULL) //2, inside pipeline, non outfile
+	{
+		//ft_printf("tonos [%d]\n", i);
 		dup2(fd[i + 1][1], STDOUT_FILENO);
+	}
+	if ((i + 1) < execl->valid_cmds)
+	{
+		ft_printf("closing [%d]\n", i);
+		close(fd[i + 1][1]);
+	}
 }
 
 /*
