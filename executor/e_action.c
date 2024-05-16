@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/14 18:46:06 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:11:19 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,69 @@
 void    write_heredoc(t_execlist *execl, char *str, int **fd, int i)
 {
     int pid;
+	int	ret;
 
-    //ft_printf("writing heredoc.\n");
+    ret = 0;
+	ft_printf("writing heredoc.\n");
 	pid = fork();
     if (pid == 0)
     {
-		//---close_pipes(execl, fd, i, 0, 1);
+		if ((i + 1) < execl->valid_cmds)
+		{
+			close(fd[i + 1][0]);
+			close(fd[i + 1][1]);
+		}
+		close(fd[i][0]);
+		ft_printf("will write '%s' into pipe, with %d len\n", str, ft_strlen(str));
+		ft_printf("will write into fd[%d][1]=%d;\n", i, fd[i][1]);
+		ret = write(fd[i][1], str, ft_strlen(str));
+		ft_printf("%d bytes were written\n", ret);
+		if (ret == -1) {
+        switch (errno) {
+            case EBADF:
+                perror("write failed: Bad file descriptor");
+                break;
+            case EFAULT:
+                perror("write failed: Bad address");
+                break;
+            case EFBIG:
+                perror("write failed: File too large");
+                break;
+            case EINTR:
+                perror("write failed: Interrupted function call");
+                break;
+            case EIO:
+                perror("write failed: Input/output error");
+                break;
+            case ENOSPC:
+                perror("write failed: No space left on device");
+                break;
+            case EPIPE:
+                perror("write failed: Broken pipe");
+                break;
+            case EINVAL:
+                perror("write failed: Invalid argument");
+                break;
+            case ENXIO:
+                perror("write failed: No such device or address");
+                break;
+            case ENOMEM:
+                perror("write failed: Out of memory");
+                break;
+            case EAGAIN:
+                perror("write failed: Resource temporarily unavailable");
+                break;
+            default:
+                perror("write failed: Unknown error");
+        	}
+		}
+		//close_pipes(execl, fd, i, 1, 0);
+		close(fd[i][1]);
+		exit(0);
+	}
+    wait(0);
+}
+//---close_pipes(execl, fd, i, 0, 1);
 		//---acho que nao e preciso fechar os non-related porque, neste caso, o
 		//parent process ja fechou ao entrar no exec_input
 		/*if ((i + 1) < execl->valid_cmds)
@@ -31,12 +88,9 @@ void    write_heredoc(t_execlist *execl, char *str, int **fd, int i)
 		close(fd[i][0]);
 		write(fd[i][1], str, ft_strlen(str));
 		close(fd[i][1]);*/
-		write(fd[i][1], str, ft_strlen(str));
-		close_pipes(execl, fd, i, 1, 0);
-		exit(0);
-    }
-    wait(0);
-}
+/*
+hello world\n (12 chars, malloc 12)
+*/
 
 void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 {
@@ -46,8 +100,9 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 	//ft_printf("In input, closed(fd[%d][1] = %d)\n", i, fd[i][1]);
 	if (execl->chunk[i]->heredoc == 1 && execl->chunk[i]->inpipe == 1) //1, heredoc valido
 	{
-		//ft_printf("heredoc input [%d]\n", i);
+		ft_printf("heredoc input [%d]\n", i);
         write_heredoc(execl, execl->chunk[i]->infile, fd, i);
+		ft_printf("will read from fd[%d][0]=%d;\n", i, fd[i][0]);
         dup2(fd[i][0], STDIN_FILENO);
 	}
     else if (execl->chunk[i]->heredoc == 0 && execl->chunk[i]->inpipe == 1
@@ -66,8 +121,16 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 	}
 	if (execl->chunk[i]->outfile == NULL)
     	close(fd[i][0]);
-	//ft_printf("In input, closed(fd[%d][0] = %d)\n", i, fd[i][0]);
+	//porque so fecho quando nao ha outfile?
 }
+
+/*
+se houver outfile, eu ainda uso o input para ler para o buffer
+dando dup2 ou nao consoante o main pipeline (ficando aberto 1 para o dup
+ou 0 abertos pq n ha input pipe), outfile é sempre um caso especial
+que precisa dele aberto anyway para copiar para a redirection
+2 outputs vindos do mesmo input
+*/
 
 char	*empty_pipe(int fd)
 {

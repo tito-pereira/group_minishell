@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/14 16:42:16 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/16 13:50:53 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <signal.h>
 # include <linux/limits.h>
 # include "./mylib/mylib.h"
+#include <errno.h> //
 
 # define ENV_VAR    __environ
 # define PROMPT		">> minishell: "
