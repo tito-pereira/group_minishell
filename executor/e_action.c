@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/16 14:11:19 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:16:45 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,18 +94,20 @@ hello world\n (12 chars, malloc 12)
 
 void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 {
-	//ft_printf("preparing input for exec[%d]\n", i);
+	ft_printf("preparing input for exec[%d]\n", i);
     close_pipes(execl, fd, i, 0, 1);
-	close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
+	//if (!(execl->chunk[i]->heredoc == 1 && execl->chunk[i]->inpipe == 1))
+	//close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
 	//ft_printf("In input, closed(fd[%d][1] = %d)\n", i, fd[i][1]);
 	if (execl->chunk[i]->heredoc == 1 && execl->chunk[i]->inpipe == 1) //1, heredoc valido
 	{
 		ft_printf("heredoc input [%d]\n", i);
         write_heredoc(execl, execl->chunk[i]->infile, fd, i);
 		ft_printf("will read from fd[%d][0]=%d;\n", i, fd[i][0]);
-        dup2(fd[i][0], STDIN_FILENO);
+		dup2(fd[i][0], STDIN_FILENO);
 	}
-    else if (execl->chunk[i]->heredoc == 0 && execl->chunk[i]->inpipe == 1
+	close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
+    if (execl->chunk[i]->heredoc == 0 && execl->chunk[i]->inpipe == 1
 		&& execl->chunk[i]->infile != NULL) //1, normal infile
     {
 		//ft_printf("infile input [%d]\n", i);
@@ -185,13 +187,14 @@ void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
 
 	pid = -2; //ls > tmp1 | cat > tmp2 | cat > tmp3 | cat > tmp4
 	tmp = 0;
+	ft_printf("preparing output for exec[%d]\n", i);
 	if ((i + 1) < execl->valid_cmds)
 		close(fd[i + 1][0]);
 	if (execl->chunk[i]->outfile != NULL) //1, outfile
 	{
-		buff = NULL;
-		if (i != 0) //inpipe, infile, heredoc
-			buff = empty_pipe(fd[i][0]);
+		//buff = NULL;
+		//if (i != 0) //inpipe, infile, heredoc
+		buff = empty_pipe(fd[i][0]);
 		nfd = ft_calloc(2, sizeof(int));
 		pid = fork();
 		if (pid == 0)

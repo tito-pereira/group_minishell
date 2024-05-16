@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/13 19:12:21 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:22:26 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,14 @@ void	print_exec(t_execlist *execl)
 		else
 			ft_printf("PATH: NULL;\n");;
 		ft_printf("Heredoc: %d;\nAppend: %d;\n", execl->chunk[i]->heredoc, execl->chunk[i]->append);
+		if (execl->chunk[i]->infile)
+			ft_printf("infile: %s;\n", execl->chunk[i]->infile);
+		else
+			ft_printf("infile: NULL\n");
+		if (execl->chunk[i]->outfile)
+			ft_printf("outfile: %s;\n", execl->chunk[i]->outfile);
+		else
+			ft_printf("outfile: NULL\n");
 		ft_printf("-.-.-.-.-.-.-.-.-.-.\n-.-.-.-.-.-.-.-.-.-.\n");
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/14 16:42:24 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/16 19:34:17 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,19 @@ void	print_db(char **str)
 	int i = -1;
 	while (str[++i] != NULL)
 		ft_printf("%s\n", str[i]);
+}
+
+void	exec_action(t_execlist *execl, int **fd, int **redir, int i, char ***exec_str)
+{
+	int	pid;
+	
+	exec_input(execl, fd, redir, i);
+	exec_output(execl, fd, i, exec_str);
+	if ()
+		execve(exec_str[i][0], exec_str[i], execl->my_envp);
+	else
+		blt_central();
+	exit(0);
 }
 
 void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_str)
@@ -39,22 +52,7 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_s
 	}
 	pid = fork();
 	if (pid == 0)
-	{
-		//ft_printf("exec action [%d]\n", i);
-		exec_input(execl, fd, redir, i);
-		exec_output(execl, fd, i, exec_str);
-		//close_pipes(execl, fd, i, 1, 0);
-		/*close(fd[i][0]);
-		close(fd[i][1]);
-		if ((i + 1) < execl->valid_cmds)
-		{
-			close(fd[i + 1][0]);
-			close(fd[i + 1][1]);
-		}*/
-		execve(exec_str[i][0], exec_str[i], execl->my_envp);
-		ft_printf("action failed [%d]\n", i);
-		exit(0);
-	}
+		exec_action(execl, fd, redir, i, exec_str);
 	else
 	{
 		close_pipes(execl, fd, i, 1, 1);
