@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/17 15:26:52 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/17 16:23:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int		output_redir(t_chunk *chunk, int *i); // (2)
 char	*new_chnk(char *spec, char *old, int a, int b); // (3)
 int		cmd_separator(t_chunk *chunk); // (4)
 void	add_arg(t_chunk *chunk, char **str); // (4)
-int		chunk_id(t_chunk *chunk, char *prog, int opt); // (5)
+int		chunk_id(t_chunk *chunk, int opt); // (5)
 
 // OTHER
 char	**create_envp(void);
@@ -102,7 +102,7 @@ void	free_chunk(t_chunk *chunk);
 void	free_exec(t_execlist *exec);
 
 // BUILT-IN
-void	blt_central(t_execlist *execl, int i, char ***exec_str);
+void	blt_central(t_execlist *execl, int i, char **exec_str);
 void	ft_cd(int *err, char **cmd, char **env);
 void	ft_echo(int *err, char **cmd);
 void	ft_env(int *err, char **cmd, char **envp);

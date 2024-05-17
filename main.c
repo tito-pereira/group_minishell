@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/16 15:22:26 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:49:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,11 +190,12 @@ int	main()
 			//continue;
 		// sig_handler_two();
 		//ft_printf("Testing.\nInput = '%s';\n", input);//
-		if (ft_strncmp(input, "exit", 10) == 0)
+		///
+		/*if (ft_strncmp(input, "exit", 10) == 0)
 		{
 			ft_printf("Closing minishell...\n");
 			exit(0);
-		}
+		}*/
 		if (parse_central(&execl, input, &exit_stt) == 1)
 		{
 			print_exec(execl);

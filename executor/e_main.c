@@ -95,21 +95,18 @@ void	get_exec_str(t_execlist *execl, char ***exec_str)
 		while (execl->chunk[c]->cmd_n_args[i] != NULL)
 			i++;
 		//ft_printf("Size[%d]: %d\n", c, i);
-		exec_str[c] = malloc((i + 1 + execl->chunk[c]->blt) * sizeof(char *));
+		exec_str[c] = malloc((i + 1 /*+ execl->chunk[c]->blt*/) * sizeof(char *));
 		//ft_printf("Malloc[%d]: %d\n", c, (i + 1 + execl->chunk[c]->blt));
-		if (execl->chunk[c]->blt == 1)
-		{
-			exec_str[c][0] = ft_strdup(execl->chunk[c]->path);
-			//ft_printf("BUILTIN:\nexec_str[%d][0]:%s;\n", c, exec_str[c][0]);
-		}
+		//if (execl->chunk[c]->blt == 1)
+			//exec_str[c][0] = ft_strdup(execl->chunk[c]->path);
 		i = -1;
 		while (execl->chunk[c]->cmd_n_args[++i] != NULL)
 		{
-			exec_str[c][i + execl->chunk[c]->blt] = ft_strdup(execl->chunk[c]->cmd_n_args[i]);
+			exec_str[c][i /*+ execl->chunk[c]->blt*/] = ft_strdup(execl->chunk[c]->cmd_n_args[i]);
 			//ft_printf("exec_str[%d][%d]:%s ", c, (i + execl->chunk[c]->blt), exec_str[c][i + execl->chunk[c]->blt]);
 			//ft_printf("= execl->chunk[%d]->cmd_n_args[%d]:%s;\n", c, i, execl->chunk[c]->cmd_n_args[i]);
 		}
-		exec_str[c][i + execl->chunk[c]->blt] = NULL;
+		exec_str[c][i /*+ execl->chunk[c]->blt*/] = NULL;
 		//ft_printf("exec_str[%d][%d]:NULL;\n", c, (i + execl->chunk[c]->blt));
 	}
 	//ft_printf("All the exec_str created.\n");
@@ -145,94 +142,3 @@ int	exec_main(t_execlist *execl, int *exit_stt)
 	end_exec(execl, fd, redir, exec_str); // X
 	return (1);
 }
-
-/*
-inicializa tudo (exec_str, fd, redirs)
-prep exec_str ()
-real time exec:
-- cria todos os pipes e atribui nos fds
-- todas as exec_actions fecham em loop tudo o que devem
-- sao feitas as dup2 ao mm tempo que se fecha
-- usam o exec_str diretamente feito antes
-*/
-
-/*
-execl->valid_cmds;
-
-int	*pid = (int *)malloc(execl->valid_cmds * sizeof(int));
-int	**fd = (int *)malloc(execl->valid_cmds * sizeof(int));
-int	*redir = (int *)malloc((execl->valid_cmds * 2) * sizeof(int));
-char	***exec_str = (char ***)malloc(execl->valid_cmds * sizeof(char **));
-...caso seja preciso inicializar...
-int i;
-i = -1;
-while (++i < (execl->valid_cmds * 2))
-	redir[i] = -1;
-int	j;
-i = -1;
-while (++i < execl->valid_cmds)
-{
-	j = -1;
-	while (++j < 2)
-		fd[i][j] = -1;
-}
-...................................
-
-tenho que reaproveitar as ideias do executor original, o loop, para fazer um
-tratamento previo onde defino, em cada chunk,
-
-nao preocupar com frees, apenas, no fim de tudo, dou free aos tres:
-pid = (int *)malloc;
-fd = (int **)malloc;
-redir = (int *)malloc;
-exec_str = (char ***)malloc;
--> loop de atribuicao de dups e pipes;
--> correr em simultaneo todos os processos;
-free(pid);
-free(fd);
-free(redir);
-free(exec_str);
-
-nao tenho acesso ao pid. so tenho pid == 0 em forks e waits
-crio 1, passo 0;
-i++;
-if (i < execl->valid-cmds)
-{
-	create another
-	if (pid = 0)
-	{
-		new_
-	}
-}
-if (i < execl->valid-cmds)
-	wait(0);
-
-read, get_next_line, dup2, tudo o que for ler de pipes
-desde que a ponta de escrita esteja vazia, esperam pelo fim da escrita
-
-para alem disso, comandos tipo ls que nao precisem de input, saltam essa
-parte e simplesmente correm
-
-resumindo, esta implementacao em si ja vai resultar porque os comandos ja tem
-esses mecanismos incluidos
-also, depois de executar, o pipe fecha sozinho, por isso nem tenho q me preocupar
-em fechar a ponta de escrita, ele executa e fecha e espera sozinho, top
-*/
-
-/*
-------------------------------------------------
-aquela parte esta feita, falta agora outra: open/closes de pipes e files
-
-redirs - in/out files (redirs acho que se fecham sozinhos)
-fds - pipes
-ja sei
-abro os pipes todos no main process previamente, tal como as redirs
-e depois dentro de cada processo fecho os relativos in && out pipes para os "atribuir"
-ou
-faco uma iteracao a fechar todos os outros pipes que nao uso
-ou
-em cada iteracao dentro de cada fork individual em cada processo, crio o pipe aí
-
-pelos vistos, se fechares uma ponta de um pipe, nao estas a automaticamente atribui lo
-para escrever, isso so ocorre com quem escreve primeiro
-*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/16 16:16:45 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:46:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 void    write_heredoc(t_execlist *execl, char *str, int **fd, int i)
 {
     int pid;
-	int	ret;
 
-    ret = 0;
-	ft_printf("writing heredoc.\n");
+	//ft_printf("writing heredoc.\n");
 	pid = fork();
     if (pid == 0)
     {
@@ -28,82 +26,29 @@ void    write_heredoc(t_execlist *execl, char *str, int **fd, int i)
 			close(fd[i + 1][1]);
 		}
 		close(fd[i][0]);
-		ft_printf("will write '%s' into pipe, with %d len\n", str, ft_strlen(str));
-		ft_printf("will write into fd[%d][1]=%d;\n", i, fd[i][1]);
-		ret = write(fd[i][1], str, ft_strlen(str));
-		ft_printf("%d bytes were written\n", ret);
-		if (ret == -1) {
-        switch (errno) {
-            case EBADF:
-                perror("write failed: Bad file descriptor");
-                break;
-            case EFAULT:
-                perror("write failed: Bad address");
-                break;
-            case EFBIG:
-                perror("write failed: File too large");
-                break;
-            case EINTR:
-                perror("write failed: Interrupted function call");
-                break;
-            case EIO:
-                perror("write failed: Input/output error");
-                break;
-            case ENOSPC:
-                perror("write failed: No space left on device");
-                break;
-            case EPIPE:
-                perror("write failed: Broken pipe");
-                break;
-            case EINVAL:
-                perror("write failed: Invalid argument");
-                break;
-            case ENXIO:
-                perror("write failed: No such device or address");
-                break;
-            case ENOMEM:
-                perror("write failed: Out of memory");
-                break;
-            case EAGAIN:
-                perror("write failed: Resource temporarily unavailable");
-                break;
-            default:
-                perror("write failed: Unknown error");
-        	}
-		}
+		//ft_printf("will write '%s' into pipe, with %d len\n", str, ft_strlen(str));
+		//ft_printf("will write into fd[%d][1]=%d;\n", i, fd[i][1]);
+		write(fd[i][1], str, ft_strlen(str));
+		//ft_printf("%d bytes were written\n", ret);
 		//close_pipes(execl, fd, i, 1, 0);
 		close(fd[i][1]);
 		exit(0);
 	}
     wait(0);
 }
-//---close_pipes(execl, fd, i, 0, 1);
-		//---acho que nao e preciso fechar os non-related porque, neste caso, o
-		//parent process ja fechou ao entrar no exec_input
-		/*if ((i + 1) < execl->valid_cmds)
-		{
-			close(fd[i + 1][0]);
-			close(fd[i + 1][1]);
-		}
-		close(fd[i][0]);
-		write(fd[i][1], str, ft_strlen(str));
-		close(fd[i][1]);*/
-/*
-hello world\n (12 chars, malloc 12)
-*/
 
 void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 {
-	ft_printf("preparing input for exec[%d]\n", i);
+	//ft_printf("preparing input for exec[%d]\n", i);
     close_pipes(execl, fd, i, 0, 1);
 	//if (!(execl->chunk[i]->heredoc == 1 && execl->chunk[i]->inpipe == 1))
 	//close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
 	//ft_printf("In input, closed(fd[%d][1] = %d)\n", i, fd[i][1]);
 	if (execl->chunk[i]->heredoc == 1 && execl->chunk[i]->inpipe == 1) //1, heredoc valido
 	{
-		ft_printf("heredoc input [%d]\n", i);
+		//ft_printf("heredoc input [%d]\n", i);
         write_heredoc(execl, execl->chunk[i]->infile, fd, i);
-		ft_printf("will read from fd[%d][0]=%d;\n", i, fd[i][0]);
+		//ft_printf("will read from fd[%d][0]=%d;\n", i, fd[i][0]);
 		dup2(fd[i][0], STDIN_FILENO);
 	}
 	close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
@@ -156,7 +101,7 @@ char	*empty_pipe(int fd)
 		}
 		shovel = get_next_line(fd);
 	}
-	ft_printf("final_chest:%s;\n", chest);
+	//ft_printf("final_chest:%s;\n", chest);
 	return (chest);
 }
 
@@ -167,7 +112,7 @@ void	temp_pipe(int *nfd, int pid, char *buff)
 	if (pid == 0)
 	{
 		close(nfd[0]);
-		ft_printf("buff:%s;", buff);
+		//ft_printf("buff:%s;", buff);
 		write(nfd[1], buff, ft_strlen(buff));
 		close(nfd[1]);
 		exit(0);
@@ -187,7 +132,7 @@ void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
 
 	pid = -2; //ls > tmp1 | cat > tmp2 | cat > tmp3 | cat > tmp4
 	tmp = 0;
-	ft_printf("preparing output for exec[%d]\n", i);
+	//ft_printf("preparing output for exec[%d]\n", i);
 	if ((i + 1) < execl->valid_cmds)
 		close(fd[i + 1][0]);
 	if (execl->chunk[i]->outfile != NULL) //1, outfile

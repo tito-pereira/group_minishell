@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/30 13:17:41 by tibarbos          #+#    #+#              #
-#    Updated: 2024/05/11 11:43:19 by tibarbos         ###   ########.fr        #
+#    Updated: 2024/05/17 15:40:12 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,7 @@ NAME= builtft
 CC= cc
 CFLAGS= -Wall -Wextra -Werror
 RM= rm -rf
-SRC= cd.c echo.c env.c exit.c export.c blt_main.c pwd.c unset.c \
-	../free.c
+SRC= blt_central.c cd.c echo.c env.c exit.c export.c pwd.c unset.c
 OBJ= ${SRC:.c=.o}
 LIBS= -lreadline -L../mylib -lft
 

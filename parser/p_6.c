@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_6.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:35:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/11 12:42:56 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:23:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ int	arg_id(t_execlist *execl, int *exit_stt)
 		{
 			execl->chunk[i]->blt = check_builtin(execl->chunk[i]->cmd_n_args[0]);
 			if (execl->chunk[i]->blt == 1)
-				r = chunk_id(execl->chunk[i], "builtft", 1);
+				r = chunk_id(execl->chunk[i], 1);
 			else if (execl->chunk[i]->blt == 0)
-				r = chunk_id(execl->chunk[i], NULL, 2);
+				r = chunk_id(execl->chunk[i], 2);
 			if (r == 0)
 			{
 				perror("Command path finding error");

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:40:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/11 22:39:48 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/17 16:23:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ char	*find_path(char	*arg, int option)
 	return (path);
 }
 
-int	chunk_id(t_chunk *chunk, char *prog, int opt)
+int	chunk_id(t_chunk *chunk, int opt) //char *prog, 
 {
 	char	*path;
 	char	*old;
@@ -127,17 +127,19 @@ int	chunk_id(t_chunk *chunk, char *prog, int opt)
 	if (opt == 1)
 	{
 		//ft_printf("(yes builtin) Finding path for '%s'\n", prog);//
-		path = find_path(prog, 1); //builtin
+		//path = find_path(prog, 1); //builtin
+		path = NULL;
+		chunk->path = NULL;
 	}
 	else if (opt == 2)
 	{
 		//ft_printf("(not builtin) Finding path for '%s'\n", chunk->cmd_n_args[0]);//
 		path = find_path(chunk->cmd_n_args[0], 2); //terminal
 	}
-	if (path == NULL)
+	if (opt == 2 && path == NULL)
 		return (0); //error check
-	if (opt == 1)
-		chunk->path = path; //builtin
+	//if (opt == 1)
+		//chunk->path = path; //builtin
 	else if (opt == 2)
 	{
 		//ft_printf("Swapping old cmd_n_arg[0] with PATH.\n");//
