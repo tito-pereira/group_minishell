@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:11 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 11:15:15 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:12:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_env(t_mini *ms, char **cmd, char **envp)
+void	ft_env(int *err, char **cmd, char **envp)
 {
 	int	i;
 
@@ -24,11 +24,11 @@ void	ft_env(t_mini *ms, char **cmd, char **envp)
 			ft_printf("%s\n", envp[i]);
 			i++;
 		}
-		ms->error = 0;
+		*err = 0;
 	}
 	else
 	{
 		ft_putstr_fd("Bad usage, burro.", 2);
-		ms->error = 69;
+		*err = 69;
 	}
 }

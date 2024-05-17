@@ -1,63 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   blt_main.c                                         :+:      :+:    :+:   */
+/*   blt_central.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 13:01:23 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/16 18:06:35 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:23:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/**/
-int	main(int ac, char **av, char **envp)
+void	blt_central(t_execlist *execl, int i, char ***exec_str) //err_stt
 {
 	int		err;
-	char	*cmds;
 
-	(void)ac;
 	err = 0;
 	ft_printf("IM INSIDE BUILTFT\n");
-	//av[1] vai ser o pipe
-	if (ft_strncmp(av[2], "cd", 3) == 0)
-		ft_cd(&err, envp);
-	else if (ft_strncmp(av[2], "echo", 5) == 0)
-		ft_echo(&err, envp);
-	else if (ft_strncmp(av[2], "env", 4) == 0)
-		ft_env(&err, envp);
-    else if (ft_strncmp(av[2], "exit", 5) == 0)
-		ft_exit(&err,);
-    else if (ft_strncmp(av[2], "export", 7) == 0)
-		ft_export(&err, envp);
-    else if (ft_strncmp(av[2], "pwd", 4) == 0)
-		ft_pwd(&err, envp);
-    else if (ft_strncmp(av[2], "unset", 6) == 0)
-		ft_unset(&err, envp);
-	// write envp to pipe
-	// free envp (porque, ao mexer, vai ser duplicada)
-	return (err);
+	if (ft_strncmp(exec_str[1], "cd", 3) == 0)
+		ft_cd(&err, execl->chunk[i]->cmd_n_args, execl->my_envp);
+	else if (ft_strncmp(exec_str[1], "echo", 5) == 0)
+		ft_echo(&err, execl->chunk[i]->cmd_n_args);
+	else if (ft_strncmp(exec_str[1], "env", 4) == 0)
+		ft_env(&err, execl->chunk[i]->cmd_n_args, execl->my_envp);
+    else if (ft_strncmp(exec_str[1], "exit", 5) == 0)
+		ft_exit(execl->chunk[i]->cmd_n_args);
+    else if (ft_strncmp(exec_str[1], "export", 7) == 0)
+		ft_export(&err, execl->chunk[i]->cmd_n_args, execl->my_envp);
+    else if (ft_strncmp(exec_str[1], "pwd", 4) == 0)
+		ft_pwd(&err, execl->chunk[i]->cmd_n_args, execl->my_envp);
+    else if (ft_strncmp(exec_str[1], "unset", 6) == 0)
+		ft_unset(&err, execl->chunk[i]->cmd_n_args, execl->my_envp);
+	//return (err); //caso seja preciso, mas nao me parece
 }
 
 /*
-se calhar apenas ignorar os error status porque nao
-ha maneira de comunicar com o main process
+- provavelmente nem preciso de ter o err aqui porque o ruben
+apenas coloca a 0 maior parte das vezes e eu nem sequer preciso disso
+- mudar os numeros e mensages de erro para coisas minimamente apresentaveis
+ainda me reprovam c aquilo
 
-e como comunico os execves?
-o sistema em si faz errno
-- sera que existe alguma getenv de errno?
-t_mini pelo error status?
-
-- como comunicar mudancas ao envp ao main process (pipes?)
-eu tenho envp alocado
-se eu passar essa morada
-o fork apenas cria uma copia do endereco mas o local fisico é o mesmo
-porque foi dado com malloc e 
-
-dito isto, o envp é capaz de ser copiado e eu quero manter as mudancas
-which means, another pipe e o retorno
+dup2 ja vem feitos em termos de redirection
+read from STDIN_FILENO
+write to STDOUT_FILENO
 */
 
 /*

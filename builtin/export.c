@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:15 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 22:34:36 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/17 15:15:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,19 @@ int	valid_var(char *var)
 	return (res);
 }
 
-void	ft_export(t_mini *ms, char **cmd, char **envp)
+void	ft_export(int *err, char **cmd, char **envp)
 {
 	int	i;
 	int	var_pos;
 
 	if (!cmd[1])
-		ft_env(ms, cmd, envp);
+		ft_env(err, cmd, envp);
 	i = 1;
 	while (cmd[i])
 	{
 		if (valid_var(cmd[i]) && ft_strchr(cmd[i], '='))
 		{
-			ms->error = 0;
+			*err = 0;
 			var_pos = get_var_pos(cmd[i], envp);
 			update_var(cmd[i], var_pos, envp);
 		}
@@ -91,10 +91,10 @@ void	ft_export(t_mini *ms, char **cmd, char **envp)
 			ft_putstr_fd(NPROMPT": export: ", 2);
 			ft_putstr_fd(cmd[i], 2);
 			ft_putstr_fd(": not a valid identifier\n", 2);
-			ms->error = 69;
+			*err = 69;
 		}
 		else
-			ms->error = 0;
+			*err = 0;
 		i++;
 	}
 }

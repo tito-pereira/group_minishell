@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/16 13:50:53 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:26:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,6 @@ typedef struct s_execlist {
 valid_cmds && cmd_nmb vai dar ao mesmo
 */
 
-typedef struct s_mini
-{
-    char    *input;
-    char    *prompt;
-    char    **envp;
-    char    error;
-    char    exit;
-}   t_mini;
-
 // SIGNAL HANDLING
 void	sig_handler_one(void);
 void	sig_handler_two(void);
@@ -111,12 +102,13 @@ void	free_chunk(t_chunk *chunk);
 void	free_exec(t_execlist *exec);
 
 // BUILT-IN
-void	ft_cd(t_mini *ms, char **cmd, char **env);
-void	ft_echo(t_mini *ms, char **cmd);
-void	ft_env(t_mini *ms, char **cmd, char **envp);
+void	blt_central(t_execlist *execl, int i, char ***exec_str);
+void	ft_cd(int *err, char **cmd, char **env);
+void	ft_echo(int *err, char **cmd);
+void	ft_env(int *err, char **cmd, char **envp);
 void	ft_exit(char **cmd);
-void	ft_export(t_mini *ms, char **cmd, char **envp);
-void    ft_pwd(t_mini *ms, char **cmd, char **envp);
-void	ft_unset(t_mini *ms, char **cmd, char **envp);
+void	ft_export(int *err, char **cmd, char **envp);
+void    ft_pwd(int *err, char **cmd, char **envp);
+void	ft_unset(int *err, char **cmd, char **envp);
 
 #endif

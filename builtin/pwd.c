@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:17 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 11:15:53 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:17:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ft_pwd(t_mini *ms, char **cmd, char **envp)
+void ft_pwd(int *err, char **cmd, char **envp)
 {
 	int	i;
 
@@ -28,6 +28,6 @@ void ft_pwd(t_mini *ms, char **cmd, char **envp)
 	{
 
 		ft_putstr_fd("Bad usage, burro.", 2);
-		ms->error = 69;
+		*err = 69;
 	}
 }

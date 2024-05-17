@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:08 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/11 11:15:09 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:11:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_echo(t_mini *ms, char **cmd)
+void	ft_echo(int *err, char **cmd)
 {
 	int newline;
 	int i;
@@ -38,5 +38,5 @@ void	ft_echo(t_mini *ms, char **cmd)
 	}
 	if (newline)
 		ft_printf("\n");
-	ms->error = 0;
+	*err = 0;
 }
