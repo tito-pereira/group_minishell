@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlima-fe <rlima-fe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/19 15:31:07 by rlima-fe         ###   ########.fr       */
+/*   Updated: 2024/05/19 20:03:30 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,6 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 esta global var, bem como a exit handler, vai ter de ficar no mesmo file da main
 senao não vou conseguir aceder a ele, assim ambas as funções têm acesso e
 podem alterar o seu valor sem mandar pointers para a frente e p trás
-
-usar SIGPIPE para detetar EOF conditions (ctrl D)
 */
 
 /*
@@ -187,6 +185,8 @@ int	main()
 		// sig_handler_one(); //modifies the default sigactions
 		//if (global_checker(execl) == 1)
 			//continue;
+		ft_printf("begining env\n");
+		print_db_char(env);
 		input = ft_read(); //with signal treatment included
 		//if (global_checker(execl) == 1)
 			//continue;
@@ -204,8 +204,12 @@ int	main()
 			if (exec_main(execl, &exit_stt) == 1)
 				exit_stt = 0;
 		}
-		//if (execl)
-			//free_exec(&execl);
+		if (execl)
+			free_exec(execl);
+		ft_printf("after free env\n");
+		print_db_char(execl->my_envp[0]);
+		free_db_str(env);
+		env = execl->my_envp[0];
 		//else, free execl maybe, retry input
 		//error_stt apenas fica gravado
 		//free(input);

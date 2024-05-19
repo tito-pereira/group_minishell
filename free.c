@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlima-fe <rlima-fe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/19 15:31:14 by rlima-fe         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:35:36 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,6 @@ char	**free_db_str(char **str)
 	free(str);
 	return (NULL);
 }
-
-////////////////////////////////////
-
-/*
-typedef struct s_chunk {
-	char	*infile; // (2) redir_checker
-	int		heredoc; // (2) redir_checker
-	char	*delimiter; // (2) redir_checker
-	char	*outfile; // (2) redir_checker
-	int		append; // (2) redir_checker
-	char	*og; // (1) parse_execl
-	char	**cmd_n_args; // (4) arg_separator
-	char	*path; // (5) arg_id
-	int		inpipe; // (5) arg_id
-	int		inpfd; // executor
-	int		outpipe; //acho que já não é necessário
-	int		outpfd; // executor
-	int		blt; // (5) arg_id
-}	t_chunk;
-
-typedef struct s_execlist {
-	t_chunk	**chunk;
-	int		cmd_nmb;
-	int		pipe_nmb;
-	char	**my_envp;
-	int		valid_cmds;
-	int		*pipe_loc;
-}	t_execlist;
-*/
 
 void	free_chunk(t_chunk *chunk)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlima-fe <rlima-fe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:15 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/19 15:06:11 by rlima-fe         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:40:35 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,6 @@ void	ft_export(int *err, char **cmd, char ***envp)
 		}	
 		i++;
 	}
+	ft_printf("dentro export env = %s\n", envp[0][52]);
 	*err = 0;
 }

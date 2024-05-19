@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlima-fe <rlima-fe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/19 15:31:27 by rlima-fe         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:36:08 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env)
 	(*execl)->chunk = malloc ((c + 2) * sizeof(t_chunk *));
 	(*execl)->cmd_nmb = c + 1;
 	(*execl)->pipe_nmb = c;
-	(*execl)->my_envp = *env;
+	(*execl)->my_envp = env;
 	(*execl)->err_stt = ex_stt;
 	(*execl)->chunk[c + 1] = NULL;
 	//ft_printf("Pipe counter: %d;\n", c); //

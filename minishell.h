@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlima-fe <rlima-fe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/19 15:22:01 by rlima-fe         ###   ########.fr       */
+/*   Updated: 2024/05/19 19:18:56 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,13 @@ typedef struct s_execlist {
 	int		valid_cmds;
 	int		*pipe_loc;
 	int		*err_stt;
+	int		*env_pipe;
 }	t_execlist;
 /*
 valid_cmds && cmd_nmb vai dar ao mesmo
 */
+
+void	print_db_char(char **str);
 
 // SIGNAL HANDLING
 void	sig_handler_one(void);
@@ -88,6 +91,7 @@ int		chunk_id(t_chunk *chunk, int opt); // (5)
 // OTHER
 char	**create_envp(void);
 void	close_pipes(t_execlist *execl, int **fd, int i, int rel, int non_rel);
+char	*rmv_newline(char *old);
 
 // EXECUTOR
 int		exec_main(t_execlist *execl, int *error_stt);
@@ -97,6 +101,8 @@ void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str);
 void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str);
 void	temp_pipe(int *nfd, char *buff);
 char	*empty_pipe(int fd, t_execlist *execl, int i);
+char	***read_from_pipe(int fd, t_execlist *execl);
+void	write_to_pipe(int fd, char ***envs);
 
 // FREE
 char	*free_str(char *str);

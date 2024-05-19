@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_central.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlima-fe <rlima-fe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 13:01:23 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 15:23:44 by rlima-fe         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:41:05 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,5 @@ void	blt_central(t_execlist *execl, int i, char **exec_str, int *err)
 		ft_pwd(err, execl->chunk[i]->cmd_n_args, *(execl->my_envp));
     else if (ft_strncmp(exec_str[0], "unset", 6) == 0)
 		ft_unset(err, execl->chunk[i]->cmd_n_args, execl->my_envp);
+	ft_printf("dentro blt central env = %s\n", execl->my_envp[0][52]);
 }

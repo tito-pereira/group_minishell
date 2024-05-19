@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:25:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 14:26:03 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:38:18 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ex_redir_file(t_execlist *execl, int i, char ***exec_str, char *buff, int *
 		tmp = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	dup2(tmp, STDOUT_FILENO);
 	close(tmp); //depois de dup, fecha-se
-	execve(exec_str[i][0], exec_str[i], execl->my_envp);
+	execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
 }
 
 void	ex_redir_pipe(int **fd, int i, char *buff, int *nfd)
@@ -66,7 +66,7 @@ void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str)
 	if ((i + 1) < execl->valid_cmds) //outfile inside pipeline
 	{
 		ex_redir_pipe(fd, i, buff, nfd);
-		execve(exec_str[i][0], exec_str[i], execl->my_envp);
+		execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
 	}
 	else
 		ex_end(buff, nfd);
