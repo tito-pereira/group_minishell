@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:11 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/18 21:39:13 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/19 14:48:17 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_env(int *err, char **cmd, char **envp)
+void	ft_env(int *err, char **cmd, char ***envp)
 {
 	int	i;
 

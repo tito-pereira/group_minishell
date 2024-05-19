@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:19 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/17 15:18:01 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/19 14:48:03 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	remove_var(char *var, char **envp)
 	temp_var = free_str(temp_var);
 }
 
-void	ft_unset(int *err, char **cmd, char **envp)
+void	ft_unset(int *err, char **cmd, char ***envp)
 {
 	while (*(++cmd))
 		remove_var(*cmd, envp);

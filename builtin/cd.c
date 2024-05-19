@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:04 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/17 15:09:02 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/19 14:49:29 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	go_to_dir(int *err, char *dir, char **env)
+void	go_to_dir(int *err, char *dir, char ***env)
 {
 	char	**exp;
 	char	*temp;
@@ -36,7 +36,7 @@ void	go_to_dir(int *err, char *dir, char **env)
 	exp = free_db_str(exp);
 }
 
-char	*home_dir(char **env)
+char	*home_dir(char ***env)
 {
 	char	*home;
 
@@ -46,7 +46,7 @@ char	*home_dir(char **env)
 	return (home);
 }
 
-void	ft_cd(int *err, char **cmd, char **env)
+void	ft_cd(int *err, char **cmd, char ***env)
 {
 	if (!cmd[1])
 		go_to_dir(err, home_dir(env), env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:15 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/17 15:15:55 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/19 14:47:55 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	valid_var(char *var)
 	return (res);
 }
 
-void	ft_export(int *err, char **cmd, char **envp)
+void	ft_export(int *err, char **cmd, char ***envp)
 {
 	int	i;
 	int	var_pos;

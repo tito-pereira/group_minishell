@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/19 14:31:56 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:49:07 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,12 @@ void	free_exec(t_execlist *exec);
 
 // BUILT-IN
 void	blt_central(t_execlist *execl, int i, char **exec_str, int *err);
-void	ft_cd(int *err, char **cmd, char **env);
+void	ft_cd(int *err, char **cmd, char ***env);
 void	ft_echo(int *err, char **cmd);
-void	ft_env(int *err, char **cmd, char **envp);
+void	ft_env(int *err, char **cmd, char ***envp);
 void	ft_exit(char **cmd);
-void	ft_export(int *err, char **cmd, char **envp);
-void    ft_pwd(int *err, char **cmd, char **envp);
-void	ft_unset(int *err, char **cmd, char **envp);
+void	ft_export(int *err, char **cmd, char ***envp);
+void    ft_pwd(int *err, char **cmd, char ***envp);
+void	ft_unset(int *err, char **cmd, char ***envp);
 
 #endif
