@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 19:56:58 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 21:12:15 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,19 +128,18 @@ void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 		printf("\n\n\nim here\n");
 		//print_db_char(execl->my_envp[0]);
 		printf("cmds = %d, changes[0] = %d\n", execl->valid_cmds, check_changes(execl->chunk[0]));
-		//free_db_str(execl->my_envp[0]);
 		printf("in read: closing writing [%d]\n", execl->env_pipe[1]);
 		close(execl->env_pipe[1]);
-		//read(execl->env_pipe[0], execl->my_envp, sizeof(char ***));
+		free_db_str(execl->my_envp[0]);
 		tmpenv = read_from_pipe(execl->env_pipe[0], execl);
+		execl->my_envp = tmpenv;
 		//printf("\n\n\nnew envs\n");
 		//print_db_char(execl->my_envp[0]);
 		close(execl->env_pipe[0]);
 		printf("also here\n");
 	}
-	ft_printf("\n\n\nin main process tmps\n");
-	print_db_char(tmpenv[0]);
-	execl->my_envp = tmpenv;
+	//free_db_str(execl->my_envp[0]);
+	//execl->my_envp = tmpenv;
 	ft_printf("\n\n\nin main process envs\n");
 	print_db_char(execl->my_envp[0]);
 	ft_printf("\n\n\nexec_loop finished.\n");

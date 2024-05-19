@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/19 20:03:30 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 21:07:40 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**create_envp(void)
 	i = 0;
 	while (__environ[i] != NULL)
 		i++;
-	my_envp = malloc((i + 1) * sizeof(char *));
+	my_envp = (char **)malloc((i + 1) * sizeof(char *));
 	i = -1;
 	while (__environ[++i] != NULL)
 		my_envp[i] = ft_strdup(__environ[i]);
@@ -185,7 +185,7 @@ int	main()
 		// sig_handler_one(); //modifies the default sigactions
 		//if (global_checker(execl) == 1)
 			//continue;
-		ft_printf("begining env\n");
+		ft_printf("\n\n\nbegining env\n");
 		print_db_char(env);
 		input = ft_read(); //with signal treatment included
 		//if (global_checker(execl) == 1)
@@ -201,17 +201,21 @@ int	main()
 		if (parse_central(&execl, input, &exit_stt, &env) == 1)
 		{
 			print_exec(execl);
+			printf("\n\n\nafter parsing\n");
+			print_db_char(execl->my_envp[0]);
 			if (exec_main(execl, &exit_stt) == 1)
+			{
+				env = execl->my_envp[0];
 				exit_stt = 0;
+			}
 		}
 		if (execl)
 			free_exec(execl);
-		ft_printf("after free env\n");
-		print_db_char(execl->my_envp[0]);
-		free_db_str(env);
-		env = execl->my_envp[0];
-		//else, free execl maybe, retry input
-		//error_stt apenas fica gravado
+		ft_printf("\n\n\nafter free env\n");
+		print_db_char(env);
+		//free_db_str(env);
+		//env = execl->my_envp[0];
+		/////////////////////
 		//free(input);
 		//if (global_sig == 2)
 			//free_exec(execl);
@@ -219,6 +223,13 @@ int	main()
 			//the_executor(execl, exit_stt);
 	}
 }
+
+/*
+char		**env;
+env = create_envp();
+*/
+
+///////////////////////////////////////////
 
 /*
 ◦ ctrl-C displays a new prompt on a new line.
