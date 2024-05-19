@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/17 15:46:26 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/19 13:32:38 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,102 +79,20 @@ que precisa dele aberto anyway para copiar para a redirection
 2 outputs vindos do mesmo input
 */
 
-char	*empty_pipe(int fd)
-{
-	char	*shovel;
-	char	*chest;
-	char	*old;
-
-	shovel = get_next_line(fd);
-	chest = NULL;
-	while (shovel != NULL)
-	{
-		if (!chest)
-			chest = ft_strdup(shovel);
-		else
-		{
-			old = chest;
-			chest = ft_strjoin(chest, shovel);
-			free(shovel);
-			shovel = NULL;
-			free(old);
-		}
-		shovel = get_next_line(fd);
-	}
-	//ft_printf("final_chest:%s;\n", chest);
-	return (chest);
-}
-
-void	temp_pipe(int *nfd, int pid, char *buff)
-{
-	pipe(nfd);
-	pid = fork();
-	if (pid == 0)
-	{
-		close(nfd[0]);
-		//ft_printf("buff:%s;", buff);
-		write(nfd[1], buff, ft_strlen(buff));
-		close(nfd[1]);
-		exit(0);
-	}
-	close(nfd[1]);
-	wait(NULL);
-	dup2(nfd[0], STDIN_FILENO);
-	close(nfd[0]);
-}
-
 void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
 	int		pid;
-	int		tmp;
-	char	*buff;
-	int		*nfd;
+	//int		tmp;
+	//char	*buff;
+	//int		*nfd;
 
 	pid = -2; //ls > tmp1 | cat > tmp2 | cat > tmp3 | cat > tmp4
-	tmp = 0;
 	//ft_printf("preparing output for exec[%d]\n", i);
 	if ((i + 1) < execl->valid_cmds)
 		close(fd[i + 1][0]);
 	if (execl->chunk[i]->outfile != NULL) //1, outfile
 	{
-		//buff = NULL;
-		//if (i != 0) //inpipe, infile, heredoc
-		buff = empty_pipe(fd[i][0]);
-		nfd = ft_calloc(2, sizeof(int));
-		pid = fork();
-		if (pid == 0)
-		{
-			if ((i + 1) < execl->valid_cmds)
-				close(fd[i + 1][1]);
-			if (buff)
-				temp_pipe(nfd, pid, buff);
-			if (execl->chunk[i]->append == 1) //append redir[i][1]
-				tmp = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
-			else // truncate
-				tmp = open(execl->chunk[i]->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
-			dup2(tmp, STDOUT_FILENO);
-			close(tmp); //depois de dup, fecha-se
-			execve(exec_str[i][0], exec_str[i], execl->my_envp);
-		}
-		wait(NULL);
-		if ((i + 1) < execl->valid_cmds) //outfile inside pipeline
-		{
-			if (buff)
-				temp_pipe(nfd, pid, buff);
-			dup2(fd[i + 1][1], STDOUT_FILENO);
-			close(fd[i + 1][1]);
-			if (buff)
-				free(buff);
-			free(nfd);
-			execve(exec_str[i][0], exec_str[i], execl->my_envp);
-		}
-		else
-		{
-			if (buff)
-				free(buff);
-			free(nfd);
-			exit(0);
-		}
+		ex_outfile(execl, fd, i, exec_str);
 	}
 	else if ((i + 1) < execl->valid_cmds && execl->chunk[i]->outfile == NULL) //2, inside pipeline, non outfile
 		dup2(fd[i + 1][1], STDOUT_FILENO);

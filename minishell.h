@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/18 22:47:36 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/19 13:50:42 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,9 @@ int		exec_main(t_execlist *execl, int *error_stt);
 void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str);
 void	exec_input(t_execlist *execl, int **fd, int **redir, int i);
 void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str);
+void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str);
+void	temp_pipe(int *nfd, char *buff);
+char	*empty_pipe(int fd);
 
 // FREE
 char	*free_str(char *str);

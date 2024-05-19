@@ -70,17 +70,6 @@ void	end_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 
 ////////////////////////////////
 
-/*
-vindo do step 6:
-
-se for builtin: (+ 1)
-- cmd_n_args vem inalterado
-- chunk->path vem com o path para o meu executavel de builtins
-
-se for terminal: (+ 0)
-- cmd_n_args ja vem modificado com o path em primeiro lugar
-*/
-
 void	get_exec_str(t_execlist *execl, char ***exec_str)
 {
 	int	i;
