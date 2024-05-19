@@ -6,18 +6,20 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:49:36 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 13:50:06 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:24:53 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*empty_pipe(int fd)
+char	*empty_pipe(int fd, t_execlist *execl, int i)
 {
 	char	*shovel;
 	char	*chest;
 	char	*old;
 
+	if (execl->chunk[i]->infile == NULL && execl->chunk[i]->inpipe == 1)
+		return (NULL);
 	shovel = get_next_line(fd);
 	chest = NULL;
 	while (shovel != NULL)

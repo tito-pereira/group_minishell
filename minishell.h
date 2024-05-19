@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/19 13:50:42 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:25:40 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i);
 void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str);
 void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str);
 void	temp_pipe(int *nfd, char *buff);
-char	*empty_pipe(int fd);
+char	*empty_pipe(int fd, t_execlist *execl, int i);
 
 // FREE
 char	*free_str(char *str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/18 23:42:17 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/19 14:18:35 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,24 +245,4 @@ sig 1
 ctrl c - global=2, rl_newline ou global=2 + checker (free)
 ctrl d - global = 2, free, exit ???
 ctrl \ - SIG_IGN
-
-se bem que ainda nao sei bem como vou dar handle do ctrl D pos parser
-
-pra ja faco assim, mas posso aprender ja sobre as masks e sets nem que seja
-para o exame
-opa ya. vou fazer basicamente dois sets de signal handling, faz sentido
-apenas os faco manualmente e nao uso as set functions()
-...
-. $? no ponto 3
-. testar as '' e outros parametros inteiros e frees
-*/
-
-/*
-ora bem
-
-. test step 5
-. test executor
-. test builtins
-
-. valgrind, norm, github testers
 */

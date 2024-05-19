@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:25:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 13:50:01 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:26:03 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ex_redir_file(t_execlist *execl, int i, char ***exec_str, char *buff, int *
 	execve(exec_str[i][0], exec_str[i], execl->my_envp);
 }
 
-void	ex_redir_pipe(t_execlist *execl, int **fd, int i, char *buff, int *nfd)
+void	ex_redir_pipe(int **fd, int i, char *buff, int *nfd)
 {
 	if (buff)
 		temp_pipe(nfd, buff);
@@ -53,9 +53,7 @@ void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str)
 	int		*nfd;
 	int 	pid;
 	
-	buff = NULL;
-	if (i != 0 || execl->chunk[i]->infile == 1) //inpipe i != 0, infile(file + heredoc) == 1
-		buff = empty_pipe(fd[i][0]);
+	buff = empty_pipe(fd[i][0], execl, i);
 	nfd = ft_calloc(2, sizeof(int));
 	pid = fork();
 	if (pid == 0)
@@ -67,7 +65,7 @@ void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str)
 	wait(NULL);
 	if ((i + 1) < execl->valid_cmds) //outfile inside pipeline
 	{
-		ex_redir_pipe(execl, fd, i, buff, nfd);
+		ex_redir_pipe(fd, i, buff, nfd);
 		execve(exec_str[i][0], exec_str[i], execl->my_envp);
 	}
 	else
