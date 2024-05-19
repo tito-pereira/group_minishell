@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_loop.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 21:12:15 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/20 00:17:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,15 @@ void	exec_action(t_execlist *execl, int **fd, int **redir, \
 	else if (execl->chunk[i]->blt == 1)
 	{
 		blt_central(execl, i, exec_str[i], execl->err_stt);
-		ft_printf("dentro loop env = %s\n", execl->my_envp[0][52]);
+		//ft_printf("\n\n\ndentro export env\n");
+		//print_db_char(execl->my_envp[0]);
 		if (execl->valid_cmds == 1)
 		{
-			printf("in writing: closing reading [%d]\n", execl->env_pipe[0]);
+			//printf("in writing: closing reading [%d]\n", execl->env_pipe[0]);
 			close(execl->env_pipe[0]);
 			//write(execl->env_pipe[1], execl->my_envp, sizeof(char ***));
 			write_to_pipe(execl->env_pipe[1], execl->my_envp);
-			printf("in writing: closing writing [%d]\n", execl->env_pipe[1]);
+			//printf("in writing: closing writing [%d]\n", execl->env_pipe[1]);
 			close(execl->env_pipe[1]);
 		}
 	}
@@ -79,7 +80,7 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, \
 		}
 		//ft_printf("launch done and waited [%d]\n", i);
 	}
-	ft_printf("fora action env = %s\n", execl->my_envp[0][52]);
+	//ft_printf("fora action env = %s\n", execl->my_envp[0][52]);
 	exit(0);
 	//ft_printf("exec launch out [%d]\n", i);
 }
@@ -125,10 +126,10 @@ void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 	wait(NULL);
 	if (execl->valid_cmds == 1 && check_changes(execl->chunk[0]) == 1)
 	{
-		printf("\n\n\nim here\n");
+		//printf("\n\n\nim here\n");
 		//print_db_char(execl->my_envp[0]);
-		printf("cmds = %d, changes[0] = %d\n", execl->valid_cmds, check_changes(execl->chunk[0]));
-		printf("in read: closing writing [%d]\n", execl->env_pipe[1]);
+		//printf("cmds = %d, changes[0] = %d\n", execl->valid_cmds, check_changes(execl->chunk[0]));
+		//printf("in read: closing writing [%d]\n", execl->env_pipe[1]);
 		close(execl->env_pipe[1]);
 		free_db_str(execl->my_envp[0]);
 		tmpenv = read_from_pipe(execl->env_pipe[0], execl);
@@ -136,11 +137,11 @@ void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 		//printf("\n\n\nnew envs\n");
 		//print_db_char(execl->my_envp[0]);
 		close(execl->env_pipe[0]);
-		printf("also here\n");
+		//printf("also here\n");
 	}
 	//free_db_str(execl->my_envp[0]);
 	//execl->my_envp = tmpenv;
-	ft_printf("\n\n\nin main process envs\n");
-	print_db_char(execl->my_envp[0]);
+	//ft_printf("\n\n\nin main process envs\n");
+	//print_db_char(execl->my_envp[0]);
 	ft_printf("\n\n\nexec_loop finished.\n");
 }

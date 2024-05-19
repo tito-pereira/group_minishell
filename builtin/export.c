@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:15 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/19 15:40:35 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/20 00:15:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static int	get_var_pos(char *var, char **envp)
 static void	update_var(char *var, int var_pos, char ***envp)
 {
 	char	**envp_temp;
-	int i;
+	//int i;
 
-	printf("var_pos = %d\n", var_pos);
+	//printf("var_pos = %d\n", var_pos);
 	if (!envp[0][var_pos])
 	{
 		envp_temp = ft_calloc (var_pos + 2, sizeof (char *));
@@ -54,12 +54,12 @@ static void	update_var(char *var, int var_pos, char ***envp)
 		envp[0][var_pos] = free_str (envp[0][var_pos]);
 		envp[0][var_pos] = ft_strdup (var);
 	}
-	i = -1;
-	while(envp[0][++i])
-	{
-		ft_printf("envp[i] = %s\n", envp[0][i]);
-		printf("i = %d\n", i);
-	}
+	//i = -1;
+	//while(envp[0][++i])
+	//{
+		//ft_printf("envp[i] = %s\n", envp[0][i]);
+		//printf("i = %d\n", i);
+	//}
 }
 
 static int	valid_var(char *var)
@@ -88,7 +88,7 @@ void	ft_export(int *err, char **cmd, char ***envp)
 	int	var_pos;
 
 	ft_printf("INSIDE EXPORT:\n");
-	ft_printf("cmd[1] = %s\n", cmd[1]);
+	//ft_printf("cmd[1] = %s\n", cmd[1]);
 	i = 1;
 	if (!cmd[1])
 		ft_env(err, cmd, envp);
@@ -106,6 +106,7 @@ void	ft_export(int *err, char **cmd, char ***envp)
 		}	
 		i++;
 	}
-	ft_printf("dentro export env = %s\n", envp[0][52]);
+	//ft_printf("\n\n\ndentro export env\n");
+	//print_db_char(envp[0]);
 	*err = 0;
 }

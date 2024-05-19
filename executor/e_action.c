@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 13:32:38 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 23:42:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ que precisa dele aberto anyway para copiar para a redirection
 
 void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
-	int		pid;
+	//int		pid;
 	//int		tmp;
 	//char	*buff;
 	//int		*nfd;
 
-	pid = -2; //ls > tmp1 | cat > tmp2 | cat > tmp3 | cat > tmp4
+	//pid = -2; //ls > tmp1 | cat > tmp2 | cat > tmp3 | cat > tmp4
 	//ft_printf("preparing output for exec[%d]\n", i);
 	if ((i + 1) < execl->valid_cmds)
 		close(fd[i + 1][0]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/19 20:53:31 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/20 00:11:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int	pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env)
 	(*execl)->cmd_nmb = c + 1;
 	(*execl)->pipe_nmb = c;
 	(*execl)->my_envp = env;
-	printf("\n\n\ninside chunks\n");
-	print_db_char((*execl)->my_envp[0]);
+	//printf("\n\n\ninside chunks\n");
+	//print_db_char((*execl)->my_envp[0]);
 	(*execl)->err_stt = ex_stt;
 	(*execl)->chunk[c + 1] = NULL;
 	//ft_printf("Pipe counter: %d;\n", c); //

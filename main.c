@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/19 21:07:40 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/20 00:11:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,8 +185,8 @@ int	main()
 		// sig_handler_one(); //modifies the default sigactions
 		//if (global_checker(execl) == 1)
 			//continue;
-		ft_printf("\n\n\nbegining env\n");
-		print_db_char(env);
+		//ft_printf("\n\n\nbegining env\n");
+		//print_db_char(env);
 		input = ft_read(); //with signal treatment included
 		//if (global_checker(execl) == 1)
 			//continue;
@@ -201,18 +201,19 @@ int	main()
 		if (parse_central(&execl, input, &exit_stt, &env) == 1)
 		{
 			print_exec(execl);
-			printf("\n\n\nafter parsing\n");
-			print_db_char(execl->my_envp[0]);
+			//printf("\n\n\nafter parsing\n");
+			//print_db_char(execl->my_envp[0]);
 			if (exec_main(execl, &exit_stt) == 1)
 			{
+				//if check_change() == 1
 				env = execl->my_envp[0];
 				exit_stt = 0;
 			}
 		}
 		if (execl)
 			free_exec(execl);
-		ft_printf("\n\n\nafter free env\n");
-		print_db_char(env);
+		//ft_printf("\n\n\nafter free env\n");
+		//print_db_char(env);
 		//free_db_str(env);
 		//env = execl->my_envp[0];
 		/////////////////////

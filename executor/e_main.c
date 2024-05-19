@@ -128,13 +128,13 @@ int	exec_main(t_execlist *execl, int *exit_stt)
 	init_exec(execl, fd, redir); // V
 	get_exec_str(execl, exec_str); // V
 	exec_loop(execl, fd, redir, exec_str); // X
-	if (execl->my_envp)
-	{
-		printf("\n\n\nenvp exists\n");
-		print_db_char(execl->my_envp[0]);
-	}
-	else
-		printf("envp is NULL somehow\n");
+	//if (execl->my_envp)
+	//{
+		//printf("\n\n\nenvp exists\n");
+		//print_db_char(execl->my_envp[0]);
+	//}
+	//else
+		//printf("envp is NULL somehow\n");
 	//ft_printf("after exec loop env = %s\n", execl->my_envp[0][51]);
 	end_exec(execl, fd, redir, exec_str); // X
 	//ft_printf("after exec end env = %s\n", execl->my_envp[0][52]);
