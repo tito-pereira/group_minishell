@@ -3,33 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rlima-fe <rlima-fe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:11 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/19 14:48:17 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:57:51 by rlima-fe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_env(int *err, char **cmd, char ***envp)
+void	ft_env( int *err, char **cmd, char ***envp)
 {
-	int	i;
+	size_t	i;
 
-	if (!cmd[1])
+	if (cmd[1])
 	{
-		i = 0;
-		while (envp && *envp && envp[i][0])
-		{
-			ft_printf("%s\n", envp[i]);
-			i++;
-		}
-		*err = 0;
+		ft_printf("minishell >> : env:  invalid usage\n");
+		*err = 69;
 	}
 	else
 	{
-		ft_putstr_fd("Bad usage, burro.", 2);
-		*err = 69;
+		i = 0;
+		while (envp && *envp && envp[0][i])
+		{
+			ft_printf ("%s\n", envp[0][i]);
+			i++;
+		}
+		*err = 0;;
 	}
 }
 

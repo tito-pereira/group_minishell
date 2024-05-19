@@ -3,58 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rlima-fe <rlima-fe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:04 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/19 14:49:29 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:03:58 by rlima-fe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	go_to_dir(int *err, char *dir, char ***env)
+static void	set_dir(char *dir, char ***envp, int *err)
 {
-	char	**exp;
 	char	*temp;
+	char	**var;
 
 	temp = NULL;
-	exp = ft_calloc(3, sizeof(char *));
-	exp[0] = ft_strdup("export");
-	if (chdir(dir) == 0)
+	var = ft_calloc (3, sizeof (char *));
+	var[0] = ft_strdup ("export");
+	temp = getcwd (temp, BUFFER_SIZE);
+	if (chdir (dir))
 	{
-		temp = getcwd(temp, PATH_MAX);
-		exp[1] = ft_strjoin("PWD=", temp);
-		ft_export (err, exp, env);
-		*err = 0;
+		ft_printf("minishell >> : cd : not a directory");
+		*err = 69;
 	}
 	else
 	{
-		ft_putstr_fd(NPROMPT": cd: No such file or directory", 2);
-		*err = 69;
+		var[1] = ft_strjoin ("OLDPWD=", temp);
+		ft_export (err, var, envp);
+		temp = free_str(temp);
+		var[1] = free_str(var[1]);
+		temp = getcwd (temp, BUFFER_SIZE);
+		var[1] = ft_strjoin ("PWD=", temp);
+		ft_export (err, var, envp);
 	}
 	temp = free_str(temp);
-	exp = free_db_str(exp);
+	var = free_db_str(var);
 }
 
-char	*home_dir(char ***env)
+static char	*get_home(char **envp)
 {
 	char	*home;
 
-	while(env && ft_strncmp(*env, "HOME=", 5))
-		env++;
-	home = *env + 5;
+	while (envp && ft_strncmp (*envp, "HOME=", 5))
+		envp++;
+	home = *envp + 5;
 	return (home);
 }
 
-void	ft_cd(int *err, char **cmd, char ***env)
+void	ft_cd(int *err, char **cmd, char ***envp)
 {
-	if (!cmd[1])
-		go_to_dir(err, home_dir(env), env);
-	else if (cmd[1] && !cmd[2])
-		go_to_dir(err, cmd[1], env);
+	if (cmd[1] && !cmd[2])
+		set_dir (cmd[1], envp, err);
+	else if (!cmd[1])
+		set_dir (get_home (*envp), envp, err);
 	else
 	{
-		ft_putstr_fd ("-" NPROMPT ": cd:  invalid usage\n", 2);
+		ft_printf("minishell >> : cd: invalid usage\n", 2);
 		*err = 69;
 	}
+	*err = 0;
 }

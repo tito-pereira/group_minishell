@@ -3,71 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rlima-fe <rlima-fe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:15 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/19 14:47:55 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:06:11 by rlima-fe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	get_var_pos(char *var, char **envp)
+static int	get_var_pos(char *var, char **envp)
 {
-	char	*temp_var;
+	char	*var_temp;
 	int		var_len;
 	int		var_pos;
 
-	var_len = ft_strchr(var, '=') - var;
-	temp_var = ft_calloc(var_len + 2, sizeof(char));
-	ft_strlcpy (temp_var, var, var_len + 2);
-	temp_var[var_len] = '=';
-	temp_var[var_len + 1] = '\0';
+	var_len = ft_strchr (var, '=') - var;
 	var_pos = 0;
-	while (envp[var_pos] && ft_strncmp(temp_var, envp[var_pos], var_len + 1))
+	var_temp = ft_calloc (var_len + 2, sizeof (char));
+	ft_strlcpy (var_temp, var, var_len + 2);
+	var_temp[var_len] = '=';
+	var_temp[var_len + 1] = '\0';
+	while (envp[var_pos] && ft_strncmp (envp[var_pos], var_temp, var_len + 1))
 		var_pos++;
-	temp_var = free_str(temp_var);
+	var_temp = free_str (var_temp);
 	return (var_pos);
 }
 
-void	update_var(char *var, int var_pos, char **envp)
+static void	update_var(char *var, int var_pos, char ***envp)
 {
-	char	**temp_envp;
+	char	**envp_temp;
+	int i;
 
-	if (!envp[var_pos])
+	printf("var_pos = %d\n", var_pos);
+	if (!envp[0][var_pos])
 	{
-		temp_envp = ft_calloc(var_pos + 2, sizeof(char *));
-		temp_envp[var_pos] = var;
+		envp_temp = ft_calloc (var_pos + 2, sizeof (char *));
+		envp_temp[var_pos] = ft_strdup (var);
+		//ft_printf("envp_temp = %s\n", envp_temp[var_pos]);
 		while (var_pos--)
-			temp_envp[var_pos] = envp[var_pos];
-		envp = free_db_str(envp);
-		envp = temp_envp;
+		{
+			envp_temp[var_pos] = ft_strdup (envp[0][var_pos]);
+			//ft_printf("envp_temp = %s\n", envp_temp[var_pos]);
+		}
+		*envp = free_db_str(*envp); 
+		*envp = envp_temp;
 	}
 	else
 	{
-		envp[var_pos] = free_str(envp[var_pos]);
-		envp[var_pos] = ft_strdup(var);
+		envp[0][var_pos] = free_str (envp[0][var_pos]);
+		envp[0][var_pos] = ft_strdup (var);
+	}
+	i = -1;
+	while(envp[0][++i])
+	{
+		ft_printf("envp[i] = %s\n", envp[0][i]);
+		printf("i = %d\n", i);
 	}
 }
 
-int	valid_var(char *var)
+static int	valid_var(char *var)
 {
 	int	i;
-	int	res;
+	int	ret;
 
-	res = 1;
+	ret = 1;
+	if (!var || (var && var[0] == '='))
+		ret = 0;
+	if (ft_isdigit (var[0]))
+		ret = 0;
 	i = 0;
-	if (!var || var[0] == '=')
-		res = 0;
-	if (isdigit(var[0]))
-		res = 0;
 	while (var[i] && var[i] != '=')
 	{
 		if (var[i] != '_' && !ft_isalnum(var[i]))
-			res = 0;
+			ret = 0;
 		i++;
 	}
-	return (res);
+	return (ret);
 }
 
 void	ft_export(int *err, char **cmd, char ***envp)
@@ -75,26 +87,24 @@ void	ft_export(int *err, char **cmd, char ***envp)
 	int	i;
 	int	var_pos;
 
+	ft_printf("INSIDE EXPORT:\n");
+	ft_printf("cmd[1] = %s\n", cmd[1]);
+	i = 1;
 	if (!cmd[1])
 		ft_env(err, cmd, envp);
-	i = 1;
 	while (cmd[i])
 	{
-		if (valid_var(cmd[i]) && ft_strchr(cmd[i], '='))
+		if (valid_var (cmd[i]) && ft_strchr (cmd[i], '='))
 		{
-			*err = 0;
-			var_pos = get_var_pos(cmd[i], envp);
-			update_var(cmd[i], var_pos, envp);
+			var_pos = get_var_pos (cmd[i], *envp);
+			update_var (cmd[i], var_pos, envp);
 		}
-		else if (!valid_var(cmd[i]))
+		else if (!valid_var (cmd[i]))
 		{
-			ft_putstr_fd(NPROMPT": export: ", 2);
-			ft_putstr_fd(cmd[i], 2);
-			ft_putstr_fd(": not a valid identifier\n", 2);
+			ft_printf("minishell >> : export : %s : is not valid", cmd[i]);
 			*err = 69;
-		}
-		else
-			*err = 0;
+		}	
 		i++;
 	}
+	*err = 0;
 }
