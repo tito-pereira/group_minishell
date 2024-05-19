@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   p_3.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:12:29 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/11 12:33:29 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/18 23:41:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
-(2) - remove redirections from the parsing string to simplify proccess
+(2) - remove redirections from the parsing string to simplify parsing process
 
 e se houver >>>>> ou <<<<<
 redir interpreta isso ou da erro?
 -> get_name retorna NULL
 -> rmv_redirs salta todos os '<' a frente, assume bom senso
+
+cat <example.txt >tmp1|cat -e>tmp2|cat -e>tmp3
 */
 
 void	temp_strings(char *og, char **new, int a, int b)
@@ -30,8 +32,8 @@ void	temp_strings(char *og, char **new, int a, int b)
 	if (a != 0)
 		first = ft_substr(og, 0, a);
 	secnd = NULL;
-	if (b != (int)ft_strlen(og))
-		secnd = ft_substr(og, (b + 1), ((int)ft_strlen(og) - b));
+	if ((b + 1) != (int)ft_strlen(og))
+		secnd = ft_substr(og, b, ((int)ft_strlen(og) - b));
 	*new = NULL;
 	if (!first && secnd)
 		*new = secnd; //(malloc ja feito)
@@ -45,18 +47,30 @@ void	temp_strings(char *og, char **new, int a, int b)
 		*new = first; //(malloc ja feito)
 }
 
+/*
+if (b + 1)
+
+total 11, [10]
+char 6, [5]
+
+provavelmente o erro ta na substr, ver como é feita
+[start]
+len = numero de malloc
+*/
+
 void	find_redirs(char *og, int *a, int *b, int *i)
 {
 	if (og[*i] == '<' || og[*i] == '>')
 	{
 		(*a) = (*i);
-		while (og[*i] == '<' || og[*i] == '>')
+		while ((og[*i] == '<' || og[*i] == '>') && og[*i] != '\0')
 			(*i)++;
 		while ((og[*i] == 9 || og[*i] == 32) && og[*i] != '\0') //whitespaces + EOF
 			(*i)++;
 		while (og[*i] != 9 && og[*i] != 32 && og[*i] != '\0') // non white + EOF
 			(*i)++;
 		(*b) = (*i);
+		//printf("b = %d, position = '%c'\n", *b, og[*b]);
 	}
 }
 
@@ -80,6 +94,7 @@ void	find_red_pos(t_chunk *chunk, int *i)
 		free(chunk->og);
 		chunk->og = new;
 		(*i) = a;
+		//printf("a = %d, position = '%c'\n", a, chunk->og[a]);
 	}
 }
 

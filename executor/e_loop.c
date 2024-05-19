@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/17 15:42:50 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/18 18:18:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	exec_action(t_execlist *execl, int **fd, int **redir, int i, char ***exec_s
 {
 	exec_input(execl, fd, redir, i);
 	exec_output(execl, fd, i, exec_str);
-	if (execl->chunk[i]->blt == 0)
-		execve(exec_str[i][0], exec_str[i], execl->my_envp);
-	else if (execl->chunk[i]->blt == 1)
-		blt_central(execl, i, exec_str[i]); //int *err_stt
+	//if (execl->chunk[i]->blt == 0)
+	execve(exec_str[i][0], exec_str[i], execl->my_envp);
+	//else if (execl->chunk[i]->blt == 1)
+	//	blt_central(execl, i, exec_str[i]); //int *err_stt
 	exit(0);
 }
 

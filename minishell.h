@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/17 16:23:51 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/18 22:47:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void	sig_repeat(int num);
 //void	global_checker(t_execlist *execl);
 
 // PARSER MAIN
-int		parse_central(t_execlist **execl, char *input, int *exit_stt);
-int		pipe_chunks(t_execlist **execl, char *input, int *exit_stt); // (1)
+int		parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env);
+int		pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env); // (1)
 int		redir_checker(t_execlist *execl, int *exit_stt); // (2)
 int		scope_redirs(t_execlist *execl, int *exit_stt); // (3)
 int		special_char(t_execlist *execl, int *exit_stt); // (4)
@@ -92,7 +92,6 @@ void	close_pipes(t_execlist *execl, int **fd, int i, int rel, int non_rel);
 int		exec_main(t_execlist *execl, int *error_stt);
 void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str);
 void	exec_input(t_execlist *execl, int **fd, int **redir, int i);
-//void	exec_output(t_execlist *execl, int **fd, int **redir, int i);
 void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str);
 
 // FREE

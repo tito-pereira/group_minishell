@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 12:30:06 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/18 22:42:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
 	return(1);
 }
 
-int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
+int	pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env)
 {
 	int			c;
 
@@ -78,23 +78,23 @@ int	pipe_chunks(t_execlist **execl, char *input, int *exit_stt)
 	if (!(*execl))
 	{
 		perror("Memory allocation problem in the parser");
-		*exit_stt = 1;
+		*ex_stt = 1;
 		return(0);
 	}
 	c = pipe_counter(input, *execl);
 	if (c == -1)
 	{
 		perror("Invalid pipe placement");
-		*exit_stt = 1;
+		*ex_stt = 1;
 		return(0);
 	}
 	(*execl)->chunk = malloc ((c + 2) * sizeof(t_chunk *));
 	(*execl)->cmd_nmb = c + 1;
 	(*execl)->pipe_nmb = c;
-	(*execl)->my_envp = create_envp();
+	(*execl)->my_envp = *env;
 	(*execl)->chunk[c + 1] = NULL;
 	//ft_printf("Pipe counter: %d;\n", c); //
-	if (chunk_create(input, *execl, exit_stt) == 0)
+	if (chunk_create(input, *execl, ex_stt) == 0)
 		return(0);
 	/*if (*execl)
 	{

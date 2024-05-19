@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_2a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/13 16:55:53 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/18 23:41:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,20 @@ char	*get_name(char *str, int i)
 	int	a;
 	int	b;
 
-	ft_printf("Getting file name:\n"); //
+	//ft_printf("Getting file name:\n"); //
 	while (str[i] == 9 || str[i] == 32)
 		i++;
 	if (str[i] == '\0')
 		return (NULL);
 	a = i;
-	ft_printf("a:%d;\n", a); //
+	//ft_printf("a:%d;\n", a); //
 	while (str[i] != 9 && str[i] != 32 && str[i] != '\0'
 		&& str[i] != '>' && str[i] != '<')
 		i++;
 	b = i;
-	ft_printf("b:%d;\n", b); //
+	//ft_printf("b:%d;\n", b); //
+	if (a == b)
+		return (NULL);
 	return (ft_substr(str, a, (b - a)));
 }
 
@@ -125,17 +127,26 @@ int	input_redir(t_chunk *chunk, int *i)
 			perror("Empty input redirection");
 			return (0);
 		}
+		if (chunk->delimiter != NULL)
+			free(chunk->delimiter);
 		chunk->delimiter = get_name(chunk->og, *i);
 		//ft_printf("delimiter is '%s'\n", chunk->delimiter); //
+		if (chunk->infile != NULL)
+			free(chunk->infile);
 		chunk->infile = heredoc_read(chunk->delimiter);
 		if (chunk->infile == NULL)
 			return (-1);
 	}
 	else if (chunk->og[*i] != '<') // <
 	{
+		if (chunk->infile != NULL)
+			free(chunk->infile);
 		//ft_printf("simple input redirection checking.\n"); //
 		chunk->infile = get_name(chunk->og, *i);
 	}
+	if (chunk->infile == NULL)
+		return (-1);
+	//ft_printf("heredoc: '%d'\n", chunk->heredoc);//
 	//ft_printf("infile: '%s'\n", chunk->infile); //
 	return (1);
 }
@@ -148,23 +159,29 @@ com a flag heredoc
 int	output_redir(t_chunk *chunk, int *i)
 {
 	(*i)++;
-	ft_printf("Output redirection checker.\n"); //
+	//ft_printf("Output redirection checker.\n"); //
 	if(chunk->og[*i] == '>') // >>
 	{
 		(*i)++;
-		ft_printf("append output redirection.\n");//
+		//ft_printf("append output redirection.\n");//
 		chunk->append = 1;
+		if (chunk->outfile != NULL)
+			free(chunk->outfile);
 		chunk->outfile = get_name(chunk->og, *i);
 		(*i)--;
 	}
 	if(chunk->og[*i] != '>') // >
 	{
-		ft_printf("truncate output redirection.\n");//
+		//ft_printf("truncate output redirection.\n");//
 		chunk->append = 0;
+		if (chunk->outfile != NULL)
+			free(chunk->outfile);
 		chunk->outfile = get_name(chunk->og, *i);
 	}
-	ft_printf("append: '%d'\n", chunk->append);//
-	ft_printf("outfile: '%s'\n", chunk->outfile);//
+	if (chunk->outfile == NULL)
+		return (-1);
+	//ft_printf("append: '%d'\n", chunk->append);//
+	//ft_printf("outfile: '%s'\n", chunk->outfile);//
 	return(1);
 }
 

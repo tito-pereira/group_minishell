@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/17 15:49:52 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/18 23:42:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,14 +120,14 @@ int	null_input(char *input, int *exit_stt)
 	return (0);
 }
 
-int	parse_central(t_execlist **execl, char *input, int *exit_stt)
+int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 {
 	int			flag;
 
 	//ft_printf("Inside parsing.\n");//
 	flag = null_input(input, exit_stt);
 	if (flag == 1)
-		flag = pipe_chunks(execl, input, exit_stt);
+		flag = pipe_chunks(execl, input, exit_stt, env);
 	if (flag == 1)
 		flag = redir_checker(*execl, exit_stt);
 	if (flag == 1)
@@ -176,10 +176,12 @@ int	main()
 	char		*input;
 	t_execlist	*execl;
 	int			exit_stt;
+	char		**env;
 
 	global_sig = 0;
 	exit_stt = 0;
 	execl = NULL;
+	env = create_envp();
 	while (1)
 	{
 		// sig_handler_one(); //modifies the default sigactions
@@ -196,7 +198,7 @@ int	main()
 			ft_printf("Closing minishell...\n");
 			exit(0);
 		}*/
-		if (parse_central(&execl, input, &exit_stt) == 1)
+		if (parse_central(&execl, input, &exit_stt, &env) == 1)
 		{
 			print_exec(execl);
 			if (exec_main(execl, &exit_stt) == 1)

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 13:01:23 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/17 16:22:12 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/18 22:46:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	blt_central(t_execlist *execl, int i, char **exec_str) //err_stt
     else if (ft_strncmp(exec_str[0], "unset", 6) == 0)
 		ft_unset(&err, execl->chunk[i]->cmd_n_args, execl->my_envp);
 	//return (err); //caso seja preciso, mas nao me parece
+	//*err_stt = err;
 }
 
 /*
