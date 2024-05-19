@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 14:14:36 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:34:27 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,20 @@ void	print_db(char **str)
 		ft_printf("%s\n", str[i]);
 }
 
-void	exec_action(t_execlist *execl, int **fd, int **redir, int i, char ***exec_str)
+void	exec_action(t_execlist *execl, int **fd, int **redir, \
+	int i, char ***exec_str)
 {
 	exec_input(execl, fd, redir, i);
 	exec_output(execl, fd, i, exec_str);
 	if (execl->chunk[i]->blt == 0)
 		execve(exec_str[i][0], exec_str[i], execl->my_envp);
 	else if (execl->chunk[i]->blt == 1)
-		blt_central(execl, i, exec_str[i]); //int *err_stt
+		blt_central(execl, i, exec_str[i], execl->err_stt);
 	exit(0);
 }
 
-void	exec_launch(t_execlist *execl, int **fd, int **redir, int i, char ***exec_str)
+void	exec_launch(t_execlist *execl, int **fd, int **redir, \
+	int i, char ***exec_str)
 {
 	int	pid;
 

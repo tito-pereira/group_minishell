@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/19 14:25:40 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:31:56 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_execlist {
 	char	**my_envp;
 	int		valid_cmds;
 	int		*pipe_loc;
+	int		*err_stt;
 }	t_execlist;
 /*
 valid_cmds && cmd_nmb vai dar ao mesmo
@@ -104,7 +105,7 @@ void	free_chunk(t_chunk *chunk);
 void	free_exec(t_execlist *exec);
 
 // BUILT-IN
-void	blt_central(t_execlist *execl, int i, char **exec_str);
+void	blt_central(t_execlist *execl, int i, char **exec_str, int *err);
 void	ft_cd(int *err, char **cmd, char **env);
 void	ft_echo(int *err, char **cmd);
 void	ft_env(int *err, char **cmd, char **envp);

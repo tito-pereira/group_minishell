@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 22:43:16 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/19 14:33:26 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void	free_exec(t_execlist *execl)
 	i = -1;
 	while (execl->chunk && execl->chunk[++i] != NULL)
 		free_chunk(execl->chunk[i]);
-	if (execl->my_envp != NULL)
-		free_db_str(execl->my_envp);
+	//if (execl->my_envp != NULL)
+		//free_db_str(execl->my_envp);
 	if (execl->pipe_loc != NULL)
 		free(execl->pipe_loc);
 	free(execl);
