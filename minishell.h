@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/20 13:18:54 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:44:58 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <linux/limits.h>
+# include <termcap.h>
+# include <termios.h>
 # include "./mylib/mylib.h"
-#include <errno.h> //
+//# include <errno.h> //
 
 # define ENV_VAR    __environ
-# define PROMPT		">> minishell: "
-# define NPROMPT	"\n>> minishell: "
+# define PROMPT		"\033[42;34m>> minishell: \033[0;37m"
+//# define NPROMPT	"\n>> minishell: "
 
 typedef struct s_chunk {
 	char	*infile; // (2) redir_checker

@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/20 14:26:28 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:17:22 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,19 +106,34 @@ Tell the update routines that we have moved onto a new (empty) line, usually aft
 
 Function: int rl_redisplay ()
 Change what's displayed on the screen to reflect the current contents of rl_line_buffer.
+automaticamente vai buscar o prompt usado
 */
 
-// super clunky e estranho
+void	set_tty_manual()
+{
+	struct	termios	manual;
+
+	tcgetattr(STDIN_FILENO, &manual);
+    manual.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+    manual.c_oflag &= ~(OPOST);
+    manual.c_cflag |= (CS8);
+    manual.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+    tcsetattr(STDIN_FILENO, TCSANOW, &manual);
+}
+
 void	sig_repeat(int num)
 {
+	struct termios origin;
+
 	(void)num;
+	tcgetattr(STDIN_FILENO, &origin);
+	set_tty_manual(); //set to manual
 	global_sig = 1;
-	//rl_replace_line(PROMPT, 0);
 	printf("\n");
 	rl_on_new_line();
-	//rl_replace_line(PROMPT, 0);
+	rl_replace_line("", 0);
 	rl_redisplay();
-	//rl_replace_line("", 0);
+	tcsetattr(STDIN_FILENO, TCSANOW, &origin); //reset to origins
 }
 
 char	**create_envp(void)
@@ -180,17 +195,36 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 	return (flag);
 }
 
+void	init_globals(int *exit_stt, t_execlist **execl, struct termios *origin, char ***env)
+{
+	global_sig = 0;
+	*exit_stt = 0;
+	*execl = NULL;
+	tcgetattr(STDIN_FILENO, origin);
+	*env = create_envp();
+}
+
+void	esc_protocol(t_execlist *execl, struct termios origin)
+{
+	if (execl != NULL)
+		free_exec(execl);
+	tcsetattr(STDIN_FILENO, TCSANOW, &origin);
+}
+
 int	main()
 {
-	char		*input;
-	t_execlist	*execl;
-	int			exit_stt;
-	char		**env;
+	char			*input;
+	t_execlist		*execl;
+	int				exit_stt;
+	char			**env;
+	struct	termios	origin;
 
 	global_sig = 0;
 	exit_stt = 0;
 	execl = NULL;
+	tcgetattr(STDIN_FILENO, &origin);
 	env = create_envp();
+	init_globals(&exit_stt, &execl, &origin, &env);
 	while (1)
 	{
 		sig_handler_one();
@@ -235,3 +269,63 @@ int	main()
 			//the_executor(execl, exit_stt);
 	}
 }
+
+/*
+#include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <termios.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
+int global_sig = 0;
+struct termios orig_termios;
+
+// Function to reset terminal to original settings
+void reset_terminal_mode()
+{
+    tcsetattr(STDIN_FILENO, TCSANOW, &orig_termios);
+}
+
+// Function to set terminal to raw mode
+void set_raw_mode()
+{
+    struct termios raw;
+
+    // Get current terminal settings
+    tcgetattr(STDIN_FILENO, &orig_termios);
+
+    // Make a copy of the original settings
+    raw = orig_termios;
+
+    // Input modes: no break, no CR to NL, no parity check, no strip char, no start/stop output control.
+    raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+
+    // Output modes: disable post-processing
+    raw.c_oflag &= ~(OPOST);
+
+    // Control modes: set 8-bit chars
+    raw.c_cflag |= (CS8);
+
+    // Local modes: echoing off, canonical off, no extended functions, no signal chars.
+    raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+
+    // Apply the new settings
+    tcsetattr(STDIN_FILENO, TCSANOW, &raw);
+}
+
+void sig_repeat(int num)
+{
+    (void)num; // Unused parameter
+    global_sig = 1;
+    printf("\n");
+    rl_replace_line("", 0);  // Clear the current line
+    rl_on_new_line();        // Move cursor to a new line
+    rl_redisplay();          // Redisplay the prompt
+}
+
+void setup_signal_handler()
+{
+    struct
+
+*/
