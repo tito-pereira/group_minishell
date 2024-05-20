@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/20 00:17:09 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/20 03:53:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	print_db(char **str)
 		ft_printf("%s\n", str[i]);
 }
 
-void	exec_action(t_execlist *execl, int **fd, int **redir, \
-	int i, char ***exec_str)
+void	exec_action(t_execlist *execl, int **fd, \
+	int i, char ***exec_str) //int **redir
 {
-	exec_input(execl, fd, redir, i);
+	exec_input(execl, fd, i); //int **redir
 	exec_output(execl, fd, i, exec_str);
 	if (execl->chunk[i]->blt == 0)
 		execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
@@ -66,7 +66,7 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, \
 	pid = fork();
 	if (pid == 0)
 	{
-		exec_action(execl, fd, redir, i, exec_str);
+		exec_action(execl, fd, i, exec_str); //redir
 	}
 	else
 	{

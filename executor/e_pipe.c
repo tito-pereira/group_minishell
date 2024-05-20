@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_pipe.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:49:36 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 14:24:53 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/20 02:47:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ char	*empty_pipe(int fd, t_execlist *execl, int i)
 
 	if (execl->chunk[i]->infile == NULL && execl->chunk[i]->inpipe == 1)
 		return (NULL);
+	printf("inside empty_pipe [%d] with fd[%d]\n", i, fd);
 	shovel = get_next_line(fd);
 	chest = NULL;
 	while (shovel != NULL)
 	{
+		printf("shovel exists [%d]\n", i);
 		if (!chest)
 			chest = ft_strdup(shovel);
 		else
@@ -36,7 +38,8 @@ char	*empty_pipe(int fd, t_execlist *execl, int i)
 		}
 		shovel = get_next_line(fd);
 	}
-	//ft_printf("final_chest:%s;\n", chest);
+	ft_printf("final_chest [%d]:%s;\n", i, chest);
+	close(fd);
 	return (chest);
 }
 

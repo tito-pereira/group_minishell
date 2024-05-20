@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 23:42:24 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/20 03:52:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,40 @@ void    write_heredoc(t_execlist *execl, char *str, int **fd, int i)
     wait(0);
 }
 
-void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
+void	write_inpipe(t_execlist *execl, char *str, int **fd, int i)
+{
+	int 	pid;
+	int		infile;
+	char	*shovel;
+
+	//ft_printf("writing inpipe\n");
+	pid = fork();
+    if (pid == 0)
+    {
+		if ((i + 1) < execl->valid_cmds)
+		{
+			close(fd[i + 1][0]);
+			close(fd[i + 1][1]);
+		}
+		close(fd[i][0]);
+		////////////////////
+		infile = open(str, O_RDONLY); //possivel erro de nao haver file
+		shovel = get_next_line(infile);
+		while (shovel != NULL)
+		{
+			write(fd[i][1], shovel, ft_strlen(shovel)); //talvez seja preciso '\n' depois
+			free(shovel);
+			shovel = get_next_line(infile);
+		}
+		close(infile);
+		////////////////////
+		close(fd[i][1]);
+		exit(0);
+	}
+    wait(0);
+}
+
+void	exec_input(t_execlist *execl, int **fd, int i) //int **redir
 {
 	//ft_printf("preparing input for exec[%d]\n", i);
     close_pipes(execl, fd, i, 0, 1);
@@ -51,33 +84,31 @@ void	exec_input(t_execlist *execl, int **fd, int **redir, int i)
 		//ft_printf("will read from fd[%d][0]=%d;\n", i, fd[i][0]);
 		dup2(fd[i][0], STDIN_FILENO);
 	}
-	close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
+	//close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
     if (execl->chunk[i]->heredoc == 0 && execl->chunk[i]->inpipe == 1
 		&& execl->chunk[i]->infile != NULL) //1, normal infile
     {
 		//ft_printf("infile input [%d]\n", i);
-        redir[i][0] = open(execl->chunk[i]->infile, O_RDONLY);
-        dup2(redir[i][0], STDIN_FILENO);
-		close(redir[i][0]); //depois de dup, fecha-se
+        //redir[i][0] = open(execl->chunk[i]->infile, O_RDONLY);
+        //dup2(redir[i][0], STDIN_FILENO);
+		//close(redir[i][0]); //depois de dup, fecha-se
+		write_inpipe(execl, execl->chunk[i]->infile, fd, i);
+		dup2(fd[i][0], STDIN_FILENO);
     }
-	else if (i > 0) //resto, ate ao ultimo
+	close(fd[i][1]); 
+	if (i > 0) //resto, ate ao ultimo
 	{
 		//ft_printf("pipeline input [%d]\n", i);
         dup2(fd[i][0], STDIN_FILENO); //last pipe, fd[i - 1][0];
 		//ft_printf("dup2(fd[%d][0] = %d, STDIN_FILENO = %d);\n", i, fd[i][0], STDIN_FILENO);
 	}
 	if (execl->chunk[i]->outfile == NULL)
+	{
+		printf("closing inpipe in [%d]\n", i);
     	close(fd[i][0]);
-	//porque so fecho quando nao ha outfile?
+	}
+	//porque ainda vou precisar desta ponta do pipe para ler redir
 }
-
-/*
-se houver outfile, eu ainda uso o input para ler para o buffer
-dando dup2 ou nao consoante o main pipeline (ficando aberto 1 para o dup
-ou 0 abertos pq n ha input pipe), outfile é sempre um caso especial
-que precisa dele aberto anyway para copiar para a redirection
-2 outputs vindos do mesmo input
-*/
 
 void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
 {

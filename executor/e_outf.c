@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_outf.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:25:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/19 15:38:18 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/20 02:44:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,17 @@ void	ex_end(char *buff, int *nfd)
 	exit(0);
 }
 
+// cat<example.txt>tmp1|cat -e>tmp2|cat -e>tmp3
+
 void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
 	char	*buff;
 	int		*nfd;
 	int 	pid;
 	
+	//printf("inside outfile in [%d]\n", i);
 	buff = empty_pipe(fd[i][0], execl, i);
+	//printf("buff:%s;\n", buff);
 	nfd = ft_calloc(2, sizeof(int));
 	pid = fork();
 	if (pid == 0)

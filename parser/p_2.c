@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/12 19:04:17 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/20 02:24:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	redir_checker(t_execlist *execl, int *exit_stt)
 		//ft_printf("outfile: %s;\n", execl->chunk[c]->outfile);
 		execl->chunk[c]->append = 0;
 		execl->chunk[c]->inpipe = 0;
+		execl->chunk[c]->path = NULL;
 		//ft_printf("append: %d;\n", execl->chunk[c]->append);
 		execl->chunk[c]->cmd_n_args = NULL;
 		//ft_printf("cmd_n_args: %s;\n", execl->chunk[c]->cmd_n_args);
@@ -76,3 +77,13 @@ int	redir_checker(t_execlist *execl, int *exit_stt)
 	}
 	return (1);
 }
+
+/*
+inicializar:
+infile
+outfile
+delimiter
+og
+cmd_n_args
+path
+*/
