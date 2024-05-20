@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/20 03:52:50 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/20 13:18:54 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	print_db_char(char **str);
 
 // SIGNAL HANDLING
 void	sig_handler_one(void);
-void	sig_handler_two(void);
+//void	sig_handler_two(void);
 void	sig_repeat(int num);
 //void	sig_f_exit(int num);
 //void	global_checker(t_execlist *execl);
