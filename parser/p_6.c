@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_6.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:35:51 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/17 16:23:36 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 15:53:33 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	check_builtin(char *arg)
 	return (0);
 }
 
-int	arg_id(t_execlist *execl, int *exit_stt)
+int	arg_id(t_execlist *execl)
 {
 	int	i;
 	int	r;
@@ -75,7 +75,7 @@ int	arg_id(t_execlist *execl, int *exit_stt)
 			if (r == 0)
 			{
 				perror("Command path finding error");
-				*exit_stt = 127;
+				*(execl->exit_stt) = 127;
 				return(0);
 			}
 		}

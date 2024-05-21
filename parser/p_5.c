@@ -31,7 +31,7 @@ erros para unclosed quotes aqui ou noutro sitio
 */
 
 
-int	arg_separator(t_execlist *execl, int *exit_stt)
+int	arg_separator(t_execlist *execl)
 {
 	int		c;
 	int		ret;
@@ -47,13 +47,13 @@ int	arg_separator(t_execlist *execl, int *exit_stt)
 		if (ret == 0)
 		{
 			perror("Empty pipe error");
-			*exit_stt = 1;
+			*(execl->exit_stt) = 1;
 			return(0);
 		}
 		else if (ret == -1)
 		{
 			perror("Unclosed quotes error");
-			*exit_stt = 1;
+			*(execl->exit_stt) = 1;
 			return(0);
 		}
 	}

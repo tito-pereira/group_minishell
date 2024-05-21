@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_2a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/18 23:41:00 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 18:14:19 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,27 +185,39 @@ int	output_redir(t_chunk *chunk, int *i)
 	return(1);
 }
 
-/*char	*ft_str_find(char *str, char *lim)
+/*
+por exemplo
+chunk->outfile[number] = get_name;
+
+em que so chunk->outfile[nmb_outf] seria o valido, porque é o
+ultimo
+comeca sempre em zero
+e if (0), fazer entao um malloc **
+
+if (chunk->nmb_outf == 0)
 {
+	chunk->outfiles = malloc(2 * sizeof(char *));
+	chunk->outfiles[0] = son;
+	chunk->outfiles[1] = NULL;
+}
+else
+	chunk->outfiles = add_char_p(chunk->outfiles, son);
+
+char	**add_char_p(char **old, char *son)
+{
+	char	**new;
 	int		i;
-	int		j;
-	char	*ret;
 
 	i = 0;
-	j = 0;
-	while (str[i] != '\0')
-	{
-		j = 0;
-		while (str[i + j] == lim[j])
-		{
-			j++;
-			if (lim[j] == '\0')
-			{
-				ret = ft_substr(str, 0, i);
-				return (ret);
-			}
-		}
+	while (old[i] != NULL)
 		i++;
-	}
-	return (NULL);
-}*/
+	new = malloc((i + 2) * sizeof(char *));
+	i = -1;
+	while (old[++i] != NULL)
+		new[i] = ft_strdup(old[i]);
+	new[++i] = son; //ou strdup ainda n sei
+	new[i] = NULL;
+	free_db_char(old);
+	return (new);
+}
+*/

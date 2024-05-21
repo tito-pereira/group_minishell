@@ -12,18 +12,15 @@
 
 #include "minishell.h"
 
-/*
-void	sig_repeat_two(int num)
+void	sig_repeat(int num)
 {
-	num = 2;
-	global_sig = num;
+	(void)num;
+	rl_replace_line("", 0);
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
-
-void	global_checker(t_execlist *execl)
-{
-	if (global_sig == 2) //ctrl C
-		free_exec(execl);
-}*/
 
 void	sig_handler(int mode)
 {
@@ -48,8 +45,8 @@ void	sig_handler(int mode)
 /*
 
 (vanilla, SIGINT)
-.(?) ctrl C, empty prompt, repeat (vanilla: )
-.(?) ctrl C, some lines, repeat (vanilla: )
+.(V) ctrl C, empty prompt, repeat (vanilla: )
+.(V) ctrl C, some lines, repeat (vanilla: )
 .(V) ctrl C, blocking commands, (repeat?)
 ◦ ctrl-C displays a new prompt on a new line.
 (new, repeat)
@@ -64,20 +61,11 @@ void	sig_handler(int mode)
 (vanilla, SIGQUIT)
 .(V) ctrl \, empty prompt, nothing
 .(V) ctrl \, full prompt, nothing
-.(?) ctrl \, blocking commands, nothing
+.(V) ctrl \, blocking commands, nothing
 ◦ ctrl-\ does nothing.
 (new, SIG_IGN)
 
 -------------------------
-sig 1 - pre readline
-(X) ctrl c - redisplay    , --------------
-(V) ctrl d -------------- , input == NULL && global_sig == 0
-(X) ctrl \ - SIG_IGN      , --------------
-
-sig 2 - pos readline, pre command
-(X) ctrl c 
-(X) ctrl d -------------- (outro mecanismo)
-(X) ctrl \ -------------- 
 
 como nao consigo usar signal handling em ctrl-D
 vamos supor entao que nao consigo controlar ctrl-D em buffers de input cheios
@@ -91,31 +79,11 @@ parent process e nao no cat dentro do execve
 mudo o ctrl-C para default antes do execve, e mudo o ctrl-C para IGN right after?
 para nao haver conflitos de sinais entre o parent process e todos os forked child
 processes que vou criar
+
+posso usar o sighandler para informar o meu executor, pos execucao, se recebeu ctrl-C?
+tamben nao tenho acesso ao retorno do execve
 ------------------------------
--> ctrl C ainda nao da propriamente buffer vazio, retorna sempre null
+
 -> ctrl-D c blocking command precisa de tratamento (provavelmente usando error status, em vez de
 continuar no loop do minishell, da free a tudo e sai)
-
-
-c1r8s6% cat		(empty ctrl-D)
-c1r8s6% cat		(full ctrl-D)
-cwenocweno%                                                                                             
-c1r8s6% cat		(empty ctrl-C)
-^C
-c1r8s6% cat		(full ctrl-C)
-cweochoi^C
-
-em relacao ao porque de o sinal global sentir quase imperativo ou obrigatorio, é
-muito simplesmente porque o mecanismo habitual é transferencia de informacao
-direta entre funcoes atraves de pointers ou returns, e a variavel global existe quando
-a transmissao de info entre funcoes dentro do mesmo processo se torna impossivel
-Portanto, eu sei que o global_sig vai ser para comunicar entre entre as handlers e as
-main functions. Agora onde e para que, ainda nao sei
-
-outra questao ta a ser aquilo do canonical vs manual mode de terminal input,
-quando usar qual, e tudo isto apenas para retirar o ^C de aparecer.
-Vai ser normal aparecer, em maior parte dos casos, os sinais no display do ecra uma vez
-que o meu minishell corre da mesma maneira que um bash terminal normal, em batch mode,
-que significa receber input linha a linha em ve de caracter a caracter em tempo real
-(para mais info pesquisa na net)
 */

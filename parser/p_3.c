@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_3.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:12:29 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/18 23:41:44 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 15:30:59 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,13 @@ void	find_red_pos(t_chunk *chunk, int *i)
 	}
 }
 
-int	scope_redirs(t_execlist *execl, int *exit_stt)
+int	scope_redirs(t_execlist *execl)
 {
 	int		c;
 	int		i;
 
 	c = -1;
 	i = -1;
-	(void)exit_stt;
 	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");//
 	//ft_printf("Inside parsing (3): scope_redirs;\n");//
 	while (execl->chunk[++c] != NULL)

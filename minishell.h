@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/21 12:40:52 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:29:59 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,29 @@
 # define PROMPT		"\033[42;34m>> minishell: \033[0;37m"
 
 typedef struct s_chunk {
-	char	*infile; // (2) redir_checker
-	int		heredoc; // (2) redir_checker
-	char	*delimiter; // (2) redir_checker
-	char	*outfile; // (2) redir_checker
-	int		append; // (2) redir_checker
-	char	*og; // (1) parse_execl
-	char	**cmd_n_args; // (4) arg_separator
-	char	*path; // (5) arg_id
-	int		inpipe; // (5) arg_id
-	int		inpfd; // executor
-	int		outpipe; //acho que já não é necessário
-	int		outpfd; // executor
-	int		blt; // (5) arg_id
+	char	*infile;
+	int		heredoc;
+	char	*delimiter;
+	char	*outfile;
+	int		append;
+	char	*og;
+	char	**cmd_n_args;
+	char	*path;
+	int		inpipe;
+	int		inpfd;
+	int		outpipe;
+	int		outpfd;
+	int		blt;
 }	t_chunk;
+
+/*
+char	**infiles;
+int		nmb_inf;
+int		final_inf;
+char	**outfiles;
+int		nmb_outf;
+int		final_outf;
+*/
 
 typedef struct s_execlist {
 	t_chunk	**chunk;
@@ -54,29 +63,28 @@ typedef struct s_execlist {
 	char	***my_envp;
 	int		valid_cmds;
 	int		*pipe_loc;
-	int		*err_stt;
+	int		*exit_stt;
 	int		*env_pipe;
 }	t_execlist;
 /*
-valid_cmds && cmd_nmb vai dar ao mesmo
+-> valid_cmds && cmd_nmb vai dar ao mesmo
 */
 
 void	print_db_char(char **str);
 
 // SIGNAL HANDLING
 void	sig_handler(int mode);
-//void	sig_handler_two(void);
 void	sig_repeat(int num);
-//void	global_checker(t_execlist *execl);
 
 // PARSER MAIN
-int		parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env);
+int		parse_central(t_execlist **execl, char *input, int *exit_stt, \
+		char ***env);
 int		pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env);
-int		redir_checker(t_execlist *execl, int *exit_stt);
-int		scope_redirs(t_execlist *execl, int *exit_stt);
-int		special_char(t_execlist *execl, int *exit_stt);
-int		arg_separator(t_execlist *execl, int *exit_stt);
-int		arg_id(t_execlist *execl, int *exit_stt);
+int		redir_checker(t_execlist *execl);
+int		scope_redirs(t_execlist *execl);
+int		special_char(t_execlist *execl);
+int		arg_separator(t_execlist *execl);
+int		arg_id(t_execlist *execl);
 
 // PARSER SUPPORT
 int		pipe_counter(char *input, t_execlist *execl);
@@ -86,15 +94,16 @@ char	*new_chnk(char *spec, char *old, int a, int b);
 int		cmd_separator(t_chunk *chunk);
 void	add_arg(t_chunk *chunk, char **str);
 int		chunk_id(t_chunk *chunk, int opt);
+char	*search_my_envp(t_execlist *execl, char *env_name);
 
-// OTHER
+// GLOBAL SUPPORT
 char	**create_envp(void);
 void	close_pipes(t_execlist *execl, int **fd, int i, int rel, int non_rel);
 char	*rmv_newline(char *old);
 
 // EXECUTOR
-int		exec_main(t_execlist *execl, int *error_stt);
-void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str);
+int		exec_main(t_execlist *execl);
+void	exec_loop(t_execlist *execl, int **fd, char ***exec_str);
 void	exec_input(t_execlist *execl, int **fd, int i);
 void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str);
 void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str);
@@ -102,6 +111,7 @@ void	temp_pipe(int *nfd, char *buff);
 char	*empty_pipe(int fd, t_execlist *execl, int i);
 char	***read_from_pipe(int fd, t_execlist *execl);
 void	write_to_pipe(int fd, char ***envs);
+//void	open_all_redirs(t_execlist *execl, int i);
 
 // FREE
 char	*free_str(char *str);
@@ -110,7 +120,7 @@ void	free_chunk(t_chunk *chunk);
 void	free_exec(t_execlist *exec);
 
 // BUILT-IN
-void	blt_central(t_execlist *execl, int i, char **exec_str, int *err);
+void	blt_central(t_execlist *execl, int i, char **exec_str);
 void	ft_cd(int *err, char **cmd, char ***env);
 void	ft_echo(int *err, char **cmd);
 void	ft_env(int *err, char **cmd, char ***envp);

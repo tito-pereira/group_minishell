@@ -6,13 +6,12 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/21 13:25:35 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:29:31 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-////////////////////////////////////////////
 void	print_db(char **str)
 {
 	int i = -1;
@@ -20,9 +19,11 @@ void	print_db(char **str)
 		ft_printf("%s\n", str[i]);
 }
 
-void	exec_action(t_execlist *execl, int **fd, \
-	int i, char ***exec_str) //int **redir
+////////////////////////////////////////////
+
+void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str) //int **redir
 {
+	//open_all_redirs(execl, i);
 	exec_input(execl, fd, i); //int **redir
 	exec_output(execl, fd, i, exec_str);
 	if (execl->chunk[i]->blt == 0)
@@ -32,7 +33,7 @@ void	exec_action(t_execlist *execl, int **fd, \
 	}
 	else if (execl->chunk[i]->blt == 1)
 	{
-		blt_central(execl, i, exec_str[i], execl->err_stt);
+		blt_central(execl, i, exec_str[i]);
 		//ft_printf("\n\n\ndentro export env\n");
 		//print_db_char(execl->my_envp[0]);
 		if (execl->valid_cmds == 1)
@@ -48,8 +49,7 @@ void	exec_action(t_execlist *execl, int **fd, \
 	exit(0);
 }
 
-void	exec_launch(t_execlist *execl, int **fd, int **redir, \
-	int i, char ***exec_str)
+void	exec_launch(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
 	int	pid;
 
@@ -60,7 +60,7 @@ void	exec_launch(t_execlist *execl, int **fd, int **redir, \
 		pid = fork();
 		if (pid == 0)
 		{
-			exec_launch(execl, fd, redir, i, exec_str);
+			exec_launch(execl, fd, i, exec_str);
 			//ft_printf("out of launch [%d]\n", i);
 			//exit(0);
 		}
@@ -102,7 +102,7 @@ int	check_changes(t_chunk *chunk)
 	return (ret);
 }
 
-void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str)
+void	exec_loop(t_execlist *execl, int **fd, char ***exec_str)
 {
 	int	i;
 	int	pid;
@@ -124,7 +124,7 @@ void	exec_loop(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 	}
 	pid = fork();
 	if (pid == 0)
-		exec_launch(execl, fd, redir, i, exec_str);
+		exec_launch(execl, fd, i, exec_str);
 	close_pipes(execl, fd, i, 1, 1);
 	sig_handler(3);
 	wait(NULL);

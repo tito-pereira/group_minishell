@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlima-fe <rlima-fe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:19 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/19 15:02:19 by rlima-fe         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:49:00 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,3 +45,6 @@ void	ft_unset(int *err, char **cmd, char ***envp)
 	*err = 0;
 }
 
+/*
+-> garantir que as my_envp é sempre NULL terminated (incluindo na unset e na export)
+*/

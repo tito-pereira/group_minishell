@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/20 03:52:17 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 15:58:24 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	write_inpipe(t_execlist *execl, char *str, int **fd, int i)
     wait(0);
 }
 
-void	exec_input(t_execlist *execl, int **fd, int i) //int **redir
+void	exec_input(t_execlist *execl, int **fd, int i)
 {
 	//ft_printf("preparing input for exec[%d]\n", i);
     close_pipes(execl, fd, i, 0, 1);

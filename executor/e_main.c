@@ -14,7 +14,7 @@
 
 /////////////////////////
 
-void	init_exec(t_execlist *execl, int **fd, int **redir)
+void	init_exec(t_execlist *execl, int **fd)
 {
 	int i;
 	//int	j;
@@ -25,7 +25,7 @@ void	init_exec(t_execlist *execl, int **fd, int **redir)
 	while (++i < execl->valid_cmds)
 	{
 		ft_printf("i: %d < cmds: %d\n", i, execl->valid_cmds);
-		redir[i] = ft_calloc(2, sizeof(int));
+		//redir[i] = ft_calloc(2, sizeof(int));
 		fd[i] = ft_calloc(2, sizeof(int));
 		/*j = -1;
 		while (++j < 2)
@@ -48,7 +48,7 @@ void	init_exec(t_execlist *execl, int **fd, int **redir)
 	//ft_printf("fd && redir initialized.\n");
 }
 
-void	end_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
+void	end_exec(t_execlist *execl, int **fd, char ***exec_str)
 {
 	int i;
 	
@@ -57,12 +57,12 @@ void	end_exec(t_execlist *execl, int **fd, int **redir, char ***exec_str)
 	while (++i < execl->valid_cmds)
 	{
 		exec_str[i] = free_db_str(exec_str[i]);
-		free(redir[i]);
+		//free(redir[i]);
 		close(fd[i][0]);
 		close(fd[i][1]);
 		free(fd[i]);
 	}
-	free(redir);
+	//free(redir);
 	free(fd);
 	free(exec_str);
 	ft_printf("All frees done.\n");
@@ -103,31 +103,28 @@ void	get_exec_str(t_execlist *execl, char ***exec_str)
 
 ////////////////////////////////
 
-int	exec_main(t_execlist *execl, int *exit_stt)
+int	exec_main(t_execlist *execl)
 {
 	int		**fd;
-	int		**redir;
+	//int		**redir;
 	char	***exec_str;
 
 	//ft_printf("Inside the executor:\n");
-	(void)exit_stt;
 	fd = (int **)ft_calloc(execl->valid_cmds, sizeof(int *));
-	redir = (int **)ft_calloc(execl->valid_cmds, sizeof(int *));
+	//redir = (int **)ft_calloc(execl->valid_cmds, sizeof(int *));
 	exec_str = (char ***)ft_calloc(execl->valid_cmds, sizeof(char **));
-	if (!fd || !redir || !exec_str)
+	if (!fd || !exec_str)
 	{
 		if (fd)
 			free(fd);
-		if (redir)
-			free(redir);
 		if (exec_str)
 			free(exec_str);
 		return (0);
 	}
 	//ft_printf("All mallocs succesfull\n");
-	init_exec(execl, fd, redir); // V
+	init_exec(execl, fd); // V
 	get_exec_str(execl, exec_str); // V
-	exec_loop(execl, fd, redir, exec_str); // X
+	exec_loop(execl, fd, exec_str); // X
 	//if (execl->my_envp)
 	//{
 		//printf("\n\n\nenvp exists\n");
@@ -136,7 +133,7 @@ int	exec_main(t_execlist *execl, int *exit_stt)
 	//else
 		//printf("envp is NULL somehow\n");
 	//ft_printf("after exec loop env = %s\n", execl->my_envp[0][51]);
-	end_exec(execl, fd, redir, exec_str); // X
+	end_exec(execl, fd, exec_str); // X
 	//ft_printf("after exec end env = %s\n", execl->my_envp[0][52]);
 	return (1);
 }

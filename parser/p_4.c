@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/11 12:33:54 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:55:18 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	get_positions(int *a, int *b, int *i, char *chunk)
 	*/
 }
 
-char	*get_spec(int *a, int *b, char *chunk, int *exit_stt)
+char	*get_spec(int *a, int *b, char *chunk, t_execlist *execl)
 {
 	char	*env_name;
 	char	*env_value;
@@ -67,9 +67,9 @@ char	*get_spec(int *a, int *b, char *chunk, int *exit_stt)
 	if (!env_name)
 		return(NULL);
 	if (env_name[0] == '?')
-		env_value = ft_itoa(*exit_stt);
+		env_value = ft_itoa(*(execl->exit_stt));
 	else
-		env_value = getenv(env_name);
+		env_value = search_my_envp(execl, env_name); //getenv(env_name);
 	if (!env_value)
 		return(NULL);
 	free(env_name);
@@ -77,13 +77,13 @@ char	*get_spec(int *a, int *b, char *chunk, int *exit_stt)
 	return (env_value);
 }
 
-int	h_env_var(int *a, int *b, int *i, char **chunk, int *exit_stt)
+int	h_env_var(int *a, int *b, int *i, char **chunk, t_execlist *execl)
 {
 	char	*spec;
 
 	ft_printf("Inside the handler\n");
 	get_positions(a, b, i, *chunk);
-	spec = ft_strdup(get_spec(a, b, *chunk, exit_stt));
+	spec = ft_strdup(get_spec(a, b, *chunk, execl));
 	if (spec != NULL)
 	{
 		*chunk = new_chnk(spec, *chunk, *a, *b);
@@ -116,7 +116,7 @@ int	h_env_var(int *a, int *b, int *i, char **chunk, int *exit_stt)
 	*/
 }
 
-int	special_char(t_execlist *execl, int *exit_stt)
+int	special_char(t_execlist *execl)
 {
 	int		a;
 	int		b;
@@ -141,9 +141,9 @@ int	special_char(t_execlist *execl, int *exit_stt)
 			if (execl->chunk[j]->og[i] == '$' && flag == 1)
 			{
 				//ft_printf("Special char found in position %d\n", i);//
-				if (h_env_var(&a, &b, &i, &execl->chunk[j]->og, exit_stt) == 0)
+				if (h_env_var(&a, &b, &i, &execl->chunk[j]->og, execl) == 0)
 				{
-					*exit_stt = 1;
+					*(execl->exit_stt) = 1;
 					return(0);
 				}
 				//else

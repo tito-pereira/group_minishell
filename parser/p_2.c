@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/20 02:24:05 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 15:46:58 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 (2) - reads and stores redirections and filenames inside each token
 */
 
-int	check_redir(t_execlist *execl, int *i, int c, int *exit_stt)
+int	check_redir(t_execlist *execl, int *i, int c)
 {
 	//ft_printf("Inside check_redir;\n"); //
 	if (execl->chunk[c]->og[*i] == '<' && c == 0)
@@ -24,7 +24,7 @@ int	check_redir(t_execlist *execl, int *i, int c, int *exit_stt)
 		if (input_redir(execl->chunk[c], i) == -1)
 		{
 			perror("Input redirection parsing error");
-			*exit_stt = 1;
+			*(execl->exit_stt) = 1;
 			return (0);
 		}
 	}
@@ -33,14 +33,14 @@ int	check_redir(t_execlist *execl, int *i, int c, int *exit_stt)
 		if (output_redir(execl->chunk[c], i) == -1)
 		{
 			perror("Output redirection parsing error");
-			*exit_stt = 1;
+			*(execl->exit_stt) = 1;
 			return (0);
 		}
 	}
 	return (1);
 }
 
-int	redir_checker(t_execlist *execl, int *exit_stt)
+int	redir_checker(t_execlist *execl)
 {
 	int	i;
 	int	c;
@@ -71,19 +71,9 @@ int	redir_checker(t_execlist *execl, int *exit_stt)
 		i = -1;
 		while (execl->chunk[c]->og[++i] != '\0')
 		{
-			if (check_redir(execl, &i, c, exit_stt) == 0)
+			if (check_redir(execl, &i, c) == 0)
 				return (0);
 		}
 	}
 	return (1);
 }
-
-/*
-inicializar:
-infile
-outfile
-delimiter
-og
-cmd_n_args
-path
-*/

@@ -6,7 +6,7 @@
 /*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/21 13:53:32 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:08:40 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,6 @@ void	print_exec(t_execlist *execl)
 }
 ///////////////////////////////////////////////
 
-int	global_sig;
-// 0 neutro e/ou ctrl D
-// 1 para redisplay; (ctrl C)
-
 /*
 -> esta global var, bem como a exit handler, vai ter de ficar no mesmo file da main
 senao não vou conseguir aceder a ele, assim ambas as funções têm acesso e
@@ -78,14 +74,14 @@ char	*ft_read()
 	input = NULL;
 	while (1)
 	{
-		ft_printf("global_signal check: %d\n", global_sig);
+		//ft_printf("global_signal check: %d\n", global_sig);
 		input = readline(PROMPT);
-		if (input != NULL)// && global_sig == 0) //normal + ctrl-\ && ctrl-D ignores
+		if (input != NULL) //normal + ctrl-\ && ctrl-D ignores
 		{
 			add_history(input);
 			return (input);
 		}
-		else if (input == NULL)// && global_sig == 0) //ctrl-D stoppage, SIGINT (ctrl-\ ignores)
+		else if (input == NULL) //ctrl-D stoppage, SIGINT (ctrl-\ ignores)
 			exit(0);
 		/*else if (input != NULL && global_sig == 1) //ctrl-C redisplay + full buffer (clear it)
 		{
@@ -108,17 +104,6 @@ entra sempre no full buffer
 
 sera preciso dar frees dos inputs depois de adicionar a history?
 */
-
-void	sig_repeat(int num)
-{
-	(void)num;
-	//global_sig = 1;
-	rl_replace_line("", 0);
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
 
 char	**create_envp(void)
 {
@@ -166,26 +151,26 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 	if (flag == 1)
 		flag = pipe_chunks(execl, input, exit_stt, env);
 	if (flag == 1)
-		flag = redir_checker(*execl, exit_stt);
+		flag = redir_checker(*execl);
 	if (flag == 1)
-		flag = scope_redirs(*execl, exit_stt);
+		flag = scope_redirs(*execl);
 	if (flag == 1)
-		flag = special_char(*execl, exit_stt);
+		flag = special_char(*execl);
 	if (flag == 1)
-		flag = arg_separator(*execl, exit_stt);
+		flag = arg_separator(*execl);
 	if (flag == 1)
-		flag = arg_id(*execl, exit_stt);
+		flag = arg_id(*execl);
 	//ft_printf("Finished parsing with flag %d\n", flag);//
 	return (flag);
 }
 
+/*
 void	init_globals(int *exit_stt, t_execlist **execl, char ***env)
 {
-	global_sig = 0;
 	*exit_stt = 0;
 	*execl = NULL;
 	*env = create_envp();
-}
+}*/
 
 int	main()
 {
@@ -193,9 +178,7 @@ int	main()
 	t_execlist		*execl;
 	int				exit_stt;
 	char			**env;
-	//struct	termios	origin;
 
-	global_sig = 0;
 	exit_stt = 0;
 	execl = NULL;
 	env = create_envp();
@@ -224,7 +207,7 @@ int	main()
 			print_exec(execl);
 			//printf("\n\n\nafter parsing\n");
 			//print_db_char(execl->my_envp[0]);
-			if (exec_main(execl, &exit_stt) == 1)
+			if (exec_main(execl) == 1)
 			{
 				//if check_change() == 1
 				env = execl->my_envp[0];

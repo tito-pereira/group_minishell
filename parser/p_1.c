@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/20 00:11:02 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 15:46:22 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	**divide_pipes(t_execlist *execl, char *input)
 	return (og_group);
 }
 
-int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
+int	chunk_create(char *input, t_execlist *execl)
 {
 	char	**og_group;
 	int		i;
@@ -52,7 +52,7 @@ int	chunk_create(char *input, t_execlist *execl, int *exit_stt)
 	if (i != execl->cmd_nmb)
 	{
 		perror("Pipe parsing error");
-		*exit_stt = 1;
+		*(execl->exit_stt) = 1;
 		return(0);
 	}
 	i = -1;
@@ -92,12 +92,10 @@ int	pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env)
 	(*execl)->cmd_nmb = c + 1;
 	(*execl)->pipe_nmb = c;
 	(*execl)->my_envp = env;
-	//printf("\n\n\ninside chunks\n");
-	//print_db_char((*execl)->my_envp[0]);
-	(*execl)->err_stt = ex_stt;
+	(*execl)->exit_stt = ex_stt;
 	(*execl)->chunk[c + 1] = NULL;
 	//ft_printf("Pipe counter: %d;\n", c); //
-	if (chunk_create(input, *execl, ex_stt) == 0)
+	if (chunk_create(input, *execl) == 0)
 		return(0);
 	/*if (*execl)
 	{

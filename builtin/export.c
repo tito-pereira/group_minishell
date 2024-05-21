@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:15 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/20 00:15:43 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 16:49:06 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,3 +110,7 @@ void	ft_export(int *err, char **cmd, char ***envp)
 	//print_db_char(envp[0]);
 	*err = 0;
 }
+
+/*
+-> garantir que as my_envp é sempre NULL terminated (incluindo na unset e na export)
+*/
