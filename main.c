@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/20 23:24:31 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 13:53:32 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,65 +80,44 @@ char	*ft_read()
 	{
 		ft_printf("global_signal check: %d\n", global_sig);
 		input = readline(PROMPT);
-		if (input != NULL && global_sig == 0) //normal + ctrl-\ && ctrl-D ignores
+		if (input != NULL)// && global_sig == 0) //normal + ctrl-\ && ctrl-D ignores
 		{
 			add_history(input);
 			return (input);
 		}
-		else if (input == NULL && global_sig == 0) //ctrl-D stoppage, SIGINT (ctrl-\ ignores)
+		else if (input == NULL)// && global_sig == 0) //ctrl-D stoppage, SIGINT (ctrl-\ ignores)
 			exit(0);
-		else if (input != NULL && global_sig == 1) //ctrl-C redisplay + full buffer (clear it)
+		/*else if (input != NULL && global_sig == 1) //ctrl-C redisplay + full buffer (clear it)
 		{
 			free(input);
-			ft_printf("global_signal check: %d\n", global_sig);
+			ft_printf("full buffer\nglobal_signal check: %d\n", global_sig);
 			global_sig = 0;
 			continue ;
 		}
 		else if (input == NULL && global_sig == 1) //ctrl-C redisplay + empty buffer (just repeat)
 		{
-			ft_printf("global_signal check: %d\n", global_sig);
+			ft_printf("NULL buffer\nglobal_signal check: %d\n", global_sig);
 			global_sig = 0;
 			continue ;
-		}
+		}*/
 	}
 }
 
 /*
+entra sempre no full buffer
+
 sera preciso dar frees dos inputs depois de adicionar a history?
-
-Function: int rl_on_new_line ()
-Tell the update routines that we have moved onto a new (empty) line, usually after ouputting a newline.
-
-Function: int rl_redisplay ()
-Change what's displayed on the screen to reflect the current contents of rl_line_buffer.
-automaticamente vai buscar o prompt usado
 */
-
-void	set_tty_manual()
-{
-	struct	termios	manual;
-
-	tcgetattr(STDIN_FILENO, &manual);
-    manual.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-    manual.c_oflag &= ~(OPOST);
-    manual.c_cflag |= (CS8);
-    manual.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-    tcsetattr(STDIN_FILENO, TCSANOW, &manual);
-}
 
 void	sig_repeat(int num)
 {
-	struct termios origin;
-
 	(void)num;
-	tcgetattr(STDIN_FILENO, &origin);
-	set_tty_manual(); //set to manual
-	global_sig = 1;
+	//global_sig = 1;
+	rl_replace_line("", 0);
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	tcsetattr(STDIN_FILENO, TCSANOW, &origin); //reset to origins
 }
 
 char	**create_envp(void)
@@ -200,20 +179,12 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 	return (flag);
 }
 
-void	init_globals(int *exit_stt, t_execlist **execl, struct termios *origin, char ***env)
+void	init_globals(int *exit_stt, t_execlist **execl, char ***env)
 {
 	global_sig = 0;
 	*exit_stt = 0;
 	*execl = NULL;
-	tcgetattr(STDIN_FILENO, origin);
 	*env = create_envp();
-}
-
-void	esc_protocol(t_execlist *execl, struct termios origin)
-{
-	if (execl != NULL)
-		free_exec(execl);
-	tcsetattr(STDIN_FILENO, TCSANOW, &origin);
 }
 
 int	main()
@@ -222,17 +193,16 @@ int	main()
 	t_execlist		*execl;
 	int				exit_stt;
 	char			**env;
-	struct	termios	origin;
+	//struct	termios	origin;
 
 	global_sig = 0;
 	exit_stt = 0;
 	execl = NULL;
-	tcgetattr(STDIN_FILENO, &origin);
 	env = create_envp();
-	init_globals(&exit_stt, &execl, &origin, &env);
+	//init_globals(&exit_stt, &execl, &origin, &env);
 	while (1)
 	{
-		sig_handler_one();
+		sig_handler(1);
 		//if (global_checker(execl) == 1)
 			//continue;
 		//ft_printf("\n\n\nbegining env\n");
@@ -248,6 +218,7 @@ int	main()
 			ft_printf("Closing minishell...\n");
 			exit(0);
 		}*/
+		sig_handler(2);
 		if (parse_central(&execl, input, &exit_stt, &env) == 1)
 		{
 			print_exec(execl);
@@ -329,8 +300,30 @@ void sig_repeat(int num)
     rl_redisplay();          // Redisplay the prompt
 }
 
-void setup_signal_handler()
+void	set_tty_manual()
 {
-    struct
+	struct	termios	manual;
 
+	tcgetattr(STDIN_FILENO, &manual);
+    manual.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+    manual.c_oflag &= ~(OPOST);
+    manual.c_cflag |= (CS8);
+	manual.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+	tcsetattr(STDIN_FILENO, TCSANOW, &manual);
+}
+
+void	sig_repeat(int num)
+{
+	struct termios origin;
+
+	(void)num;
+	tcgetattr(STDIN_FILENO, &origin);
+	set_tty_manual(); //set to manual
+	global_sig = 1;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	tcsetattr(STDIN_FILENO, TCSANOW, &origin); //reset to origins
+}
 */
