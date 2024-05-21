@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/20 18:17:22 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/20 23:24:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,19 @@ int	global_sig;
 // 1 para redisplay; (ctrl C)
 
 /*
-esta global var, bem como a exit handler, vai ter de ficar no mesmo file da main
+-> esta global var, bem como a exit handler, vai ter de ficar no mesmo file da main
 senao não vou conseguir aceder a ele, assim ambas as funções têm acesso e
 podem alterar o seu valor sem mandar pointers para a frente e p trás
 
-ach que o global nao vai ser para utilizar na ft_read mas sim quando sair da read para informar
+-> acho que o global nao vai ser para utilizar na ft_read mas sim quando sair da read para informar
 que é para dar free das cenas
-para ja, a unica situacao que vejo é para saber se dou free ao input buffer (escape c ctrl C) ou se é valido
-e o uso (escape normal c enter)
+para ja, a unica situacao que vejo é para saber se dou free ao input buffer (escape c ctrl C) ou se é
+valido e o uso (escape normal c enter)
+
+-> voltei ao inicio de nao perceber onde usar a global. Depende de como for usar as sig handlers
+tambem. Eu ia usar como "erro de status" ao sair da readline e como informacao sobre se dou free
+ou nao, no entanto, ja consegui por as new_line e redisplay a dar e nao percebo onde usar
+o global afinal. se calhar só se usa depois nos blocking commands
 */
 
 char	*ft_read()

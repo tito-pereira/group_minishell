@@ -61,7 +61,7 @@ void	sig_handler_one(void)
 
 -------------------------
 sig 1 - pre readline
-(X) ctrl c - global=2, rl_newline
+(X) ctrl c - acho que nao uso global aqui
 (V) ctrl d -------------- input == NULL && global_sig == 0
 (X) ctrl \ - SIG_IGN
 
@@ -79,32 +79,6 @@ continuar no loop do minishell, da free a tudo e sai)
 -> ctrl-\ in blocking commands imprime o ^\
 
 
-
-while loop {
-	sig 1 = close immediate (porque ainda nao dei malloc de nada)
-	readline
-	after readline
-	sig 2 = free + close
-	parser
-	exec
-	blocking command
-}
-
-void	sig_handler_two(void)
-{
-	//struct	sigaction	sa_f_exit;
-	struct	sigaction	sa_repeat;
-	struct	sigaction	sa_ign;
-
-	//sa_f_exit.sa_handler = &sig_f_exit;
-	sa_repeat.sa_handler = &sig_repeat;
-	sa_ign.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sa_repeat, NULL); //ctrl C
-	//sigaction(EOF, &sa_f_exit, NULL); //ctrl D
-	sigaction(SIGQUIT, &sa_ign, NULL); //ctrl barra
-}
-
-
 a resposta ao meu problema de flags deve ser as masks, sigaddset e sigemptyset
 ja sei
 usar as rl_newline etc etc
@@ -117,4 +91,9 @@ em relacao ao porque de o sinal global sentir quase imperativo ou obrigatorio, Ã
 muito simplesmente porque o mecanismo habitual Ã© transferencia de informacao
 direta entre funcoes atraves de pointers ou returns, e a variavel global existe quando
 a transmissao de info entre funcoes dentro do mesmo processo se torna impossivel
+Portanto, eu sei que o global_sig vai ser para comunicar entre entre as handlers e as
+main functions. Agora onde e para que, ainda nao sei
+
+outra questao ta a ser aquilo do canonical vs manual mode de terminal input,
+quando usar qual, e tudo isto apenas para retirar o ^C de aparecer
 */
