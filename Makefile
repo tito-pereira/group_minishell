@@ -3,35 +3,56 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:44:12 by marvin            #+#    #+#              #
-#    Updated: 2024/05/21 18:30:29 by tibarbos         ###   ########.fr        #
+#    Updated: 2024/05/22 18:26:34 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# Name && Utilities
 NAME= minishell
+RM= rm -rf
+
+# Compiler && Flags
 CC= cc
 CFLAGS= -Wall -Wextra -Werror
-RM= rm -rf
-SRC= ./parser/p_1.c ./parser/p_1a.c \
+
+# Source && Object Files
+SRC_P= ./parser/p_1.c ./parser/p_1a.c \
 	./parser/p_2.c ./parser/p_2a.c \
 	./parser/p_3.c \
 	./parser/p_4.c ./parser/p_4a.c ./parser/p_4b.c \
 	./parser/p_5.c ./parser/p_5a.c \
-	./parser/p_6.c ./parser/p_6a.c \
-	./executor/e_main.c ./executor/e_loop.c ./executor/e_action.c \
-	./executor/e_close.c ./executor/e_outf.c ./executor/e_pipe.c \
-	./executor/e_envs.c ./executor/e_redirs.c \
-	./builtin/blt_central.c ./builtin/cd.c ./builtin/echo.c ./builtin/env.c \
-	./builtin/exit.c ./builtin/export.c ./builtin/pwd.c ./builtin/unset.c \
-	main.c free.c signals.c
-OBJ= ${SRC:.c=.o}
-LIBS= -lreadline -L./mylib -lft
+	./parser/p_6.c ./parser/p_6a.c
+OBJ_P= $({SRC_P:.c=.o})
 
+SRC_E= ./src/executor/e_main.c ./src/executor/e_loop.c \
+	./src/executor/e_action.c ./src/executor/e_close.c \
+	./src/executor/e_outf.c ./src/executor/e_pipe.c \
+	./src/executor/e_envs.c ./src/executor/e_redirs.c
+OBJ_E= $({SRC_E:.c=.o})
+
+SRC_B= ./src/builtin/blt_central.c ./src/builtin/cd.c \
+	./src/builtin/echo.c ./src/builtin/env.c \
+	./src/builtin/exit.c ./src/builtin/export.c \
+	./src/builtin/pwd.c ./src/builtin/unset.c
+OBJ_B= $({SRC_B:.c=.o})
+
+SRC_M= ./src/main.c ./src/free.c ./src/signals.c
+OBJ_M= $({SRC_M:.c=.o})
+
+OBJ= $(OBJ_P) $(OBJ_E) $(OBJ_B) $(OBJ_M)
+
+# Include Libraries
+LIB_FT= -L./mylib -lft
+LIB_READ= -lreadline
+LIBS= $(LIB_FT) $(LIB_READ)
+
+# Rules
 $(NAME): $(OBJ)
 	@cd ./mylib && make
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
+	@$(CC) -g $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
 all: $(NAME)
 	@cd ./mylib && make all

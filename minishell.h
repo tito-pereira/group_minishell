@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 13:33:20 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/22 18:12:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_execlist {
 -> tirar inpfd, outpfd e outpipe
 */
 
+// DELETE
 void	print_db_char(char **str);
 
 // SIGNAL HANDLING
@@ -85,7 +86,8 @@ void	sig_repeat(int num);
 // PARSER MAIN
 int		parse_central(t_execlist **execl, char *input, int *exit_stt, \
 		char ***env);
-int		pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env);
+int		pipe_chunks(t_execlist **execl, char *input, int *ex_stt, \
+		char ***env);
 int		redir_checker(t_execlist *execl);
 int		scope_redirs(t_execlist *execl);
 int		special_char(t_execlist *execl);
@@ -117,7 +119,7 @@ void	temp_pipe(int *nfd, char *buff);
 char	*empty_pipe(int fd, t_execlist *execl, int i);
 char	***read_from_pipe(int fd, t_execlist *execl);
 void	write_to_pipe(int fd, char ***envs);
-//void	open_all_redirs(t_execlist *execl, int i);
+//void	open_all_redirs(t_execlist *execl, int i); // ADD
 
 // FREE
 char	*free_str(char *str);
