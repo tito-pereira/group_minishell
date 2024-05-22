@@ -6,52 +6,99 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:29:03 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/22 18:08:46 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/23 00:57:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	open_all_infs(t_execlist *execl, int i)
+/*
+typedef struct s_chunk {
+	char	**infiles; //
+	int		nmb_inf; //
+	int		*here_dcs; //
+	int		heredoc; // --- //
+	char	*here_file; // --- //
+	char	*delimiter;
+	char	**outfiles; //
+	int		nmb_outf; //
+	int		append;
+	int		*app_dcs; //
+	char	*og;
+	char	**cmd_n_args;
+	char	*path; // --- //
+	int		inpipe;
+	int		inpfd; // --- //
+	int		outpipe; // --- //
+	int		outpfd; // --- //
+	int		blt;
+}	t_chunk;
+*/
+
+void	open_all_infs(t_chunk *chunk, int *exit)
 {
 	int	i;
 	int	tmp;
+	int	nfile;
 
 	i = -1;
-	if (execl->chunk[i]->infiles != NULL)
+	nfile = chunk->nmb_inf;
+	if (chunk->infiles != NULL)
 	{
-		while (++i <= execl->chunk[i]->nmb_inf)
+		while (++i <= nfile)
 		{
-			tmp = open();
-			if (tmp == -1)
-				//;
-			close(tmp);
+			if (chunk->here_dcs[i] == 0)
+			{
+				tmp = open(chunk->infiles[i], O_RDONLY | O_CREAT, 0644);
+				if (tmp == -1)
+					*exit = 1; //verificar os erros possiveis
+				close(tmp);
+			} //so os nao heredoc abrem files, os heredoc passam à frente
 		}
 	}
 }
 
-void	open_all_outfs(t_execlist *execl, int i)
+void	open_all_outfs(t_chunk *chunk, int *exit)
 {
 	int	i;
 	int	tmp;
+	int	nfile;
 	
 	i = -1;
-	if (execl->chunk[i]->outfiles != NULL)
+	nfile = chunk->nmb_outf;
+	if (chunk->outfiles != NULL)
 	{
-		while (++i <= execl->chunk[i]->nmb_outf)
+		while (++i <= nfile)
 		{
-			tmp = open();
+			if (chunk->app_dcs[i] == 0)
+				tmp = open(chunk->outfiles[i], O_RDWR | O_CREAT | O_TRUNC, 0644);
+			else if (chunk->app_dcs[i] == 1)
+				tmp = open(chunk->outfiles[i], O_RDWR | O_CREAT | O_APPEND, 0644);
 			if (tmp == -1)
-				//;
+				*exit = 1; //verificar os erros possiveis
 			close(tmp);
 		}
 	}
 }
 
-void	open_all_redirs(t_execlist *execl, int i)
+void	open_all_redirs(t_execlist *execl)
 {
-	if (execl->chunk[i]->infiles != NULL)
-		open_all_infs(execl, i);
-	if (execl->chunk[i]->outfiles != NULL)
-		open_all_outfs(execl, i);
+	int	c;
+
+	c = -1;
+	while (execl->chunk[++c] != NULL)
+	{
+		if (execl->chunk[c]->infiles != NULL)
+			open_all_infs(execl->chunk[c], execl->exit_stt);
+		if (execl->chunk[c]->outfiles != NULL)
+			open_all_outfs(execl->chunk[c], execl->exit_stt);
+	}
 }
+
+/*
+-> heredoc nao abre files, cuidado, tirar isso
+
+-> talvez mudar aquele codigo de permissoes?
+nao é suposto ver as permissoes do file?
+se calhar eu recolho aqui ao tentar abrir com certas permissoes
+*/
