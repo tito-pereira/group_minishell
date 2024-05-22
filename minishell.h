@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 06:04:06 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/22 13:33:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_chunk {
 	char	**infiles; //
 	int		nmb_inf; //
 	int		heredoc;
+	char	*here_file;
 	char	*delimiter;
 	char	**outfiles; //
 	int		nmb_outf; //
@@ -50,6 +51,8 @@ typedef struct s_chunk {
 }	t_chunk;
 
 /*
+char	*here_file;
+
 char	**infiles;
 int		nmb_inf;
 int		final_inf;

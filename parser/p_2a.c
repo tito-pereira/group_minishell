@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 06:12:15 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/22 13:52:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*heredoc_read(char *lim)
 heredoc_read vai retornar mas é o input inteiro e nao um filename
 */
 
-int	input_redir(t_chunk *chunk, int *i)
+int	input_redir(t_chunk *chunk, int *i, char *new)
 {
 	(*i)++;
 	//ft_printf("Input redirection checker.\n"); //
@@ -97,28 +97,32 @@ int	input_redir(t_chunk *chunk, int *i)
 		if (chunk->delimiter != NULL)
 			free(chunk->delimiter);
 		chunk->delimiter = get_name(chunk->og, *i);
-		//ft_printf("delimiter is '%s'\n", chunk->delimiter); //
-		if (chunk->infile != NULL)
-			free(chunk->infile);
-		chunk->infile = heredoc_read(chunk->delimiter);
-		if (chunk->infile == NULL)
+		//ft_printf("delimiter is '%s'\n", chunk->delimiter);
+		//if (chunk->infile != NULL) //----------
+			//free(chunk->infile); //----------
+		chunk->here_file = heredoc_read(chunk->delimiter);
+		if (chunk->here_file == NULL)
 			return (-1);
 	}
 	else if (chunk->og[*i] != '<') // <
 	{
-		if (chunk->infile != NULL)
-			free(chunk->infile);
-		//ft_printf("simple input redirection checking.\n"); //
-		chunk->infile = get_name(chunk->og, *i);
+		//if (chunk->infile != NULL) -----------
+			//free(chunk->infile); ----------
+		//chunk->infile = get_name(chunk->og, *i);
+		//ft_printf("simple input redirection checking.\n");
+		new = get_name(chunk->og, *i);
+		if (new == NULL)
+			return (-1);
+		update_char_p(&(chunk->infiles), new, &(chunk->nmb_inf));
 	}
-	if (chunk->infile == NULL)
-		return (-1);
-	//ft_printf("heredoc: '%d'\n", chunk->heredoc);//
-	//ft_printf("infile: '%s'\n", chunk->infile); //
+	//if (chunk->infile == NULL) //----------
+		//return (-1); //----------
+	//ft_printf("heredoc: '%d'\n", chunk->heredoc);
+	//ft_printf("infile: '%s'\n", chunk->infile);
 	return (1);
 }
 
-int	output_redir(t_chunk *chunk, int *i)
+int	output_redir(t_chunk *chunk, int *i, char *new)
 {
 	(*i)++;
 	//ft_printf("Output redirection checker.\n"); //
@@ -127,27 +131,38 @@ int	output_redir(t_chunk *chunk, int *i)
 		(*i)++;
 		//ft_printf("append output redirection.\n");//
 		chunk->append = 1;
-		if (chunk->outfile != NULL)
-			free(chunk->outfile);
-		chunk->outfile = get_name(chunk->og, *i);
+		//if (chunk->outfile != NULL) //----------
+			//free(chunk->outfile); //----------
+		//chunk->outfile = get_name(chunk->og, *i);
+		new = get_name(chunk->og, *i);
+		if (new == NULL)
+			return (-1);
+		update_char_p(&(chunk->outfiles), new, &(chunk->nmb_outf));
 		(*i)--;
 	}
 	if(chunk->og[*i] != '>') // >
 	{
 		//ft_printf("truncate output redirection.\n");//
 		chunk->append = 0;
-		if (chunk->outfile != NULL)
-			free(chunk->outfile);
-		chunk->outfile = get_name(chunk->og, *i);
+		//if (chunk->outfile != NULL) -----------
+			//free(chunk->outfile); ----------
+		//chunk->outfile = get_name(chunk->og, *i);
+		new = get_name(chunk->og, *i);
+		if (new == NULL)
+			return (-1);
+		update_char_p(&(chunk->outfiles), new, &(chunk->nmb_outf));
 	}
-	if (chunk->outfile == NULL)
-		return (-1);
+	//if (chunk->outfile == NULL) //----------
+		//return (-1); //----------
 	//ft_printf("append: '%d'\n", chunk->append);//
 	//ft_printf("outfile: '%s'\n", chunk->outfile);//
 	return(1);
 }
 
 /*
+ainda tenho de tratar do heredoc e da char *delimiter
+é preciso guardar todas ou posso dar free / reciclar?
+
 por exemplo
 chunk->outfile[number] = get_name;
 
@@ -165,7 +180,7 @@ char	**add_char_p(char **old, char *son)
 	i = 0;
 	while (old[i] != NULL)
 		i++;
-	new = malloc((i + 2) * sizeof(char *));
+	new = (char **)ft_calloc((i + 2), sizeof(char *));
 	i = -1;
 	while (old[++i] != NULL)
 		new[i] = ft_strdup(old[i]);
@@ -175,16 +190,26 @@ char	**add_char_p(char **old, char *son)
 	return (new);
 }
 
-void	update_char_p(t_chunk *chunk, char *new_r)
+void	update_char_p(char ***in_or_out, char *new_str, int *count)
 {
-	if (chunk->nmb_outf == 0)
+	if (*count == -1)
 	{
-		chunk->outfiles = malloc(2 * sizeof(char *));
-		chunk->outfiles[0] = son;
-		chunk->outfiles[1] = NULL;
+		*in_or_out = (char **)ft_calloc(2, sizeof(char *));
+		(*in_or_out)[0] = new_str;
+		(*in_or_out)[1] = NULL;
+		(*count)++;
 	}
 	else
 	{
-		chunk->outfiles = add_char_p(chunk->outfiles, new_r);
+		*in_or_out = add_char_p(in_or_out, new_str);
+		(*count)++;
 	}
 }
+
+/*
+assim consigo usar estas funçoes como genericas tanto para infiles
+como para outfiles
+
+onde aumentar o contador de nmb_inf ou outf?
+algum problema sobre a maneira atual?
+*/
