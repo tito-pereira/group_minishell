@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:44:12 by marvin            #+#    #+#              #
-#    Updated: 2024/05/22 18:26:34 by marvin           ###   ########.fr        #
+#    Updated: 2024/05/22 22:48:24 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,12 @@ CC= cc
 CFLAGS= -Wall -Wextra -Werror
 
 # Source && Object Files
-SRC_P= ./parser/p_1.c ./parser/p_1a.c \
-	./parser/p_2.c ./parser/p_2a.c \
-	./parser/p_3.c \
-	./parser/p_4.c ./parser/p_4a.c ./parser/p_4b.c \
-	./parser/p_5.c ./parser/p_5a.c \
-	./parser/p_6.c ./parser/p_6a.c
+SRC_P= ./src/parser/p_1.c ./src/parser/p_1a.c \
+	./src/parser/p_2.c ./src/parser/p_2a.c ./src/parser/p_2a.c \
+	./src/parser/p_3.c \
+	./src/parser/p_4.c ./src/parser/p_4a.c ./src/parser/p_4b.c \
+	./src/parser/p_5.c ./src/parser/p_5a.c \
+	./src/parser/p_6.c ./src/parser/p_6a.c
 OBJ_P= $({SRC_P:.c=.o})
 
 SRC_E= ./src/executor/e_main.c ./src/executor/e_loop.c \

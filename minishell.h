@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 18:12:49 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/22 22:45:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,39 @@
 typedef struct s_chunk {
 	char	**infiles; //
 	int		nmb_inf; //
+	int		*here_dcs; //
 	int		heredoc;
 	char	*here_file;
 	char	*delimiter;
 	char	**outfiles; //
 	int		nmb_outf; //
 	int		append;
+	int		*app_dcs; //
 	char	*og;
 	char	**cmd_n_args;
-	char	*path;
+	char	*path; // --- //
 	int		inpipe;
-	int		inpfd;
-	int		outpipe;
-	int		outpfd;
+	int		inpfd; // --- //
+	int		outpipe; // --- //
+	int		outpfd; // --- //
 	int		blt;
 }	t_chunk;
 
 /*
-char	*here_file;
+heredoc passa a funcionar como uma flag mas na pratica
+é o mesmo valor que o heredoc_final de
+here_dcs[nmb_inf]
 
-char	**infiles;
+int		*here_dcs;
+char	*here_file;
+char	**infiles <- char *infile
 int		nmb_inf;
 int		final_inf;
-char	**outfiles;
+char	**outfiles <- char *infile
 int		nmb_outf;
 int		final_outf;
+
+char *herefile ???? que é isto
 */
 
 typedef struct s_execlist {
@@ -74,6 +82,7 @@ typedef struct s_execlist {
 /*
 -> valid_cmds && cmd_nmb vai dar ao mesmo
 -> tirar inpfd, outpfd e outpipe
+-> tmb posso tirar o path, nao o vou usar p nada
 */
 
 // DELETE
@@ -89,6 +98,7 @@ int		parse_central(t_execlist **execl, char *input, int *exit_stt, \
 int		pipe_chunks(t_execlist **execl, char *input, int *ex_stt, \
 		char ***env);
 int		redir_checker(t_execlist *execl);
+void	updt_rdr_lst(t_chunk *chunk, int in_out, int flag, char *n_str);
 int		scope_redirs(t_execlist *execl);
 int		special_char(t_execlist *execl);
 int		arg_separator(t_execlist *execl);

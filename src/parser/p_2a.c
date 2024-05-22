@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 18:09:15 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/22 22:45:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,14 @@ int	input_redir(t_chunk *chunk, int *i, char *new)
 		if (chunk->delimiter != NULL)
 			free(chunk->delimiter);
 		chunk->delimiter = get_name(chunk->og, *i);
-		//ft_printf("delimiter is '%s'\n", chunk->delimiter);
+		if (chunk->delimiter == NULL)
+			return (-1);
 		//if (chunk->infile != NULL) //----------
 			//free(chunk->infile); //----------
-		chunk->here_file = heredoc_read(chunk->delimiter);
-		if (chunk->here_file == NULL)
+		new = heredoc_read(chunk->delimiter);
+		if (new == NULL)
 			return (-1);
+		updt_rdr_lst(chunk, in_out, flag, new);
 	}
 	else if (chunk->og[*i] != '<') // <
 	{
@@ -110,10 +112,11 @@ int	input_redir(t_chunk *chunk, int *i, char *new)
 			//free(chunk->infile); ----------
 		//chunk->infile = get_name(chunk->og, *i);
 		//ft_printf("simple input redirection checking.\n");
+		chunk->heredoc = 0;
 		new = get_name(chunk->og, *i);
 		if (new == NULL)
 			return (-1);
-		update_char_p(&(chunk->infiles), new, &(chunk->nmb_inf));
+		updt_rdr_lst(chunk, in_out, flag, new);
 	}
 	//if (chunk->infile == NULL) //----------
 		//return (-1); //----------
@@ -137,7 +140,7 @@ int	output_redir(t_chunk *chunk, int *i, char *new)
 		new = get_name(chunk->og, *i);
 		if (new == NULL)
 			return (-1);
-		update_char_p(&(chunk->outfiles), new, &(chunk->nmb_outf));
+		updt_rdr_lst(chunk, in_out, flag, new);
 		(*i)--;
 	}
 	if(chunk->og[*i] != '>') // >
@@ -150,7 +153,7 @@ int	output_redir(t_chunk *chunk, int *i, char *new)
 		new = get_name(chunk->og, *i);
 		if (new == NULL)
 			return (-1);
-		update_char_p(&(chunk->outfiles), new, &(chunk->nmb_outf));
+		updt_rdr_lst(chunk, in_out, flag, new);
 	}
 	//if (chunk->outfile == NULL) //----------
 		//return (-1); //----------
@@ -158,58 +161,3 @@ int	output_redir(t_chunk *chunk, int *i, char *new)
 	//ft_printf("outfile: '%s'\n", chunk->outfile);//
 	return(1);
 }
-
-/*
-ainda tenho de tratar do heredoc e da char *delimiter
-é preciso guardar todas ou posso dar free / reciclar?
-
-por exemplo
-chunk->outfile[number] = get_name;
-
-em que so chunk->outfile[nmb_outf] seria o valido, porque é o
-ultimo
-comeca sempre em zero
-e if (0), fazer entao um malloc **
-*/
-
-char	**add_char_p(char **old, char *son)
-{
-	char	**new;
-	int		i;
-
-	i = 0;
-	while (old[i] != NULL)
-		i++;
-	new = (char **)ft_calloc((i + 2), sizeof(char *));
-	i = -1;
-	while (old[++i] != NULL)
-		new[i] = ft_strdup(old[i]);
-	new[++i] = son; //ou strdup ainda n sei
-	new[i] = NULL;
-	free_db_char(old);
-	return (new);
-}
-
-void	update_char_p(char ***in_or_out, char *new_str, int *count)
-{
-	if (*count == -1)
-	{
-		*in_or_out = (char **)ft_calloc(2, sizeof(char *));
-		(*in_or_out)[0] = new_str;
-		(*in_or_out)[1] = NULL;
-		(*count)++;
-	}
-	else
-	{
-		*in_or_out = add_char_p(in_or_out, new_str);
-		(*count)++;
-	}
-}
-
-/*
-assim consigo usar estas funçoes como genericas tanto para infiles
-como para outfiles
-
-onde aumentar o contador de nmb_inf ou outf?
-algum problema sobre a maneira atual?
-*/
