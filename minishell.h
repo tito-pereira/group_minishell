@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/21 18:29:59 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/22 06:04:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@
 # define PROMPT		"\033[42;34m>> minishell: \033[0;37m"
 
 typedef struct s_chunk {
-	char	*infile;
+	char	**infiles; //
+	int		nmb_inf; //
 	int		heredoc;
 	char	*delimiter;
-	char	*outfile;
+	char	**outfiles; //
+	int		nmb_outf; //
 	int		append;
 	char	*og;
 	char	**cmd_n_args;
@@ -68,6 +70,7 @@ typedef struct s_execlist {
 }	t_execlist;
 /*
 -> valid_cmds && cmd_nmb vai dar ao mesmo
+-> tirar inpfd, outpfd e outpipe
 */
 
 void	print_db_char(char **str);

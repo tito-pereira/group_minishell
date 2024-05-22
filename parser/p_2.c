@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/21 15:46:58 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/22 06:13:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ int	redir_checker(t_execlist *execl)
 	while (execl->chunk[++c] != NULL)
 	{
 		//ft_printf("Loop [%d];\n", c);
-		execl->chunk[c]->infile = NULL;
+		execl->chunk[c]->infiles = NULL;
 		//ft_printf("infile: %s;\n", execl->chunk[c]->infile);
 		execl->chunk[c]->heredoc = 0;
 		//ft_printf("heredoc: %d;\n", execl->chunk[c]->heredoc);
 		execl->chunk[c]->delimiter = NULL;
 		//ft_printf("delimiter: %s;\n", execl->chunk[c]->delimiter);
-		execl->chunk[c]->outfile = NULL;
+		execl->chunk[c]->outfiles = NULL;
 		//ft_printf("outfile: %s;\n", execl->chunk[c]->outfile);
 		execl->chunk[c]->append = 0;
 		execl->chunk[c]->inpipe = 0;

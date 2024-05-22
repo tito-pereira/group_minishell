@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_2a.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/21 18:14:19 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/05/22 06:12:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,6 @@ char	*get_name(char *str, int i)
 	return (ft_substr(str, a, (b - a)));
 }
 
-/*
-e redirections dentro de aspas??
-
-- e mesmo necessario aquela verificacao do fim do input ser \0?
-- deixo estar b = i ou algum caso em que b = i - 1?
-
-hello w
-a = char 7 = [6]
-b = char 8 = [7]
-len 1
-portanto sim eu quero o b na char seguinte para garantir uma len correta
-b = i sempre
-*/
-
 void	heredoc_chest(char **chest, char **input)
 {
 	char	*old;
@@ -65,25 +51,6 @@ void	heredoc_chest(char **chest, char **input)
 	free(old);
 	free(*input);
 }
-
-/*
-void	old_heredoc_chest(char **chest, char **input)
-{
-	char	*old;
-	
-	if (!(*chest))
-		*chest = ft_strdup(*input);
-	else
-	{
-		old = *chest;
-		*chest = ft_strjoin(*chest, "\n");
-		free (old);
-		old = *chest;
-		*chest = ft_strjoin(*chest, *input);
-		free (old);
-	}
-	free(*input);
-}*/
 
 char	*heredoc_read(char *lim)
 {
@@ -151,11 +118,6 @@ int	input_redir(t_chunk *chunk, int *i)
 	return (1);
 }
 
-/*
-assim posso manter a heredoc original e apenas mudar o executor
-com a flag heredoc
-*/
-
 int	output_redir(t_chunk *chunk, int *i)
 {
 	(*i)++;
@@ -193,15 +155,7 @@ em que so chunk->outfile[nmb_outf] seria o valido, porque é o
 ultimo
 comeca sempre em zero
 e if (0), fazer entao um malloc **
-
-if (chunk->nmb_outf == 0)
-{
-	chunk->outfiles = malloc(2 * sizeof(char *));
-	chunk->outfiles[0] = son;
-	chunk->outfiles[1] = NULL;
-}
-else
-	chunk->outfiles = add_char_p(chunk->outfiles, son);
+*/
 
 char	**add_char_p(char **old, char *son)
 {
@@ -220,4 +174,17 @@ char	**add_char_p(char **old, char *son)
 	free_db_char(old);
 	return (new);
 }
-*/
+
+void	update_char_p(t_chunk *chunk, char *new_r)
+{
+	if (chunk->nmb_outf == 0)
+	{
+		chunk->outfiles = malloc(2 * sizeof(char *));
+		chunk->outfiles[0] = son;
+		chunk->outfiles[1] = NULL;
+	}
+	else
+	{
+		chunk->outfiles = add_char_p(chunk->outfiles, new_r);
+	}
+}
