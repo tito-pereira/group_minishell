@@ -86,4 +86,27 @@ tamben nao tenho acesso ao retorno do execve
 
 -> ctrl-D c blocking command precisa de tratamento (provavelmente usando error status, em vez de
 continuar no loop do minishell, da free a tudo e sai)
+
+unica coisa que sei é, nao posso deixar o default ctrl-D para blocking commands
+para readline até funciona bem. tem que funcionar como SIGINT. o default SIGINT, em bash, fecha
+logo tudo mesmo estando em blocking commands (nope, apenas fecha o cat)
+
+default
+c1r5s3% cat (ctrl-C, SIGINT)
+^C
+c1r5s3% cat (ctrl-D, EOF)
+c1r5s3% 
+c1r5s3% cat (ctrl-C, SIGINT, 1 clique)
+stuff^C
+c1r5s3% cat (ctrl-D, EOF, 2 cliques)
+stuffstuff%
+c1r5s3% 
+
+
+comportamentos muito parecidos honestamente
+
+MUDAR NA READLINE DO HEREDOC
+fazer o mecanismo que faco na read mas desta vez quando uso readline ao ler o input
+para o heredoc
+vai ser equivalente a ter recebido esse sinal
 */

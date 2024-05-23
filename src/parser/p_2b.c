@@ -88,7 +88,7 @@ void	updt_rdr_lst(t_chunk *chunk, int in_out, int flag, char *n_str)
 	else if (in_out == 1 && flag == 0)
 	{
 		update_char_p(&(chunk->outfiles), n_str, &(chunk->nmb_outf));
-		update_int_p(&(chunk->outfiles), flag);
+		update_int_p(&(chunk->outfiles), flag, chunk->nmb_outf);
 	}
 }
 
@@ -110,10 +110,4 @@ que fica
 ate aqui, acho que é assim
 mas e quando eu tiver que realmente abrir os ficheiros, seja
 trunc ou append, é so abrir e deixar em branco? ou realmente faco algo?
-
->> o file fica exatamente igual ao que estava (deve abrir em append)
->  o file apaga tudo o que tinha la dentro (deve abrir em trunc)
-
-portanto outfiles sim, vou precisar de um int *, por isso mais vale fazer
-para ambos
 */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_pipe.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:49:36 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/22 18:08:41 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/23 18:02:55 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*empty_pipe(int fd, t_execlist *execl, int i)
 	char	*chest;
 	char	*old;
 
-	if (execl->chunk[i]->infile == NULL && execl->chunk[i]->inpipe == 1)
+	if (execl->chunk[i]->infiles == NULL && execl->chunk[i]->inpipe == 1)
 		return (NULL);
 	printf("inside empty_pipe [%d] with fd[%d]\n", i, fd);
 	shovel = get_next_line(fd);

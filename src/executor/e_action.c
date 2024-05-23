@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/22 18:08:00 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/23 17:19:40 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,27 +72,33 @@ void	write_inpipe(t_execlist *execl, char *str, int **fd, int i)
 
 void	exec_input(t_execlist *execl, int **fd, int i)
 {
+	int	n_file;
+
+	n_file = execl->chunk[i]->nmb_inf;
 	//ft_printf("preparing input for exec[%d]\n", i);
     close_pipes(execl, fd, i, 0, 1);
 	//if (!(execl->chunk[i]->heredoc == 1 && execl->chunk[i]->inpipe == 1))
 	//close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
 	//ft_printf("In input, closed(fd[%d][1] = %d)\n", i, fd[i][1]);
-	if (execl->chunk[i]->heredoc == 1 && execl->chunk[i]->inpipe == 1) //1, heredoc valido
+	if (execl->chunk[i]->inpipe == 1
+		&& execl->chunk[i]->here_dcs && execl->chunk[i]->here_dcs[n_file] == 1 ) //inpipe + heredocs
 	{
 		//ft_printf("heredoc input [%d]\n", i);
-        write_heredoc(execl, execl->chunk[i]->infile, fd, i);
+        write_heredoc(execl, execl->chunk[i]->infiles[n_file], fd, i);
 		//ft_printf("will read from fd[%d][0]=%d;\n", i, fd[i][0]);
 		dup2(fd[i][0], STDIN_FILENO);
 	}
 	//close(fd[i][1]); //fecha o pipe local (so escreve no proximo)
-    if (execl->chunk[i]->heredoc == 0 && execl->chunk[i]->inpipe == 1
-		&& execl->chunk[i]->infile != NULL) //1, normal infile
+    if (execl->chunk[i]->inpipe == 1
+		&& ((execl->chunk[i]->here_dcs && execl->chunk[i]->here_dcs[n_file] == 0)
+		|| (execl->chunk[i]->here_dcs == NULL))
+		&& execl->chunk[i]->infiles != NULL) //inpipe + !heredocs + infiles
     {
 		//ft_printf("infile input [%d]\n", i);
         //redir[i][0] = open(execl->chunk[i]->infile, O_RDONLY);
         //dup2(redir[i][0], STDIN_FILENO);
 		//close(redir[i][0]); //depois de dup, fecha-se
-		write_inpipe(execl, execl->chunk[i]->infile, fd, i);
+		write_inpipe(execl, execl->chunk[i]->infiles[n_file], fd, i);
 		dup2(fd[i][0], STDIN_FILENO);
     }
 	close(fd[i][1]); 
@@ -102,7 +108,7 @@ void	exec_input(t_execlist *execl, int **fd, int i)
         dup2(fd[i][0], STDIN_FILENO); //last pipe, fd[i - 1][0];
 		//ft_printf("dup2(fd[%d][0] = %d, STDIN_FILENO = %d);\n", i, fd[i][0], STDIN_FILENO);
 	}
-	if (execl->chunk[i]->outfile == NULL)
+	if (execl->chunk[i]->outfiles == NULL)
 	{
 		printf("closing inpipe in [%d]\n", i);
     	close(fd[i][0]);
@@ -121,17 +127,16 @@ void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
 	//ft_printf("preparing output for exec[%d]\n", i);
 	if ((i + 1) < execl->valid_cmds)
 		close(fd[i + 1][0]);
-	if (execl->chunk[i]->outfile != NULL) //1, outfile
+	if (execl->chunk[i]->outfiles != NULL) //1, outfile
 	{
 		ex_outfile(execl, fd, i, exec_str);
+		return ; //ou resolvo assim simplesmente e vai direto para o exec
 	}
-	else if ((i + 1) < execl->valid_cmds && execl->chunk[i]->outfile == NULL) //2, inside pipeline, non outfile
+	else if ((i + 1) < execl->valid_cmds && execl->chunk[i]->outfiles == NULL) //2, inside pipeline, non outfile
 		dup2(fd[i + 1][1], STDOUT_FILENO);
 	if ((i + 1) < execl->valid_cmds)
-		close(fd[i + 1][1]);
+		close(fd[i + 1][1]); //acho que é tranquilo tanto outfile como outpipe entrarem aqui
 }
-
-
 
 
 

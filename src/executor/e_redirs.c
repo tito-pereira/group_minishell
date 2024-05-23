@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_redirs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:29:03 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/23 00:57:33 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/23 15:27:00 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,9 @@ void	open_all_redirs(t_execlist *execl)
 }
 
 /*
--> heredoc nao abre files, cuidado, tirar isso
-
--> talvez mudar aquele codigo de permissoes?
+-> mudar aquele codigo de permissoes?
 nao é suposto ver as permissoes do file?
 se calhar eu recolho aqui ao tentar abrir com certas permissoes
+
+-> mudar error status
 */

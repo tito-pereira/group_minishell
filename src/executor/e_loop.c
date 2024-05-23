@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_loop.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/23 00:30:41 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/23 16:15:42 by tibarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ void	print_db(char **str)
 }
 
 ////////////////////////////////////////////
+
+/*
+echo pode receber redir_in e fazer redir_out
+pwd pode fazer redir_out
+*/
 
 void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str) //int **redir
 {
@@ -130,8 +135,6 @@ void	exec_loop(t_execlist *execl, int **fd, char ***exec_str)
 	wait(NULL);
 	if (execl->valid_cmds == 1 && check_changes(execl->chunk[0]) == 1)
 	{
-		//printf("\n\n\nim here\n");
-		//print_db_char(execl->my_envp[0]);
 		//printf("cmds = %d, changes[0] = %d\n", execl->valid_cmds, check_changes(execl->chunk[0]));
 		//printf("in read: closing writing [%d]\n", execl->env_pipe[1]);
 		close(execl->env_pipe[1]);
@@ -145,7 +148,5 @@ void	exec_loop(t_execlist *execl, int **fd, char ***exec_str)
 	}
 	//free_db_str(execl->my_envp[0]);
 	//execl->my_envp = tmpenv;
-	//ft_printf("\n\n\nin main process envs\n");
-	//print_db_char(execl->my_envp[0]);
 	ft_printf("\n\n\nexec_loop finished.\n");
 }
