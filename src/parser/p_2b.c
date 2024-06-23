@@ -33,7 +33,7 @@ char	**add_char_p(char **old, char *n_str)
 		new[i] = ft_strdup(old[i]);
 	new[++i] = n_str; //ou strdup ainda n sei
 	new[i] = NULL;
-	free_db_char(old);
+	free_db_str(old);
 	return (new);
 }
 
@@ -67,7 +67,7 @@ void	update_char_p(char ***in_or_out, char *n_str, int *c)
 	}
 	else
 	{
-		*in_or_out = add_char_p(in_or_out, n_str);
+		*in_or_out = add_char_p(*in_or_out, n_str);
 		(*c)++;
 	}
 }
@@ -81,7 +81,7 @@ void	update_int_p(int **in_or_out, int flag, int c)
 		(*in_or_out)[1] = -1;
 	}
 	else
-		*in_or_out = add_int_p(in_or_out, flag);
+		*in_or_out = add_int_p(*in_or_out, flag);
 }
 
 /*
@@ -98,7 +98,7 @@ void	updt_rdr_lst(t_chunk *chunk, int in_out, int flag, char *n_str)
 	else if (in_out == 1 && flag == 0)
 	{
 		update_char_p(&(chunk->outfiles), n_str, &(chunk->nmb_outf));
-		update_int_p(&(chunk->outfiles), flag, chunk->nmb_outf);
+		update_int_p(&(chunk->app_dcs), flag, chunk->nmb_outf);
 	}
 }
 

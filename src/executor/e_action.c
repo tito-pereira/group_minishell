@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_action.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:10 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/23 17:19:40 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/06/23 08:48:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	exec_input(t_execlist *execl, int **fd, int i)
 	//porque ainda vou precisar desta ponta do pipe para ler redir
 }
 
-void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
+void	exec_output(t_execlist *execl, int **fd, int i)
 {
 	//int		pid;
 	//int		tmp;
@@ -129,7 +129,7 @@ void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str)
 		close(fd[i + 1][0]);
 	if (execl->chunk[i]->outfiles != NULL) //1, outfile
 	{
-		ex_outfile(execl, fd, i, exec_str);
+		ex_outfile(execl, fd, i);
 		return ; //ou resolvo assim simplesmente e vai direto para o exec
 	}
 	else if ((i + 1) < execl->valid_cmds && execl->chunk[i]->outfiles == NULL) //2, inside pipeline, non outfile

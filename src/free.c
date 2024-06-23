@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 18:11:03 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 08:50:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**free_db_str(char **str)
 
 void	free_chunk(t_chunk *chunk)
 {
-	if (chunk->infile != NULL)
+	/*if (chunk->infile != NULL)
 		free(chunk->infile);
 	//printf("infile freed\n");
 	//chunk->infile = NULL;
@@ -54,7 +54,7 @@ void	free_chunk(t_chunk *chunk)
 	if (chunk->path != NULL)
 		free(chunk->path);
 	//printf("path freed\n");
-	//chunk->path = NULL;
+	//chunk->path = NULL;*/
 	free(chunk);
 	chunk = NULL;
 }

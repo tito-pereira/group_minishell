@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   e_outf.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:25:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/23 18:05:31 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/06/23 08:45:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ex_redir_file(t_execlist *execl, int i, char ***exec_str, char *buff, int *nfd)
+void	ex_redir_file(t_execlist *execl, int i, char *buff, int *nfd)
 {
 	int	tmp;
 	int	n_file;
@@ -51,7 +51,7 @@ void	ex_end(char *buff, int *nfd)
 	exit(0);
 }
 
-void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str)
+void	ex_outfile(t_execlist *execl, int **fd, int i)
 {
 	char	*buff;
 	int		*nfd;
@@ -66,7 +66,7 @@ void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str)
 	{
 		if ((i + 1) < execl->valid_cmds)
 			close(fd[i + 1][1]);
-		ex_redir_file(execl, i, exec_str, buff, nfd);
+		ex_redir_file(execl, i, buff, nfd);
 		ex_end(buff, nfd);
 		return ;
 	}

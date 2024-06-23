@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:44:12 by marvin            #+#    #+#              #
-#    Updated: 2024/06/23 06:45:48 by marvin           ###   ########.fr        #
+#    Updated: 2024/06/23 09:10:33 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CFLAGS= -Wall -Wextra -Werror
 
 # Source && Object Files
 SRC_P= ./src/parser/p_1.c ./src/parser/p_1a.c \
-	./src/parser/p_2.c ./src/parser/p_2a.c ./src/parser/p_2a.c \
+	./src/parser/p_2.c ./src/parser/p_2a.c ./src/parser/p_2b.c \
 	./src/parser/p_3.c \
 	./src/parser/p_4.c ./src/parser/p_4a.c ./src/parser/p_4b.c \
 	./src/parser/p_5.c ./src/parser/p_5a.c \

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 05:48:11 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 08:51:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	print_db_char(char **str) {
 	}
 }
 
+/*
 void	print_exec(t_execlist *execl)
 {
 	ft_printf("-.-.-.-.-.-.-.-.-.-\n");
@@ -48,7 +49,7 @@ void	print_exec(t_execlist *execl)
 			ft_printf("outfile: NULL\n");
 		ft_printf("-.-.-.-.-.-.-.-.-.-.\n-.-.-.-.-.-.-.-.-.-.\n");
 	}
-}
+}*/
 ///////////////////////////////////////////////
 
 /*
@@ -204,7 +205,7 @@ int	main(void)
 		sig_handler(2);
 		if (parse_central(&execl, input, &exit_stt, &env) == 1)
 		{
-			print_exec(execl);
+			//print_exec(execl);
 			//printf("\n\n\nafter parsing\n");
 			//print_db_char(execl->my_envp[0]);
 			if (exec_main(execl) == 1)

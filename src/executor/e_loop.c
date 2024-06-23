@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_loop.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/23 16:15:42 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/06/23 08:49:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str) //int **r
 {
 	//open_all_redirs(execl);
 	exec_input(execl, fd, i); //int **redir
-	exec_output(execl, fd, i, exec_str);
+	exec_output(execl, fd, i);
 	if (execl->chunk[i]->blt == 0)
 	{
 		sig_handler(2);
