@@ -121,3 +121,18 @@ ate aqui, acho que é assim
 mas e quando eu tiver que realmente abrir os ficheiros, seja
 trunc ou append, é so abrir e deixar em branco? ou realmente faco algo?
 */
+
+/*
+update redir list gloabl
+-> update char pointer (o char ** que contem e vai acumulando os nomes dos files)
+	-> infiles
+	-> outfiles
+-> update int pointer (int * contendo o valor 0/1 da flag, seja para inf ou outf)
+	-> infiles
+	-> outfiles
+(usando as funcoes generica add int p e add char p que dao free e novo malloc)
+
+new, leva malloc no get_name e aqui é atribuido diretamente
+é o nome new_string a ser acrescentado à lista
+portanto so deve levar free no fim de cada comando
+*/

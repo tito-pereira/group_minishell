@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 06:12:59 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 07:02:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@ inicializa cada chunk
 
 int	check_redir(t_execlist *execl, int *i, int c)
 {
+	char	*nwe;
+
+	nwe = NULL;
 	//ft_printf("Inside check_redir;\n"); //
 	if (execl->chunk[c]->og[*i] == '<' && c == 0)
 	{
-		if (input_redir(execl->chunk[c], i) == -1)
+		if (input_redir(execl->chunk[c], i, nwe) == -1)
 		{
 			perror("Input redirection parsing error");
 			*(execl->exit_stt) = 1;
@@ -31,7 +34,7 @@ int	check_redir(t_execlist *execl, int *i, int c)
 	}
 	else if (execl->chunk[c]->og[*i] == '>')
 	{
-		if (output_redir(execl->chunk[c], i) == -1)
+		if (output_redir(execl->chunk[c], i, nwe) == -1)
 		{
 			perror("Output redirection parsing error");
 			*(execl->exit_stt) = 1;

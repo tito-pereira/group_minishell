@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 06:41:43 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 07:06:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	input_redir(t_chunk *chunk, int *i, char *nwe)
 		nwe = heredoc_read(chunk->delimiter);
 		if (nwe == NULL)
 			return (-1);
-		updt_rdr_lst(chunk, in_out, flag, nwe);
+		updt_rdr_lst(chunk, 0, 1, nwe);
 	}
 	else if (chunk->og[*i] != '<') // <
 	{
@@ -116,7 +116,7 @@ int	input_redir(t_chunk *chunk, int *i, char *nwe)
 		nwe = get_name(chunk->og, *i);
 		if (nwe == NULL)
 			return (-1);
-		updt_rdr_lst(chunk, in_out, flag, nwe);
+		updt_rdr_lst(chunk, 0, 0, nwe);
 	}
 	//if (chunk->infile == NULL) //----------
 		//return (-1); //----------
@@ -140,7 +140,7 @@ int	output_redir(t_chunk *chunk, int *i, char *nwe)
 		nwe = get_name(chunk->og, *i);
 		if (nwe == NULL)
 			return (-1);
-		updt_rdr_lst(chunk, in_out, flag, nwe);
+		updt_rdr_lst(chunk, 1, 1, nwe);
 		(*i)--;
 	}
 	if (chunk->og[*i] != '>') // >
@@ -153,7 +153,7 @@ int	output_redir(t_chunk *chunk, int *i, char *nwe)
 		nwe = get_name(chunk->og, *i);
 		if (nwe == NULL)
 			return (-1);
-		updt_rdr_lst(chunk, in_out, flag, nwe);
+		updt_rdr_lst(chunk, 1, 0, nwe);
 	}
 	//if (chunk->outfile == NULL) //----------
 		//return (-1); //----------
@@ -161,6 +161,10 @@ int	output_redir(t_chunk *chunk, int *i, char *nwe)
 	//ft_printf("outfile: '%s'\n", chunk->outfile);//
 	return(1);
 }
+
+/*
+infile=0, outfile=1, heredoc && append == 1, nao heredoc && trunc == 0
+*/
 
 /*
 o que raio fazia o nwe neste caso?
