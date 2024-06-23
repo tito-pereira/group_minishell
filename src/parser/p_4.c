@@ -6,14 +6,14 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 18:09:27 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 05:10:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 /*
-(3) - environment variable expander with '$'
+(4) - environment variable expander with '$'
 	- handles single && double quotes
 	- does not handle redirections (handled previously)
 */
@@ -156,12 +156,6 @@ int	special_char(t_execlist *execl)
 //else, retorna normalmente sem fazer nada
 
 /*
-acho que ja testei tudo, parece estar bom
-
-ja testei com palavras antes, depois, inicio, fim, sozinho
-ja testei com pipes
-ja testei com $ errados
-
 .fazer e testar o $? que devera expandir para o exit status do ultimo
 comando
 por default, acho que e zero

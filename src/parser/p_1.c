@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 18:08:56 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 04:40:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 /*
 (1) - valid pipe counter and divide in tokens
+inicializa a "global" struct execl
 */
 
 char	**divide_pipes(t_execlist *execl, char *input)

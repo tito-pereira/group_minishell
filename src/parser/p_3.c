@@ -6,14 +6,14 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:12:29 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/22 18:09:21 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 04:50:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 /*
-(2) - remove redirections from the parsing string to simplify parsing process
+(3) - remove redirections from the parsing string to simplify parsing process
 
 e se houver >>>>> ou <<<<<
 redir interpreta isso ou da erro?

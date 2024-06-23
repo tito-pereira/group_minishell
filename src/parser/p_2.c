@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 21:45:00 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 06:12:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 /*
 (2) - reads and stores redirections and filenames inside each token
+inicializa cada chunk
 */
 
 int	check_redir(t_execlist *execl, int *i, int c)
@@ -57,7 +58,7 @@ int	redir_checker(t_execlist *execl)
 		execl->chunk[c]->infiles = NULL;
 		execl->chunk[c]->nmb_inf = -1;
 		execl->chunk[c]->heredoc = 0; //?
-		execl->chunk[c]->her_dcs = NULL;
+		execl->chunk[c]->here_dcs = NULL;
 		execl->chunk[c]->here_file = NULL; //?
 		execl->chunk[c]->delimiter = NULL;
 		execl->chunk[c]->outfiles = NULL;

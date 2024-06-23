@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 15:14:26 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/22 18:09:41 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 06:11:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,7 @@ char	*search_my_envp(t_execlist *execl, char *env_name)
 syntax correta: <name>=<value>\0
 se houver <name> = <value>\0, o espaco vai ser interpretado como dois args diferentes
 e retornar erro
+
+retorno:
+char * que simula o funcionamento da get_env mas para as minhas proprias env_var
 */

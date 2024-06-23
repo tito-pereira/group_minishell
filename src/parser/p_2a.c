@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 22:45:01 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 06:41:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*heredoc_read(char *lim)
 heredoc_read vai retornar mas é o input inteiro e nao um filename
 */
 
-int	input_redir(t_chunk *chunk, int *i, char *new)
+int	input_redir(t_chunk *chunk, int *i, char *nwe)
 {
 	(*i)++;
 	//ft_printf("Input redirection checker.\n"); //
@@ -101,10 +101,10 @@ int	input_redir(t_chunk *chunk, int *i, char *new)
 			return (-1);
 		//if (chunk->infile != NULL) //----------
 			//free(chunk->infile); //----------
-		new = heredoc_read(chunk->delimiter);
-		if (new == NULL)
+		nwe = heredoc_read(chunk->delimiter);
+		if (nwe == NULL)
 			return (-1);
-		updt_rdr_lst(chunk, in_out, flag, new);
+		updt_rdr_lst(chunk, in_out, flag, nwe);
 	}
 	else if (chunk->og[*i] != '<') // <
 	{
@@ -113,10 +113,10 @@ int	input_redir(t_chunk *chunk, int *i, char *new)
 		//chunk->infile = get_name(chunk->og, *i);
 		//ft_printf("simple input redirection checking.\n");
 		chunk->heredoc = 0;
-		new = get_name(chunk->og, *i);
-		if (new == NULL)
+		nwe = get_name(chunk->og, *i);
+		if (nwe == NULL)
 			return (-1);
-		updt_rdr_lst(chunk, in_out, flag, new);
+		updt_rdr_lst(chunk, in_out, flag, nwe);
 	}
 	//if (chunk->infile == NULL) //----------
 		//return (-1); //----------
@@ -125,7 +125,7 @@ int	input_redir(t_chunk *chunk, int *i, char *new)
 	return (1);
 }
 
-int	output_redir(t_chunk *chunk, int *i, char *new)
+int	output_redir(t_chunk *chunk, int *i, char *nwe)
 {
 	(*i)++;
 	//ft_printf("Output redirection checker.\n"); //
@@ -137,23 +137,23 @@ int	output_redir(t_chunk *chunk, int *i, char *new)
 		//if (chunk->outfile != NULL) //----------
 			//free(chunk->outfile); //----------
 		//chunk->outfile = get_name(chunk->og, *i);
-		new = get_name(chunk->og, *i);
-		if (new == NULL)
+		nwe = get_name(chunk->og, *i);
+		if (nwe == NULL)
 			return (-1);
-		updt_rdr_lst(chunk, in_out, flag, new);
+		updt_rdr_lst(chunk, in_out, flag, nwe);
 		(*i)--;
 	}
-	if(chunk->og[*i] != '>') // >
+	if (chunk->og[*i] != '>') // >
 	{
 		//ft_printf("truncate output redirection.\n");//
 		chunk->append = 0;
 		//if (chunk->outfile != NULL) -----------
 			//free(chunk->outfile); ----------
 		//chunk->outfile = get_name(chunk->og, *i);
-		new = get_name(chunk->og, *i);
-		if (new == NULL)
+		nwe = get_name(chunk->og, *i);
+		if (nwe == NULL)
 			return (-1);
-		updt_rdr_lst(chunk, in_out, flag, new);
+		updt_rdr_lst(chunk, in_out, flag, nwe);
 	}
 	//if (chunk->outfile == NULL) //----------
 		//return (-1); //----------
@@ -161,3 +161,16 @@ int	output_redir(t_chunk *chunk, int *i, char *new)
 	//ft_printf("outfile: '%s'\n", chunk->outfile);//
 	return(1);
 }
+
+/*
+o que raio fazia o nwe neste caso?
+o nwe recebe o get_name por isso vai ser either chunk outfile
+ou infile, ainda nao sei qual
+
+int		*here_dcs;
+char	*here_file;
+char	**infiles <- char *infile
+int		nmb_inf;
+char	**outfiles <- char *outfile
+int		nmb_outf;
+*/

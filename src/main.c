@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/05/22 18:11:09 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 05:48:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void	init_globals(int *exit_stt, t_execlist **execl, char ***env)
 	*env = create_envp();
 }*/
 
-int	main()
+int	main(void)
 {
 	char			*input;
 	t_execlist		*execl;

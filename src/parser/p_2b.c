@@ -12,6 +12,13 @@
 
 #include "../../minishell.h"
 
+/*
+neste file aqui tenho as tais funçoes de update
+os nomes das file redirections, que recebem os parametros
+funcoes sao chamadas no file 2a quando de facto se confirma
+uma presenca de redirection e se recolhe o nome dessa tal redirection
+*/
+
 char	**add_char_p(char **old, char *n_str)
 {
 	char	**new;
@@ -77,7 +84,10 @@ void	update_int_p(int **in_or_out, int flag, int c)
 		*in_or_out = add_int_p(in_or_out, flag);
 }
 
-//in=0, out=1, heredoc && append = 1
+/*
+infile=0, outfile=1, heredoc && append == 1, nao heredoc && trunc == 0
+*/
+
 void	updt_rdr_lst(t_chunk *chunk, int in_out, int flag, char *n_str)
 {
 	if (in_out == 0 && flag == 0)
