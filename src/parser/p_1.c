@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 04:40:52 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 18:45:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,15 @@ int	chunk_create(char *input, t_execlist *execl)
 
 int	pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env)
 {
-	int			c;
+	int		c;
+	//int		end;
 
 	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n"); //
 	//ft_printf("Inside parsing (1): pipe_chunks;\n"); //
 	//if (*execl == NULL) //
 		//ft_printf("execl is NULL dumbass\n"); //
 	*execl = malloc(sizeof(t_execlist));
+	//end = 0;
 	if (!(*execl))
 	{
 		perror("Memory allocation problem in the parser");
@@ -94,6 +96,8 @@ int	pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env)
 	(*execl)->pipe_nmb = c;
 	(*execl)->my_envp = env;
 	(*execl)->exit_stt = ex_stt;
+	//(*execl)->to_end = &end;
+	//to_end = 0;
 	(*execl)->chunk[c + 1] = NULL;
 	//ft_printf("Pipe counter: %d;\n", c); //
 	if (chunk_create(input, *execl) == 0)

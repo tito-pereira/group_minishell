@@ -24,6 +24,7 @@ char	**add_char_p(char **old, char *n_str)
 	char	**new;
 	int		i;
 
+	//printf("adding a new string %s to a char **\n", n_str);
 	i = 0;
 	while (old[i] != NULL)
 		i++;
@@ -31,8 +32,8 @@ char	**add_char_p(char **old, char *n_str)
 	i = -1;
 	while (old[++i] != NULL)
 		new[i] = ft_strdup(old[i]);
-	new[++i] = n_str; //ou strdup ainda n sei
-	new[i] = NULL;
+	new[i] = n_str; //ou strdup ainda n sei
+	new[++i] = NULL;
 	free_db_str(old);
 	return (new);
 }
@@ -42,6 +43,7 @@ int	*add_int_p(int *old, int flag)
 	int		*new;
 	int		i;
 
+	//printf("adding a new flag %d to an int *\n", flag);
 	i = 0;
 	while (old[i] != -1)
 		i++;
@@ -49,8 +51,8 @@ int	*add_int_p(int *old, int flag)
 	i = -1;
 	while (old[++i] != -1)
 		new[i] = old[i];
-	new[++i] = flag;
-	new[i] = -1;
+	new[i] = flag;
+	new[++i] = -1;
 	free(old);
 	return (new);
 }
@@ -58,8 +60,10 @@ int	*add_int_p(int *old, int flag)
 // chunk, in_out, flag, new
 void	update_char_p(char ***in_or_out, char *n_str, int *c)
 {
+	//printf("updating a char ** with '%s' member\n", n_str);
 	if (*c == -1)
 	{
+		//printf("new char * list created\n");
 		*in_or_out = (char **)ft_calloc(2, sizeof(char *));
 		(*in_or_out)[0] = n_str;
 		(*in_or_out)[1] = NULL;
@@ -70,18 +74,24 @@ void	update_char_p(char ***in_or_out, char *n_str, int *c)
 		*in_or_out = add_char_p(*in_or_out, n_str);
 		(*c)++;
 	}
+	for (int i = 0; (*in_or_out)[i] != NULL; i++)
+		//printf("chr_str[%d] == %s\n", i, (*in_or_out)[i]);
 }
 
 void	update_int_p(int **in_or_out, int flag, int c)
 {
+	//printf("updating a int * with %d flag\n", flag);
 	if (c == 0)
 	{
-		*in_or_out = (int *)ft_calloc(1, sizeof(int));
+		//printf("new int * list created\n");
+		*in_or_out = (int *)ft_calloc(2, sizeof(int));
 		(*in_or_out)[0] = flag;
 		(*in_or_out)[1] = -1;
 	}
 	else
 		*in_or_out = add_int_p(*in_or_out, flag);
+	for (int i = 0; (*in_or_out)[i] != -1; i++)
+		//printf("int_str[%d] == %d\n", i, (*in_or_out)[i]);
 }
 
 /*
@@ -90,12 +100,13 @@ infile=0, outfile=1, heredoc && append == 1, nao heredoc && trunc == 0
 
 void	updt_rdr_lst(t_chunk *chunk, int in_out, int flag, char *n_str)
 {
-	if (in_out == 0 && flag == 0)
+	//printf("--- updating rdr list, code %d flag %d new member %s ---\n", in_out, flag, n_str);
+	if (in_out == 0)// && flag == 0)
 	{
 		update_char_p(&(chunk->infiles), n_str, &(chunk->nmb_inf));
 		update_int_p(&(chunk->here_dcs), flag, chunk->nmb_inf);
 	}
-	else if (in_out == 1 && flag == 0)
+	else if (in_out == 1)// && flag == 0)
 	{
 		update_char_p(&(chunk->outfiles), n_str, &(chunk->nmb_outf));
 		update_int_p(&(chunk->app_dcs), flag, chunk->nmb_outf);
@@ -103,6 +114,12 @@ void	updt_rdr_lst(t_chunk *chunk, int in_out, int flag, char *n_str)
 }
 
 /*
+- bro se a flag for 1 nao escreve nada
+- char str tem sempre tamanho 1
+
+a contagem dos elementos c é feita na char p por isso que essa funcao vem primeiro
+e tem la o c
+
 here_file nao preciso de guardar entao posso apenas
 estar sempre a atualizar
 vou atualizando é a flag heredoc.
@@ -112,7 +129,7 @@ o ultimo a mexer na flag é o válido e é o valor
 que fica
 
 . infiles, keep adding
-. heredoc = here_dc[nmb_inf]
+. heredoc = flag do here_dcs[nmb_inf]
 
 . outfiles, keeps adding
 . append, last one changes

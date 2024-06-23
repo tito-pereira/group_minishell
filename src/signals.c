@@ -30,7 +30,7 @@ void	sig_handler(int mode)
 
 	sa_repeat.sa_handler = &sig_repeat;
 	sa_ign.sa_handler = SIG_IGN;
-	sa_dfl.sa_handler = SIG_DFL;
+	sa_dfl.sa_handler = SIG_DFL; //return to default?
 	if (mode == 1)
 	{
 		sigaction(SIGINT, &sa_repeat, NULL);

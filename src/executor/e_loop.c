@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/23 08:49:20 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 21:44:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ pwd pode fazer redir_out
 
 void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str) //int **redir
 {
-	//open_all_redirs(execl);
-	exec_input(execl, fd, i); //int **redir
+	open_all_redirs(execl); //testar depois disto
+	exec_input(execl, fd, i); //ver se é preciso mudar para **execl tambem
 	exec_output(execl, fd, i);
 	if (execl->chunk[i]->blt == 0)
 	{
 		sig_handler(2);
-		execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
+		execve(exec_str[i][0], exec_str[i], *(execl->my_envp)); //atencao aqui
 	}
 	else if (execl->chunk[i]->blt == 1)
 	{
@@ -73,9 +73,7 @@ void	exec_launch(t_execlist *execl, int **fd, int i, char ***exec_str)
 	}
 	pid = fork();
 	if (pid == 0)
-	{
 		exec_action(execl, fd, i, exec_str); //redir
-	}
 	else
 	{
 		close_pipes(execl, fd, i, 1, 1);
@@ -111,7 +109,7 @@ void	exec_loop(t_execlist *execl, int **fd, char ***exec_str)
 {
 	int	i;
 	int	pid;
-	int	ret;
+	//int	ret;
 	char ***tmpenv;
 
 	i = 0;
@@ -121,11 +119,11 @@ void	exec_loop(t_execlist *execl, int **fd, char ***exec_str)
 	if (execl->valid_cmds == 1 && check_changes(execl->chunk[0]) == 1)
 	{
 		execl->env_pipe = malloc(2 * sizeof(int));
-		ret = pipe(execl->env_pipe);
-		if (ret == -1)
+		//ret = pipe(execl->env_pipe);
+		/*if (ret == -1)
 			printf("pipe error\n");
 		else
-			printf("pipes created: [0] = %d, [1] = %d\n", execl->env_pipe[0], execl->env_pipe[1]);
+			printf("pipes created: [0] = %d, [1] = %d\n", execl->env_pipe[0], execl->env_pipe[1]);*/
 	}
 	pid = fork();
 	if (pid == 0)

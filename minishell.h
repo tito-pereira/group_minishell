@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 08:56:44 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 22:10:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <linux/limits.h>
+# include <errno.h>
 # include <termcap.h>
 # include <termios.h>
 # include "./mylib/mylib.h"
@@ -31,10 +32,12 @@
 # define ENV_VAR    __environ
 # define PROMPT		"\033[42;34m>> minishell: \033[0;37m"
 
+extern int	g_sig;
+
 typedef struct s_chunk {
-	char	**infiles; //
-	int		nmb_inf; //
-	int		*here_dcs; //
+	char	**infiles; //nome dos files
+	int		nmb_inf; //numero total
+	int		*here_dcs; //valores da flag
 	int		heredoc; // --- //
 	char	*here_file; // --- //
 	char	*delimiter;
@@ -77,6 +80,7 @@ typedef struct s_execlist {
 	int		valid_cmds;
 	int		*pipe_loc;
 	int		*exit_stt;
+	int		*to_end;
 	int		*env_pipe;
 }	t_execlist;
 /*
@@ -130,7 +134,7 @@ void	temp_pipe(int *nfd, char *buff);
 char	*empty_pipe(int fd, t_execlist *execl, int i);
 char	***read_from_pipe(int fd, t_execlist *execl);
 void	write_to_pipe(int fd, char ***envs);
-//void	open_all_redirs(t_execlist *execl, int i); // ADD
+void	open_all_redirs(t_execlist *execl); //sera que a chamo em algum lado?
 
 // FREE
 char	*free_str(char *str);
@@ -143,7 +147,7 @@ void	blt_central(t_execlist *execl, int i, char **exec_str);
 void	ft_cd(int *err, char **cmd, char ***env);
 void	ft_echo(int *err, char **cmd);
 void	ft_env(int *err, char **cmd, char ***envp);
-void	ft_exit(int *err, char **cmd);
+void	ft_exit(t_execlist *execl); //int *err, char **cmd, 
 void	ft_export(int *err, char **cmd, char ***envp);
 void    ft_pwd(int *err, char **cmd, char **envp);
 void	ft_unset(int *err, char **cmd, char ***envp);

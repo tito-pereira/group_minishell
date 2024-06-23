@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 08:51:21 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/23 22:05:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ que é para dar free das cenas
 para ja, a unica situacao que vejo é para saber se dou free ao input buffer (escape c ctrl C) ou se é
 valido e o uso (escape normal c enter)
 
--> voltei ao inicio de nao perceber onde usar a global. Depende de como for usar as sig handlers
-tambem. Eu ia usar como "erro de status" ao sair da readline e como informacao sobre se dou free
-ou nao, no entanto, ja consegui por as new_line e redisplay a dar e nao percebo onde usar
-o global afinal. se calhar só se usa depois nos blocking commands
+global vai ser para guardar o error status / info para exit program
+comunicar entre as forks e 
 */
+
+int	g_sig;
 
 char	*ft_read()
 {
@@ -179,8 +179,10 @@ int	main(void)
 	t_execlist		*execl;
 	int				exit_stt;
 	char			**env;
+	//char			**tmp;
 
 	exit_stt = 0;
+	g_sig = 0;
 	execl = NULL;
 	env = create_envp();
 	//init_globals(&exit_stt, &execl, &origin, &env);
@@ -214,6 +216,16 @@ int	main(void)
 				env = execl->my_envp[0];
 				exit_stt = 0;
 			}
+		}
+		printf("returned to main\n");
+		//printf("command loop is done, to end is %d\n", to_end);
+		//if (execl)
+			//tmp = execl->chunk[0]->cmd_n_args;
+		if (execl && execl->cmd_nmb == 1
+			&& ft_strncmp(execl->chunk[0]->cmd_n_args[0], "exit", 10) == 0)
+		{
+			free_exec(execl);
+			exit (0); //err_stt
 		}
 		if (execl)
 			free_exec(execl);

@@ -18,13 +18,13 @@ void	init_exec(t_execlist *execl, int **fd)
 {
 	int i;
 	//int	j;
-	int	ret;
+	//int	ret;
 	
 	i = -1;
 	//ft_printf("Initializing the executor function.\n");
 	while (++i < execl->valid_cmds)
 	{
-		ft_printf("i: %d < cmds: %d\n", i, execl->valid_cmds);
+		//ft_printf("i: %d < cmds: %d\n", i, execl->valid_cmds);
 		//redir[i] = ft_calloc(2, sizeof(int));
 		fd[i] = ft_calloc(2, sizeof(int));
 		/*j = -1;
@@ -36,14 +36,14 @@ void	init_exec(t_execlist *execl, int **fd)
 			//fd[i][j] = -1;
 			ft_printf("fd[%d][%d]: %d\n", i, j, fd[i][j]);
 		}*/
-		ret = pipe(fd[i]);
-		if (ret == 0)
+		pipe(fd[i]);
+		/*if (ret == 0)
 		{
 			ft_printf("pipe[%d] success\n", i);
 			ft_printf("fd[%d][0]: %d\nfd[%d][1]: %d\n", i, fd[i][0], i, fd[i][1]);
 		}
 		else
-			ft_printf("pipe[%d] failed\n", i);
+			ft_printf("pipe[%d] failed\n", i);*/
 	}
 	//ft_printf("fd && redir initialized.\n");
 }
