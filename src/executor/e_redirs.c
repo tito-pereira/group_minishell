@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:29:03 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/23 21:37:36 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 02:59:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,41 @@ void	open_all_infs(t_chunk *chunk, int *exit)
 
 	i = -1;
 	nfile = chunk->nmb_inf;
-	if (chunk->infiles != NULL)
+	tmp = 0;
+	(void)exit;
+	//printf("nfile is %d\n", nfile);
+	if (chunk->infiles)
 	{
 		while (++i <= nfile)
 		{
+			//printf("--- loop %d ---\n", i);
 			if (chunk->here_dcs[i] == 0) //nao heredoc
 			{
+				//printf("will open now\n");
+				//printf("chunk->infiles[%d]:%s\n", i, chunk->infiles[i]);
 				tmp = open(chunk->infiles[i], O_RDONLY); //| O_CREAT
+				//printf("opened in %d, tmp is %d\n", i, tmp);
 				if (tmp == -1)
-					*exit = 1; //verificar os erros possiveis
-				close(tmp);
+				{
+					return (-1);
+					//printf("opening error in infile[%d]", i);
+					//printf("error = %d\n", *exit);
+					//*exit = 1; //verificar os erros possiveis
+				}
+				//printf("will try to close tmp(%d) now\n", tmp);
+				if (tmp != -1)
+				{
+					close(tmp);
+					//printf("closed in %d with tmp(%d)\n", i, tmp);
+				}
 			} //so os nao heredoc abrem files, os heredoc passam à frente
 		}
 	}
 }
+
+/*
+ok o erro foi no exit
+*/
 
 void	open_all_outfs(t_chunk *chunk, int *exit)
 {
@@ -65,6 +86,7 @@ void	open_all_outfs(t_chunk *chunk, int *exit)
 	int	nfile;
 	
 	i = -1;
+	printf("opening all outfiles, %d in total\n", chunk->nmb_outf);
 	nfile = chunk->nmb_outf;
 	if (chunk->outfiles != NULL)
 	{
@@ -75,8 +97,16 @@ void	open_all_outfs(t_chunk *chunk, int *exit)
 			else if (chunk->app_dcs[i] == 1)
 				tmp = open(chunk->outfiles[i], O_RDWR | O_CREAT | O_APPEND);
 			if (tmp == -1)
-				*exit = 1; //verificar os erros possiveis
-			close(tmp);
+			{
+				return (-1);
+				//*exit = 1; //verificar os erros possiveis
+			}
+			printf("will try to close tmp(%d) now\n", tmp);
+			if (tmp != -1)
+			{
+				close(tmp);
+				printf("closed in %d with tmp(%d)\n", i, tmp);
+			}
 		}
 	}
 }
@@ -86,19 +116,39 @@ void	open_all_redirs(t_execlist *execl)
 	int	c;
 
 	c = -1;
-	while (execl->chunk[++c] != NULL)
+	execl->exit_stt = 0;
+	printf("--- INSIDE REDIR OPENING ---\n");
+	for (int i = 0; execl->chunk[i] != NULL; i++)
+		support_print(execl, i);
+	while (execl->chunk[++c])
 	{
-		if (execl->chunk[c]->infiles != NULL)
+		printf("inside loop\n");
+		if (execl->chunk[c]->infiles)
+		{
+			printf("inside infile loop\n");
 			open_all_infs(execl->chunk[c], execl->exit_stt);
-		if (execl->chunk[c]->outfiles != NULL && execl->exit_stt == 0)
+		}
+		printf("exit_stt is %d after infiles\n", *(execl->exit_stt));
+		if (execl->chunk[c]->outfiles && execl->exit_stt == 0)
+		{
+			printf("inside outfile loop\n");
 			open_all_outfs(execl->chunk[c], execl->exit_stt);
+		}
 	}
+	printf("--- OUTSIDE REDIR OPENING ---\n");
 }
 
 /*
+void	support_print(t_execlist *execl, int c)
 
 -> mudar error status
 -> introduzir error messages
+
+sera que vou ter que separar entre file not found ou
+nao tem permissoes?
+sim.. sim vou
+open retorna sempre -1 mas distingo através do errno, e consoante isso,
+depois atualizo o exit_stt
 
 <1 <2 <3
 bash file 1 not found (apenas tenta abrir os files, nao os cria)
@@ -126,7 +176,5 @@ todos os pipes criam as pastas, só por um nao funcionar nao interrompe os outro
 onde ponho isto?
 dentro de cada chunk, por isso tera de ser na loop? action?
 
-- open all redirs
 mudar os nomes das variaveis no executor (na action ja estava mudado afinal)
-- mudar no parser p_2b
 */

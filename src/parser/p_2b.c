@@ -35,6 +35,7 @@ char	**add_char_p(char **old, char *n_str)
 	new[i] = n_str; //ou strdup ainda n sei
 	new[++i] = NULL;
 	free_db_str(old);
+	old = NULL;
 	return (new);
 }
 
@@ -54,6 +55,7 @@ int	*add_int_p(int *old, int flag)
 	new[i] = flag;
 	new[++i] = -1;
 	free(old);
+	old = NULL;
 	return (new);
 }
 
@@ -74,7 +76,7 @@ void	update_char_p(char ***in_or_out, char *n_str, int *c)
 		*in_or_out = add_char_p(*in_or_out, n_str);
 		(*c)++;
 	}
-	for (int i = 0; (*in_or_out)[i] != NULL; i++)
+	//for (int i = 0; (*in_or_out)[i] != NULL; i++)
 		//printf("chr_str[%d] == %s\n", i, (*in_or_out)[i]);
 }
 
@@ -90,7 +92,7 @@ void	update_int_p(int **in_or_out, int flag, int c)
 	}
 	else
 		*in_or_out = add_int_p(*in_or_out, flag);
-	for (int i = 0; (*in_or_out)[i] != -1; i++)
+	//for (int i = 0; (*in_or_out)[i] != -1; i++)
 		//printf("int_str[%d] == %d\n", i, (*in_or_out)[i]);
 }
 

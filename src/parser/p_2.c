@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 23:24:19 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 02:22:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ int	redir_checker(t_execlist *execl)
 		//ft_printf("Loop [%d];\n", c);
 		execl->chunk[c]->infiles = NULL;
 		execl->chunk[c]->nmb_inf = -1;
-		execl->chunk[c]->heredoc = 0; //?
 		execl->chunk[c]->here_dcs = NULL;
+		execl->chunk[c]->heredoc = 0; //?
 		execl->chunk[c]->here_file = NULL; //?
 		execl->chunk[c]->delimiter = NULL;
 		execl->chunk[c]->outfiles = NULL;
@@ -107,7 +107,30 @@ int	redir_checker(t_execlist *execl)
 			if (check_redir(execl, &i, c) == 0)
 				return (0);
 		}
-		support_print(execl, c);
+		//support_print(execl, c);
 	}
 	return (1);
 }
+
+/*
+typedef struct s_chunk {
+	char	**infiles; //nome dos files
+	int		nmb_inf; //numero total
+	int		*here_dcs; //valores da flag
+	int		heredoc; // --- //
+	char	*here_file; // --- //
+	char	*delimiter;
+	char	**outfiles; //
+	int		nmb_outf; //
+	int		append;
+	int		*app_dcs; //
+	char	*og;
+	char	**cmd_n_args;
+	char	*path; // --- //
+	int		inpipe;
+	int		inpfd; // --- //
+	int		outpipe; // --- //
+	int		outpfd; // --- //
+	int		blt;
+}	t_chunk;
+*/

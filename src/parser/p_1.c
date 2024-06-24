@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 18:45:34 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 02:25:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env)
 		*ex_stt = 1;
 		return(0);
 	}
-	(*execl)->chunk = malloc ((c + 2) * sizeof(t_chunk *));
+	(*execl)->chunk = ft_calloc ((c + 2), sizeof(t_chunk *));
 	(*execl)->cmd_nmb = c + 1;
 	(*execl)->pipe_nmb = c;
 	(*execl)->my_envp = env;
