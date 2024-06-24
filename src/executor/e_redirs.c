@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:29:03 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/24 02:59:48 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 03:35:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_chunk {
 }	t_chunk;
 */
 
-void	open_all_infs(t_chunk *chunk, int *exit)
+int	open_all_infs(t_chunk *chunk, int *exit)
 {
 	int	i;
 	int	tmp;
@@ -73,19 +73,23 @@ void	open_all_infs(t_chunk *chunk, int *exit)
 			} //so os nao heredoc abrem files, os heredoc passam à frente
 		}
 	}
+	return (0);
 }
 
 /*
 ok o erro foi no exit
+ate mesmo na main open_all function, um simples print com o
+exit_stt causa erro
 */
 
-void	open_all_outfs(t_chunk *chunk, int *exit)
+int	open_all_outfs(t_chunk *chunk, int *exit)
 {
 	int	i;
 	int	tmp;
 	int	nfile;
 	
 	i = -1;
+	(void)exit;
 	printf("opening all outfiles, %d in total\n", chunk->nmb_outf);
 	nfile = chunk->nmb_outf;
 	if (chunk->outfiles != NULL)
@@ -109,6 +113,7 @@ void	open_all_outfs(t_chunk *chunk, int *exit)
 			}
 		}
 	}
+	return (0);
 }
 
 void	open_all_redirs(t_execlist *execl)
@@ -123,13 +128,15 @@ void	open_all_redirs(t_execlist *execl)
 	while (execl->chunk[++c])
 	{
 		printf("inside loop\n");
-		if (execl->chunk[c]->infiles)
+		if (execl->chunk[c]->infiles == NULL)
+			printf("infiles is NULL\n");
+		if (execl->chunk[c]->infiles != NULL)
 		{
 			printf("inside infile loop\n");
 			open_all_infs(execl->chunk[c], execl->exit_stt);
 		}
-		printf("exit_stt is %d after infiles\n", *(execl->exit_stt));
-		if (execl->chunk[c]->outfiles && execl->exit_stt == 0)
+		//printf("exit_stt is %d after infiles\n", *(execl->exit_stt));
+		if (execl->chunk[c]->outfiles != NULL && execl->exit_stt == 0)
 		{
 			printf("inside outfile loop\n");
 			open_all_outfs(execl->chunk[c], execl->exit_stt);

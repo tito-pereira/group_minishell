@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 23:32:32 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 03:55:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_execlist {
 
 // DELETE
 void	print_db_char(char **str);
+void	print_db(char **str);
 void	support_print(t_execlist *execl, int c);
 
 // SIGNAL HANDLING

@@ -6,20 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/23 21:44:03 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 03:57:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	print_db(char **str)
-{
-	int i = -1;
-	while (str[++i] != NULL)
-		ft_printf("%s\n", str[i]);
-}
-
-////////////////////////////////////////////
 
 /*
 echo pode receber redir_in e fazer redir_out
@@ -28,7 +19,7 @@ pwd pode fazer redir_out
 
 void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str) //int **redir
 {
-	open_all_redirs(execl); //testar depois disto
+	open_all_redirs(execl); //acho que ta a dar
 	exec_input(execl, fd, i); //ver se é preciso mudar para **execl tambem
 	exec_output(execl, fd, i);
 	if (execl->chunk[i]->blt == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   e_pipe.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:49:36 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/05/23 18:02:55 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/06/24 04:37:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ char	*empty_pipe(int fd, t_execlist *execl, int i)
 	return (chest);
 }
 
+/*
+gasta o reading file pointer e copia todo o conteudo do
+infile para uma buff str
+*/
+
 void	temp_pipe(int *nfd, char *buff)
 {
 	int	pid;
@@ -62,3 +67,7 @@ void	temp_pipe(int *nfd, char *buff)
 	dup2(nfd[0], STDIN_FILENO);
 	close(nfd[0]);
 }
+
+/*
+faz fork, escrevea buff para o pipe, e faz dup2 de input para esse pipe
+*/

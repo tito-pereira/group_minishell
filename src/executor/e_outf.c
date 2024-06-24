@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:25:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/23 08:45:52 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 04:44:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,19 @@ void	ex_redir_file(t_execlist *execl, int i, char *buff, int *nfd)
 		temp_pipe(nfd, buff);
 	if (execl->chunk[i]->append == 1) //append
 		tmp = open(execl->chunk[i]->outfiles[n_file], \
-		O_RDWR | O_CREAT | O_APPEND, 0644);
+		O_RDWR | O_CREAT | O_APPEND);
 	else // truncate
 		tmp = open(execl->chunk[i]->outfiles[n_file], \
-		O_RDWR | O_CREAT | O_TRUNC, 0644);
+		O_RDWR | O_CREAT | O_TRUNC);
 	dup2(tmp, STDOUT_FILENO);
 	close(tmp); //depois de dup, fecha-se
 	//execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
 }
+
+/*
+faz open ao file, dup2 e close
+fazia execve nao sei bem do que
+*/
 
 void	ex_redir_pipe(int **fd, int i, char *buff, int *nfd)
 {
@@ -42,6 +47,17 @@ void	ex_redir_pipe(int **fd, int i, char *buff, int *nfd)
 		free(buff);
 	free(nfd);
 }
+
+/*
+tmp pipe
+faz fork, escreve buff para o pipe, e faz dup2 de input para esse pipe
+nfd sera o o int* desse novo pipe
+*/
+
+/*
+if buff, escreve o buff para o nfd, e faz dup2 do fd para output
+qual o sentido disto?
+*/
 
 void	ex_end(char *buff, int *nfd)
 {

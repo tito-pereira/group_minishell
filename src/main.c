@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 22:05:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 03:54:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@ void	print_db_char(char **str) {
 	for (int i = 0; str[i] != NULL; i++) {
 		ft_printf("str[%d]: %s;\n", i, str[i]);
 	}
+}
+
+void	print_db(char **str)
+{
+	int i = -1;
+	while (str[++i] != NULL)
+		ft_printf("%s\n", str[i]);
 }
 
 /*
