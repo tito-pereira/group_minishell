@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/24 03:55:11 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 20:24:35 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct s_execlist {
 -> tmb posso tirar o path, nao o vou usar p nada
 */
 
-// DELETE
+// PRINTS
 void	print_db_char(char **str);
 void	print_db(char **str);
 void	support_print(t_execlist *execl, int c);

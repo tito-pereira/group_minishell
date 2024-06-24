@@ -15,6 +15,7 @@
 void	sig_repeat(int num)
 {
 	(void)num;
+	g_sig += SIGINT;
 	rl_replace_line("", 0);
 	printf("\n");
 	rl_on_new_line();
@@ -30,7 +31,7 @@ void	sig_handler(int mode)
 
 	sa_repeat.sa_handler = &sig_repeat;
 	sa_ign.sa_handler = SIG_IGN;
-	sa_dfl.sa_handler = SIG_DFL; //return to default?
+	sa_dfl.sa_handler = SIG_DFL;
 	if (mode == 1)
 	{
 		sigaction(SIGINT, &sa_repeat, NULL);
@@ -102,11 +103,54 @@ c1r5s3% cat (ctrl-D, EOF, 2 cliques)
 stuffstuff%
 c1r5s3% 
 
-
-comportamentos muito parecidos honestamente
-
 MUDAR NA READLINE DO HEREDOC
 fazer o mecanismo que faco na read mas desta vez quando uso readline ao ler o input
 para o heredoc
 vai ser equivalente a ter recebido esse sinal
+-> eu ja avisava aqui para mudar o heredoc, se calhar tenho que testar e ver
+como se esta a comportar e como é suposto
+*/
+
+/*
+void	sigpipe_handler(int signo)
+{
+	(void)signo;
+	printf("Received SIGPIPE signal. Pipe closed by child process.\n");
+	exit(EXIT_FAILURE);
+}
+
+void	sigint_hdhandler(int signo)
+{
+	if (signo == SIGINT)
+	{
+		g_signo = 130;
+		write(1, "\n", 1);
+		exit(g_signo);
+	}
+}
+
+void	sigint_handler(int signo)
+{
+	if (signo == SIGINT)
+	{
+		g_signo = 130;
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
+void	sighandler_fork(int signo)
+{
+	if (signo == SIGINT || signo == SIGQUIT)
+		g_signo = 128 + signo;
+}
+
+void	set_signals(void)
+{
+	g_signo = 0;
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
 */

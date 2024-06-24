@@ -6,58 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/24 03:54:45 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 20:26:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	print_db_char(char **str) {
-	int	w = 0;
-	while (str[w] != NULL)
-		w++;
-	ft_printf("cmd_n_args has %d elements;\n", w);
-	for (int i = 0; str[i] != NULL; i++) {
-		ft_printf("str[%d]: %s;\n", i, str[i]);
-	}
-}
-
-void	print_db(char **str)
-{
-	int i = -1;
-	while (str[++i] != NULL)
-		ft_printf("%s\n", str[i]);
-}
-
-/*
-void	print_exec(t_execlist *execl)
-{
-	ft_printf("-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf(".	PRINT CHUNKS	.\n");
-	ft_printf("-.-.-.-.-.-.-.-.-.-\n");
-	ft_printf("General overview:\nNumber of commands: %d;", execl->cmd_nmb);
-	ft_printf("\nNumber of pipes: %d;\n", execl->pipe_nmb);
-	ft_printf("-.-.-.-.-.-.-.-.-.-.\n-.-.-.-.-.-.-.-.-.-.\n");
-	for (int i = 0; execl->chunk[i] != NULL; i++) {
-		ft_printf("Chunk nª%d\n", i);
-		print_db_char(execl->chunk[i]->cmd_n_args);
-		if (execl->chunk[i]->blt == 1)
-			ft_printf("PATH: %s;\n", execl->chunk[i]->path);
-		else
-			ft_printf("PATH: NULL;\n");;
-		ft_printf("Heredoc: %d;\nAppend: %d;\n", execl->chunk[i]->heredoc, execl->chunk[i]->append);
-		if (execl->chunk[i]->infile)
-			ft_printf("infile: %s;\n", execl->chunk[i]->infile);
-		else
-			ft_printf("infile: NULL\n");
-		if (execl->chunk[i]->outfile)
-			ft_printf("outfile: %s;\n", execl->chunk[i]->outfile);
-		else
-			ft_printf("outfile: NULL\n");
-		ft_printf("-.-.-.-.-.-.-.-.-.-.\n-.-.-.-.-.-.-.-.-.-.\n");
-	}
-}*/
-///////////////////////////////////////////////
 
 /*
 -> esta global var, bem como a exit handler, vai ter de ficar no mesmo file da main
@@ -172,29 +125,20 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 	return (flag);
 }
 
-/*
-void	init_globals(int *exit_stt, t_execlist **execl, char ***env)
-{
-	*exit_stt = 0;
-	*execl = NULL;
-	*env = create_envp();
-}*/
-
 int	main(void)
 {
 	char			*input;
 	t_execlist		*execl;
 	int				exit_stt;
 	char			**env;
-	//char			**tmp;
 
 	exit_stt = 0;
 	g_sig = 0;
 	execl = NULL;
 	env = create_envp();
-	//init_globals(&exit_stt, &execl, &origin, &env);
 	while (1)
 	{
+		g_sig = 128;
 		sig_handler(1);
 		//if (global_checker(execl) == 1)
 			//continue;

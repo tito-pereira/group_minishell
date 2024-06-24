@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/24 02:22:10 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 20:22:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,36 +42,6 @@ int	check_redir(t_execlist *execl, int *i, int c)
 		}
 	}
 	return (1);
-}
-
-void	support_print(t_execlist *execl, int c)
-{
-	printf("CHUNK %d REDIR LISTS:\n", c);
-	if (execl->chunk[c]->infiles)
-	{
-		printf("infiles:\n");
-		for (int i = 0; execl->chunk[c]->infiles[i] != NULL; i++)
-			printf("%s\n", execl->chunk[c]->infiles[i]);
-	}
-	if (execl->chunk[c]->here_dcs)
-	{
-		printf("inf_flags:\n");
-		for (int i = 0; execl->chunk[c]->here_dcs[i] != -1; i++)
-			printf("%d\n", execl->chunk[c]->here_dcs[i]);
-	}
-	if (execl->chunk[c]->outfiles)
-	{
-		printf("outfiles:\n");
-		for (int i = 0; execl->chunk[c]->outfiles[i] != NULL; i++)
-			printf("%s\n", execl->chunk[c]->outfiles[i]);
-	}
-	if (execl->chunk[c]->app_dcs)
-	{
-		printf("outf_flags:\n");
-		for (int i = 0; execl->chunk[c]->app_dcs[i] != -1; i++)
-			printf("%d\n", execl->chunk[c]->app_dcs[i]);
-	}
-	//printf("outf_flag[2] = %d\n", execl->chunk[c]->app_dcs[2]);
 }
 
 int	redir_checker(t_execlist *execl)
