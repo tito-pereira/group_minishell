@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/24 20:24:35 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 18:40:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void	print_db(char **str);
 void	support_print(t_execlist *execl, int c);
 
 // SIGNAL HANDLING
-void	sig_handler(int mode);
-void	sig_repeat(int num);
+void	sig_handlerr(int mode);
+//void	sig_repeat(int num);
 
 // PARSER MAIN
 int		parse_central(t_execlist **execl, char *input, int *exit_stt, \

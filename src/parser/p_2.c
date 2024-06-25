@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/24 20:22:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 18:39:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	redir_checker(t_execlist *execl)
 	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n"); //
 	//ft_printf("Inside parsing (2): redir_checker;\n"); //
 	c = -1;
+	sig_handlerr(2);
 	//ft_printf("Is it here?\n"); //
 	//if (execl == NULL) //
 		//ft_printf("execl is NULL dumbass\n"); //

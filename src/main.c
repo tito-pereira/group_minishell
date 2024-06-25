@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/24 20:26:56 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 18:37:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int	main(void)
 			ft_printf("Closing minishell...\n");
 			exit(0);
 		}*/
-		sig_handler(2);
+		//sig_handler(2);
 		if (parse_central(&execl, input, &exit_stt, &env) == 1)
 		{
 			//print_exec(execl);

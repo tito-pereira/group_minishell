@@ -13,36 +13,52 @@
 #include "../minishell.h"
 
 /*
-void	sigint_hdhandler(int signo)
+void	sighandler_fork(int signo)
 {
-	if (signo == SIGINT)
+	if (signo == SIGINT || signo == SIGQUIT)
+		g_signo = 128 + signo;
+}*/
+
+void	sig_only_global(int num)
+{
+	if (num == SIGINT || num == SIGQUIT)
+		g_sig = 128 + num;
+}
+
+void	sig_heredoc_repeat(int num)
+{
+	if (num == SIGINT)
 	{
-		g_signo = 130;
+		g_sig = 128 + SIGINT;
 		write(1, "\n", 1);
-		exit(g_signo);
+		exit(g_sig);
 	}
 }
 
-*/
-
 void	sig_repeat(int num)
 {
-	(void)num;
-	g_sig += SIGINT;
-	rl_replace_line("", 0);
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (num == SIGINT)
+	{
+		g_sig = 128 + SIGINT;
+		rl_replace_line("", 0);
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
-void	sig_handler(int mode)
+void	sig_handlerr(int mode)
 {
 	struct	sigaction	sa_repeat;
+	struct	sigaction	sa_hd_repeat;
+	struct	sigaction	sa_global;
 	struct	sigaction	sa_ign;
 	struct	sigaction	sa_dfl;
 
 	sa_repeat.sa_handler = &sig_repeat;
+	sa_hd_repeat.sa_handler = &sig_hd_repeat;
+	sa_global.sa_handler = &sig_global;
 	sa_ign.sa_handler = SIG_IGN;
 	sa_dfl.sa_handler = SIG_DFL;
 	if (mode == 1) //prompt
@@ -51,12 +67,21 @@ void	sig_handler(int mode)
 		sigaction(SIGQUIT, &sa_ign, NULL);
 	}
 	else if (mode == 2) //heredoc ???
-		sigaction(SIGINT, &sa_dfl, NULL);
+	{
+		sigaction(SIGINT, &sig_hd_repeat, NULL);
+		//sigaction(SIGQUIT, &sa_ign, NULL); //ja foi definida antes, n posso tirar isto?
+	}
 	else if (mode == 3) //pre executor ???
-		sigaction(SIGINT, &sa_ign, NULL);
+	{
+		sigaction(SIGINT, &sig_global, NULL);
+		sigaction(SIGQUIT, &sig_global, NULL);
+	}
 }
 
 /*
+sig_handler(1) - main.c
+sig_handler(2) - p_2.c
+sig_handler(3) - e_main.c
 
 (vanilla, SIGINT)
 .(V) ctrl C, empty prompt, repeat (vanilla: )
@@ -106,8 +131,32 @@ teste triplo ecra:
 - blocking command
 
 - nao acho que o sigpipe seja necessário, apenas acrescenta uma mensagem extra
-- hdhandler
-- handler fork
+
+heredoc
+- ir ao meu codigo e por antes do heredoc e antes do executor
+- triple test
+-> heredoc sujeito a expander? tenho isso?
+-> o zé também usa 0644 em permissoes? why? mais uma vez, standard practice
+(ONLY OUTPUT)
+
+usos da global var:
+-> mal entra no lexer main, se o global for 130, a mesma historia,
+exit code 130, baza
+(lexer vem antes do parser e exec por isso deve ser mesmo a seguir ao prompt
+de input)
+-> durante o heredoc, o parent process espera pelo filho
+logo a seguir, verifica se o global é 130, caso seja, exit code = 130
+e retorno -1
+
+-> sig_handler_fork
+ambos SIGINT e SIGQUIT levam ign e apenas mudam a global
+
+-> (executer_utils_1.c)
+signal(SIGINT, sigint_hdhandler);
+signal(SIGQUIT, SIG_IGN);
+cada vez que ele recebe heredoc input é num fork novo por isso que ele
+repete as sighandlers em todos os forks (sera que o parent process tambem realiza
+sighandling neste caso?)
 */
 
 /*

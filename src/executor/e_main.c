@@ -122,6 +122,7 @@ int	exec_main(t_execlist *execl)
 		return (0);
 	}
 	//ft_printf("All mallocs succesfull\n");
+	sig_handlerr(3);
 	init_exec(execl, fd); // V
 	get_exec_str(execl, exec_str); // V
 	exec_loop(execl, fd, exec_str); // X
