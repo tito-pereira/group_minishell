@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/25 18:39:53 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 21:46:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,18 @@ inicializa cada chunk
 int	check_redir(t_execlist *execl, int *i, int c)
 {
 	char	*nwe;
+	int		ret;
 
 	nwe = NULL;
+	ret = 0;
 	//ft_printf("Inside check_redir;\n"); //
 	if (execl->chunk[c]->og[*i] == '<' && c == 0)
 	{
-		if (input_redir(execl->chunk[c], i, nwe) == -1)
+		//ft_printf("Inside input redir;\n");
+		ret = input_redir(execl->chunk[c], i, nwe);
+		if (ret == -1 || ret == 130) //(input_redir(execl->chunk[c], i, nwe) == -1)
 		{
+			printf("return was either -1 or 130, will give 0\n");
 			perror("Input redirection parsing error");
 			*(execl->exit_stt) = 1;
 			return (0);
@@ -52,7 +57,7 @@ int	redir_checker(t_execlist *execl)
 	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n"); //
 	//ft_printf("Inside parsing (2): redir_checker;\n"); //
 	c = -1;
-	sig_handlerr(2);
+	//sig_handlerr(2);
 	//ft_printf("Is it here?\n"); //
 	//if (execl == NULL) //
 		//ft_printf("execl is NULL dumbass\n"); //
@@ -76,7 +81,10 @@ int	redir_checker(t_execlist *execl)
 		while (execl->chunk[c]->og[++i] != '\0')
 		{
 			if (check_redir(execl, &i, c) == 0)
+			{
+				printf("parser 2 will return 0 to parser main\n");
 				return (0);
+			}
 		}
 		//support_print(execl, c);
 	}

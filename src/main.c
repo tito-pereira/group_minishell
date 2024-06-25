@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/25 18:37:50 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 22:01:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 		flag = pipe_chunks(execl, input, exit_stt, env);
 	if (flag == 1)
 		flag = redir_checker(*execl);
+	printf("redir checker return was %d\n", flag);
 	if (flag == 1)
 		flag = scope_redirs(*execl);
 	if (flag == 1)
@@ -139,7 +140,7 @@ int	main(void)
 	while (1)
 	{
 		g_sig = 128;
-		sig_handler(1);
+		sig_handlerr(1);
 		//if (global_checker(execl) == 1)
 			//continue;
 		//ft_printf("\n\n\nbegining env\n");
@@ -167,6 +168,15 @@ int	main(void)
 				env = execl->my_envp[0];
 				exit_stt = 0;
 			}
+		}
+		else
+		{
+			printf("need to handle parser fails\n");
+			if (execl)
+				free_exec(execl);
+			//if (g_sig == 130)
+			continue ; //podera haver algum erro que n seja para reset prompt?
+			//exit (0);
 		}
 		printf("returned to main\n");
 		//printf("command loop is done, to end is %d\n", to_end);

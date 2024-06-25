@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 07:06:51 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/26 00:07:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,54 +34,10 @@ char	*get_name(char *str, int i)
 	return (ft_substr(str, a, (b - a)));
 }
 
-void	heredoc_chest(char **chest, char **input)
-{
-	char	*old;
-	
-	if (!(*chest))
-		*chest = ft_strdup(*input);
-	else
-	{
-		old = *chest;
-		*chest = ft_strjoin(*chest, *input);
-		free (old);
-	}
-	old = *chest;
-	*chest = ft_strjoin(*chest, "\n");
-	free(old);
-	free(*input);
-}
-
-char	*heredoc_read(char *lim)
-{
-	char	*input;
-	char	*chest;
-
-	input = NULL;
-	chest = NULL;
-	while (1)
-	{
-		input = readline("heredoc> ");
-		if (!input)
-			return (NULL);
-		if (ft_strncmp(lim, input, 4096) == 0)
-		{
-			free(input);
-			break ;
-		}
-		heredoc_chest(&chest, &input);
-	}
-	return (chest);
-}
-
-/*
-heredoc_read vai retornar mas é o input inteiro e nao um filename
-*/
-
 int	input_redir(t_chunk *chunk, int *i, char *nwe)
 {
 	(*i)++;
-	//ft_printf("Input redirection checker.\n"); //
+	ft_printf("Input redirection checker.\n"); //
 	if (chunk->og[*i] == '<') // <<
 	{
 		//ft_printf("heredoc input redirection checking.\n"); //
@@ -103,7 +59,10 @@ int	input_redir(t_chunk *chunk, int *i, char *nwe)
 			//free(chunk->infile); //----------
 		nwe = heredoc_read(chunk->delimiter);
 		if (nwe == NULL)
-			return (-1);
+		{
+			printf("heredoc_read return was NULL, will give 130\n");
+			return (130);
+		}
 		updt_rdr_lst(chunk, 0, 1, nwe);
 	}
 	else if (chunk->og[*i] != '<') // <

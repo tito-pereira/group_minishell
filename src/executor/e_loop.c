@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/25 18:42:53 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 19:01:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	exec_loop(t_execlist *execl, int **fd, char ***exec_str)
 	if (pid == 0)
 		exec_launch(execl, fd, i, exec_str);
 	close_pipes(execl, fd, i, 1, 1);
-	sig_handler(3);
+	//sig_handler(3);
 	wait(NULL);
 	if (execl->valid_cmds == 1 && check_changes(execl->chunk[0]) == 1)
 	{

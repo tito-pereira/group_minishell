@@ -19,21 +19,32 @@ void	sighandler_fork(int signo)
 		g_signo = 128 + signo;
 }*/
 
-void	sig_only_global(int num)
+void	sig_global(int num)
 {
 	if (num == SIGINT || num == SIGQUIT)
+	{
+		printf("inside SIGINT only changes global handler function\n");
 		g_sig = 128 + num;
+	}
 }
 
-void	sig_heredoc_repeat(int num)
+void	sig_hd_repeat(int num)
 {
 	if (num == SIGINT)
 	{
+		printf("inside SIGINT exits heredoc handler function\n");
 		g_sig = 128 + SIGINT;
 		write(1, "\n", 1);
 		exit(g_sig);
 	}
 }
+
+/*
+nao vai fucionar no meu porque eu nao faço heredoc em nenhum fork
+
+empty heredoc + ctrl-C -> escape, new prompt
+full heredoc + ctrl-C -> escape, new prompt
+*/
 
 void	sig_repeat(int num)
 {
@@ -54,13 +65,13 @@ void	sig_handlerr(int mode)
 	struct	sigaction	sa_hd_repeat;
 	struct	sigaction	sa_global;
 	struct	sigaction	sa_ign;
-	struct	sigaction	sa_dfl;
+	//struct	sigaction	sa_dfl;
 
 	sa_repeat.sa_handler = &sig_repeat;
 	sa_hd_repeat.sa_handler = &sig_hd_repeat;
 	sa_global.sa_handler = &sig_global;
 	sa_ign.sa_handler = SIG_IGN;
-	sa_dfl.sa_handler = SIG_DFL;
+	//sa_dfl.sa_handler = SIG_DFL;
 	if (mode == 1) //prompt
 	{
 		sigaction(SIGINT, &sa_repeat, NULL);
@@ -68,20 +79,29 @@ void	sig_handlerr(int mode)
 	}
 	else if (mode == 2) //heredoc ???
 	{
-		sigaction(SIGINT, &sig_hd_repeat, NULL);
-		//sigaction(SIGQUIT, &sa_ign, NULL); //ja foi definida antes, n posso tirar isto?
+		printf("SIGINT exits heredoc activated\n");
+		sigaction(SIGINT, &sa_hd_repeat, NULL);
+		sigaction(SIGQUIT, &sa_ign, NULL); //ja foi definida antes, n posso tirar isto?
 	}
 	else if (mode == 3) //pre executor ???
 	{
-		sigaction(SIGINT, &sig_global, NULL);
-		sigaction(SIGQUIT, &sig_global, NULL);
+		printf("SIGINT only changes global activated\n");
+		sigaction(SIGINT, &sa_global, NULL);
+		sigaction(SIGQUIT, &sa_global, NULL);
 	}
 }
 
 /*
 sig_handler(1) - main.c
-sig_handler(2) - p_2.c
+sig_handler(2) - p_2c.c
 sig_handler(3) - e_main.c
+
+() empty prompt
+() full prompt
+() empty / one line + empty heredoc
+() full / one line + full heredoc
+() empty blocking command
+() full blocking command
 
 (vanilla, SIGINT)
 .(V) ctrl C, empty prompt, repeat (vanilla: )
@@ -107,21 +127,41 @@ sig_handler(3) - e_main.c
 ◦ ctrl-\ does nothing.
 (new, SIG_IGN)
 
-default
-c1r5s3% cat (ctrl-C, SIGINT)
-^C
-c1r5s3% cat (ctrl-D, EOF)
-c1r5s3% 
-c1r5s3% cat (ctrl-C, SIGINT, 1 clique)
-stuff^C
-c1r5s3% cat (ctrl-D, EOF, 2 cliques)
-stuffstuff%
-c1r5s3% 
+-----
+BASH (heredoc):
+root_tito@tabp:~$ cat <<lim (ctrl-C)
+> ^C
+root_tito@tabp:~$ cat <<lim
+> stuff^C
+root_tito@tabp:~$ cat <<lim
+> stuff
+> l^C
+root_tito@tabp:~$ cat <<lim (ctrl-D)
+>
+-bash: warning: here-document at line 23 delimited by end-of-file (wanted `lim')
+root_tito@tabp:~$ cat <<lim
+> stuff
+> lim
+stuff
+root_tito@tabp:~$ echo <<lim (ctrl-\ is ignored)
 
-basicamente tudo o que envolva blocking commands vai ser default, nao
-ha grande maneira de controlar porque eles dao reset aos sighandlers
-o que podemos fazer é registar a global var no parent process e após o
-fecho do child process lidar com o sinal recebido
+ZÉ (heredoc):
+minishell:~/jose$ echo <<lim
+> ^C
+minishell:~/jose$ echo <<lim
+>
+minishell: warning: here-document delimited by end-of-file (wanted `lim')
+
+minishell:~/jose$ echo <<lim
+>
+
+(o do zé está igualzinho wtf)
+
+TITO (heredoc):
+>> minishell: echo <<lim (ctrl-C)
+>> minishell: echo <<lim (ctrl-D) (return NULL)
+heredoc>
+-----
 
 teste triplo ecra:
 - empty prompt
@@ -131,13 +171,6 @@ teste triplo ecra:
 - blocking command
 
 - nao acho que o sigpipe seja necessário, apenas acrescenta uma mensagem extra
-
-heredoc
-- ir ao meu codigo e por antes do heredoc e antes do executor
-- triple test
--> heredoc sujeito a expander? tenho isso?
--> o zé também usa 0644 em permissoes? why? mais uma vez, standard practice
-(ONLY OUTPUT)
 
 usos da global var:
 -> mal entra no lexer main, se o global for 130, a mesma historia,
@@ -157,9 +190,19 @@ signal(SIGQUIT, SIG_IGN);
 cada vez que ele recebe heredoc input é num fork novo por isso que ele
 repete as sighandlers em todos os forks (sera que o parent process tambem realiza
 sighandling neste caso?)
+
+if (!input)
+{
+	printf("minishell: warning: here-document delimited by end-of-file \
+(wanted `%s')\n", init->eof);
+	close(pipe_fd[1]);
+	delete_lists(init);
+	exit(EXIT_FAILURE);
+}
 */
 
 /*
+--------------------------------------------------
 void	sigpipe_handler(int signo)
 {
 	(void)signo;

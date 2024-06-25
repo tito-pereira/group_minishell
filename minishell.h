@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/25 18:40:26 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 21:34:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int		arg_id(t_execlist *execl);
 int		pipe_counter(char *input, t_execlist *execl);
 int		input_redir(t_chunk *chunk, int *i, char *nwe);
 int		output_redir(t_chunk *chunk, int *i, char *nwe);
+char    *heredoc_read(char *lim);
 char	*new_chnk(char *spec, char *old, int a, int b);
 int		cmd_separator(t_chunk *chunk);
 void	add_arg(t_chunk *chunk, char **str);
