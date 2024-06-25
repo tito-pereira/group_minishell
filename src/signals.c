@@ -12,6 +12,19 @@
 
 #include "../minishell.h"
 
+/*
+void	sigint_hdhandler(int signo)
+{
+	if (signo == SIGINT)
+	{
+		g_signo = 130;
+		write(1, "\n", 1);
+		exit(g_signo);
+	}
+}
+
+*/
+
 void	sig_repeat(int num)
 {
 	(void)num;
@@ -32,14 +45,14 @@ void	sig_handler(int mode)
 	sa_repeat.sa_handler = &sig_repeat;
 	sa_ign.sa_handler = SIG_IGN;
 	sa_dfl.sa_handler = SIG_DFL;
-	if (mode == 1)
+	if (mode == 1) //prompt
 	{
 		sigaction(SIGINT, &sa_repeat, NULL);
 		sigaction(SIGQUIT, &sa_ign, NULL);
 	}
-	else if (mode == 2)
+	else if (mode == 2) //heredoc ???
 		sigaction(SIGINT, &sa_dfl, NULL);
-	else if (mode == 3)
+	else if (mode == 3) //pre executor ???
 		sigaction(SIGINT, &sa_ign, NULL);
 }
 
@@ -48,6 +61,7 @@ void	sig_handler(int mode)
 (vanilla, SIGINT)
 .(V) ctrl C, empty prompt, repeat (vanilla: )
 .(V) ctrl C, some lines, repeat (vanilla: )
+.(X) ctrl C, heredoc, repeat (vanilla: )
 .(V) ctrl C, blocking commands, (repeat?)
 ◦ ctrl-C displays a new prompt on a new line.
 (new, repeat)
@@ -55,42 +69,18 @@ void	sig_handler(int mode)
 (vanilla, EOF)
 .(V) ctrl D, empty prompt, quit (vanilla: NULL input && repeat)
 .(V) ctrl D, full prompt, nothing (vanilla: nothing)
+.(X) ctrl D, heredoc, repeat (vanilla: )
 .(-) ctrl D, blocking commands, (quit/nothing) (vanilla: NULL input && repeat)
 ◦ ctrl-D exits the shell.
 (new, SIGINT)
 
 (vanilla, SIGQUIT)
-.(V) ctrl \, empty prompt, nothing
-.(V) ctrl \, full prompt, nothing
+.(V) ctrl \, empty prompt, ignore
+.(V) ctrl \, full prompt, ignore
+.(V) ctrl \, heredoc, ignore
 .(V) ctrl \, blocking commands, nothing
 ◦ ctrl-\ does nothing.
 (new, SIG_IGN)
-
--------------------------
-
-como nao consigo usar signal handling em ctrl-D
-vamos supor entao que nao consigo controlar ctrl-D em buffers de input cheios
-no blocking command eu so posso lidar com o returno do execve()
-
-o sinal é mudado no parent process.
-nao consigo controlar o cat dentro do execve, so consigo que ele
-herde coisas minhas. mas qualquer influencia do sinal é no
-parent process e nao no cat dentro do execve
-
-mudo o ctrl-C para default antes do execve, e mudo o ctrl-C para IGN right after?
-para nao haver conflitos de sinais entre o parent process e todos os forked child
-processes que vou criar
-
-posso usar o sighandler para informar o meu executor, pos execucao, se recebeu ctrl-C?
-tamben nao tenho acesso ao retorno do execve
-------------------------------
-
--> ctrl-D c blocking command precisa de tratamento (provavelmente usando error status, em vez de
-continuar no loop do minishell, da free a tudo e sai)
-
-unica coisa que sei é, nao posso deixar o default ctrl-D para blocking commands
-para readline até funciona bem. tem que funcionar como SIGINT. o default SIGINT, em bash, fecha
-logo tudo mesmo estando em blocking commands (nope, apenas fecha o cat)
 
 default
 c1r5s3% cat (ctrl-C, SIGINT)
@@ -103,12 +93,21 @@ c1r5s3% cat (ctrl-D, EOF, 2 cliques)
 stuffstuff%
 c1r5s3% 
 
-MUDAR NA READLINE DO HEREDOC
-fazer o mecanismo que faco na read mas desta vez quando uso readline ao ler o input
-para o heredoc
-vai ser equivalente a ter recebido esse sinal
--> eu ja avisava aqui para mudar o heredoc, se calhar tenho que testar e ver
-como se esta a comportar e como é suposto
+basicamente tudo o que envolva blocking commands vai ser default, nao
+ha grande maneira de controlar porque eles dao reset aos sighandlers
+o que podemos fazer é registar a global var no parent process e após o
+fecho do child process lidar com o sinal recebido
+
+teste triplo ecra:
+- empty prompt
+- full prompt
+- empty heredoc
+- full heredoc
+- blocking command
+
+- nao acho que o sigpipe seja necessário, apenas acrescenta uma mensagem extra
+- hdhandler
+- handler fork
 */
 
 /*
