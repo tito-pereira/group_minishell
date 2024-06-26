@@ -23,7 +23,7 @@ void	sig_global(int num)
 {
 	if (num == SIGINT || num == SIGQUIT)
 	{
-		printf("inside SIGINT only changes global handler function\n");
+		//printf("inside SIGINT only changes global handler function\n");
 		g_sig = 128 + num;
 	}
 }
@@ -32,7 +32,7 @@ void	sig_hd_repeat(int num)
 {
 	if (num == SIGINT)
 	{
-		printf("inside SIGINT exits heredoc handler function\n");
+		//printf("inside SIGINT exits heredoc handler function\n");
 		g_sig = 128 + SIGINT;
 		write(1, "\n", 1);
 		exit(g_sig);
@@ -79,13 +79,13 @@ void	sig_handlerr(int mode)
 	}
 	else if (mode == 2) //heredoc ???
 	{
-		printf("SIGINT exits heredoc activated\n");
+		//printf("SIGINT exits heredoc activated\n");
 		sigaction(SIGINT, &sa_hd_repeat, NULL);
 		sigaction(SIGQUIT, &sa_ign, NULL); //ja foi definida antes, n posso tirar isto?
 	}
 	else if (mode == 3) //pre executor ???
 	{
-		printf("SIGINT only changes global activated\n");
+		//printf("SIGINT only changes global activated\n");
 		sigaction(SIGINT, &sa_global, NULL);
 		sigaction(SIGQUIT, &sa_global, NULL);
 	}

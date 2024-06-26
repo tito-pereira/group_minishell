@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/25 21:34:13 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/26 19:02:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,9 +141,10 @@ void	open_all_redirs(t_execlist *execl); //sera que a chamo em algum lado?
 
 // FREE
 char	*free_str(char *str);
+int		*free_int_arr(int *str);
 char	**free_db_str(char **str);
-void	free_chunk(t_chunk *chunk);
-void	free_exec(t_execlist *exec);
+t_chunk		*free_chunk(t_chunk *chunk);
+t_execlist	*free_exec(t_execlist *execl);
 
 // BUILT-IN
 void	blt_central(t_execlist *execl, int i, char **exec_str);

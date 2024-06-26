@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/26 04:25:53 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/26 16:58:35 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	get_positions(int *a, int *b, int *i, char *chunk)
 	*a = *i;
 	(*i)++;
 	while (chunk[*i] != 9 && chunk[*i] != 32 && chunk[*i] != '$'
-		&& chunk[*i] != '\0' && chunk[*i] != 34)
+		&& chunk[*i] != '\0' && chunk[*i] != 34 && chunk[*i] != '\n')
 		(*i)++;
 	*b = (*i) - 1;
 	ft_printf("a:%d && b:%d\n", *a, *b);
@@ -53,6 +53,7 @@ void	get_positions(int *a, int *b, int *i, char *chunk)
 	se calhar acrescentar uma condicao de [i] != 34 por causa da
 	double quote
 	ha alguma env var que possua double quote? nao creio
+	9, 32, 34, $, \0, e agr \n?
 	*/
 }
 
@@ -67,9 +68,15 @@ char	*get_spec(int *a, int *b, char *chunk, t_execlist *execl)
 	if (!env_name)
 		return(NULL);
 	if (env_name[0] == '?')
+	{
+		printf("will go for exit_stt itoa\n");
 		env_value = ft_itoa(*(execl->exit_stt));
+	}
 	else
+	{
+		printf("will go for search_my_envp\n");
 		env_value = search_my_envp(execl, env_name); //getenv(env_name);
+	}
 	if (!env_value)
 		return(NULL);
 	free(env_name);
@@ -134,17 +141,19 @@ int	spec_char_heredoc(t_execlist *execl, int j, int *a, int *b)
 	int	inf;
 	
 	inf = -1;
+	printf("inside heredoc spec char\n");
 	while (execl->chunk[j]->infiles[++inf] != NULL)
 	{
 		i = -1;
 		flag = 1;
 		while (execl->chunk[j]->here_dcs[inf] == 1
-			&& execl->chunk[j]->infiles[inf][i] != '\0')
+			&& execl->chunk[j]->infiles[inf][++i] != '\0')
 		{
 			if (execl->chunk[j]->infiles[inf][i] == 39)
 				flag *= -1;
 			if (execl->chunk[j]->infiles[inf][i] == '$' && flag == 1)
 			{
+				printf("special $ sign found in %d position\n", i);
 				if (h_env_var(a, b, &i, &execl->chunk[j]->infiles[inf], execl) == 0)
 				{
 					*(execl->exit_stt) = 1;
@@ -165,7 +174,7 @@ int	special_char(t_execlist *execl)
 	//int		flag;
 
 	j = -1;
-	//flag = 1;
+	printf("inside parser 3: spec char\n");
 	a = 0;
 	b = 0;
 	while (execl->chunk[++j] != NULL)
@@ -174,6 +183,7 @@ int	special_char(t_execlist *execl)
 			return (0);
 		if (execl->chunk[j]->infiles)
 		{
+			printf("will enter heredoc spec char\n");
 			if (spec_char_heredoc(execl, j, &a, &b) == 0)
 				return (0);
 		}

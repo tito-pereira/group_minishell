@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/25 19:01:48 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/26 20:03:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,30 @@ void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str) //int **r
 	}
 	exit(0);
 }
+
+/*
+builtins
+(so dup2 no exec_output)
+dup2 outfile
+blt_central
+dup2 outpipe
+blt central
+envp write to pipe
+
+X builtins
+(execve para outfile)
+dup2 outpipe NO MESMO PROCESS
+sair ca p fora e execve normal
+
+só preciso é de trazer os respetivos fd cmg desta vez
+sera que dup2 stdin se mantem? acho que sim pq nao uso execs
+tambem acho que nao ha problema cas as envps pq elas se mantêm,
+so nao comunicavam dantes era com o parent process
+-> evnp é suposto manterem-se
+-> dup2 output eu mudo
+-> execstr é suposto ser a mesma
+teoricamente deve resultar
+*/
 
 void	exec_launch(t_execlist *execl, int **fd, int i, char ***exec_str)
 {

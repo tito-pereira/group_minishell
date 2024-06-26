@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:40 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/26 00:07:34 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/26 16:08:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_name(char *str, int i)
 int	input_redir(t_chunk *chunk, int *i, char *nwe)
 {
 	(*i)++;
-	ft_printf("Input redirection checker.\n"); //
+	//ft_printf("Input redirection checker.\n"); //
 	if (chunk->og[*i] == '<') // <<
 	{
 		//ft_printf("heredoc input redirection checking.\n"); //
