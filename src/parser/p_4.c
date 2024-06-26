@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/23 05:10:00 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/26 04:25:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,18 +102,58 @@ int	h_env_var(int *a, int *b, int *i, char **chunk, t_execlist *execl)
 		return (0);
 	}
 	return (1);
-	/*
-	get_positions(&a, &b, &i, execl.chunk[j].og);
-	spec = get_spec(a, b, execl.chunk[j].og);
-	if (spec != NULL)
-		execl.chunk[j].og = new_chnk(spec, execl.chunk[j].og, a, b);
-	else
+}
+
+int	spec_char_chunk(t_execlist *execl, int j, int *a, int *b)
+{
+	int	i;
+	int	flag;
+	
+	i = -1;
+	flag = 1;
+	while (execl->chunk[j]->og[++i] != '\0')
 	{
-		perror("Error handling environment variable");
-		free_exec(execl);
-		exit(0);
+		if (execl->chunk[j]->og[i] == 39)
+			flag *= -1;
+		if (execl->chunk[j]->og[i] == '$' && flag == 1)
+		{
+			if (h_env_var(a, b, &i, &execl->chunk[j]->og, execl) == 0)
+			{
+				*(execl->exit_stt) = 1;
+				return (0);
+			}
+		}
 	}
-	*/
+	return (1);
+}
+
+int	spec_char_heredoc(t_execlist *execl, int j, int *a, int *b)
+{
+	int	i;
+	int	flag;
+	int	inf;
+	
+	inf = -1;
+	while (execl->chunk[j]->infiles[++inf] != NULL)
+	{
+		i = -1;
+		flag = 1;
+		while (execl->chunk[j]->here_dcs[inf] == 1
+			&& execl->chunk[j]->infiles[inf][i] != '\0')
+		{
+			if (execl->chunk[j]->infiles[inf][i] == 39)
+				flag *= -1;
+			if (execl->chunk[j]->infiles[inf][i] == '$' && flag == 1)
+			{
+				if (h_env_var(a, b, &i, &execl->chunk[j]->infiles[inf], execl) == 0)
+				{
+					*(execl->exit_stt) = 1;
+					return (0);
+				}
+			}
+		}
+	}
+	return (1);
 }
 
 int	special_char(t_execlist *execl)
@@ -121,39 +161,73 @@ int	special_char(t_execlist *execl)
 	int		a;
 	int		b;
 	int		j;
-	int		i;
-	int		flag;
+	//int		i;
+	//int		flag;
 
 	j = -1;
-	flag = 1;
-	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");//
-	//ft_printf("Inside parsing (4): special_char;\n");//
+	//flag = 1;
+	a = 0;
+	b = 0;
 	while (execl->chunk[++j] != NULL)
 	{
-		//ft_printf("Chunk n°%d:\n", j);//
-		i = -1;
-		while (execl->chunk[j]->og[++i] != '\0')
+		if (spec_char_chunk(execl, j, &a, &b) == 0)
+			return (0);
+		if (execl->chunk[j]->infiles)
 		{
-			a = 0;
-			b = 0;
-			if (execl->chunk[j]->og[i] == 39)
-				flag *= -1;
-			if (execl->chunk[j]->og[i] == '$' && flag == 1)
-			{
-				//ft_printf("Special char found in position %d\n", i);//
-				if (h_env_var(&a, &b, &i, &execl->chunk[j]->og, execl) == 0)
-				{
-					*(execl->exit_stt) = 1;
-					return(0);
-				}
-				//else
-					//ft_printf("execl->chunk[j]->og: '%s'\n", execl->chunk[j]->og);//
-			}
+			if (spec_char_heredoc(execl, j, &a, &b) == 0)
+				return (0);
 		}
 	}
 	return(1);
 }
 //else, retorna normalmente sem fazer nada
+
+/*
+i = -1;
+while (execl->chunk[j]->here_dcs[x] == 1
+	&& execl->chunk[j]->infiles[x][i] != '\0')
+{
+	a = 0;
+	b = 0;
+	if (execl->chunk[j]->infiles[x][i] == 39)
+		flag *= -1;
+	if (execl->chunk[j]->infiles[x][i] == '$' && flag == 1)
+	{
+		if (h_env_var(&a, &b, &i, &execl->chunk[j]->infiles[x], execl) == 0)
+		{
+			*(execl->exit_stt) = 1;
+			return(0);
+		}
+	}
+}
+
+execl->chunk->infiles[i] = char * com o heredoc
+execl->chunk->here_dcs[i] = int c flag se é heredoc ou nao
+
+ou eu aplico o heredoc ao og original e retiro o <<lim
+ou entao tenho que criar na mesma isto aqui
+
+typedef struct s_chunk {
+	char	**infiles; //nome dos files
+	int		nmb_inf; //numero total
+	int		*here_dcs; //valores da flag
+	int		heredoc; // --- //
+	char	*here_file; // --- //
+	char	*delimiter;
+	char	**outfiles; //
+	int		nmb_outf; //
+	int		append;
+	int		*app_dcs; //
+	char	*og;
+	char	**cmd_n_args;
+	char	*path; // --- //
+	int		inpipe;
+	int		inpfd; // --- //
+	int		outpipe; // --- //
+	int		outpfd; // --- //
+	int		blt;
+}	t_chunk;
+*/
 
 /*
 .fazer e testar o $? que devera expandir para o exit status do ultimo
@@ -174,4 +248,38 @@ parsing + execution both create error status
 .first '$HOME' second
 (acho que o proprio ponto 4 do parser nao foi testado ent n sei
 de onde vem o erro)
+*/
+
+/*
+int	special_char(t_execlist *execl)
+{
+	int		a;
+	int		b;
+	int		j;
+	int		i;
+	int		flag;
+
+	j = -1;
+	flag = 1;
+	while (execl->chunk[++j] != NULL)
+	{
+		i = -1;
+		while (execl->chunk[j]->og[++i] != '\0')
+		{
+			a = 0;
+			b = 0;
+			if (execl->chunk[j]->og[i] == 39)
+				flag *= -1;
+			if (execl->chunk[j]->og[i] == '$' && flag == 1)
+			{
+				if (h_env_var(&a, &b, &i, &execl->chunk[j]->og, execl) == 0)
+				{
+					*(execl->exit_stt) = 1;
+					return(0);
+				}
+			}
+		}
+	}
+	return(1);
+}
 */

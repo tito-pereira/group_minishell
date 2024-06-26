@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/25 22:01:32 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/26 03:24:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,12 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 		flag = pipe_chunks(execl, input, exit_stt, env);
 	if (flag == 1)
 		flag = redir_checker(*execl);
-	printf("redir checker return was %d\n", flag);
-	if (flag == 1)
-		flag = scope_redirs(*execl);
+	//if (flag == 1)
+		//flag = scope_redirs(*execl);
 	if (flag == 1)
 		flag = special_char(*execl);
+	if (flag == 1)
+		flag = scope_redirs(*execl);
 	if (flag == 1)
 		flag = arg_separator(*execl);
 	if (flag == 1)
@@ -125,6 +126,11 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 	//ft_printf("Finished parsing with flag %d\n", flag);//
 	return (flag);
 }
+
+/*
+trocar o ponto 3 pelo ponto 4
+trocar o scope pelo spec char
+*/
 
 int	main(void)
 {
