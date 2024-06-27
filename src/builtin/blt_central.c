@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 13:01:23 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/23 18:46:44 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/27 01:30:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,7 @@ void	blt_central(t_execlist *execl, int i, char **exec_str)
 	else if (ft_strncmp(exec_str[0], "env", 4) == 0)
 		ft_env(execl->exit_stt, execl->chunk[i]->cmd_n_args, execl->my_envp);
     else if (ft_strncmp(exec_str[0], "exit", 5) == 0)
-	{
-		//printf("previous end = %d\n", to_end);
-		//to_end = 1; //ft_exit(execl); //execl->exit_stt, execl->chunk[i]->cmd_n_args,
-		//printf("after end = %d\n", to_end);
-		return ;
-	}
+		ft_exit(execl->exit_stt, execl->chunk[i]->cmd_n_args, execl);
     else if (ft_strncmp(exec_str[0], "export", 7) == 0)
 		ft_export(execl->exit_stt, execl->chunk[i]->cmd_n_args, execl->my_envp);
     else if (ft_strncmp(exec_str[0], "pwd", 4) == 0)

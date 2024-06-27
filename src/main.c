@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/26 03:24:15 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/27 03:15:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,26 @@ trocar o ponto 3 pelo ponto 4
 trocar o scope pelo spec char
 */
 
+void	exit_cmd_checker(t_execlist *execl)
+{
+	if (execl && execl->cmd_nmb == 1
+		&& ft_strncmp(execl->chunk[0]->cmd_n_args[0], "exit", 10) == 0)
+		ft_exit(execl);
+}
+
+/*
+fora:
+- exit command called (strcmp)
+- ausencia de pipes (cmd nmb == 1)
+
+dentro:
+- so 1 argumento
+- argumento valido (digit)
+
+se der erro de exit, sai daqui e reentra no caminho normal
+de free + new prompt
+*/
+
 int	main(void)
 {
 	char			*input;
@@ -190,103 +210,14 @@ int	main(void)
 			//tmp = execl->chunk[0]->cmd_n_args;
 		if (execl && execl->cmd_nmb == 1
 			&& ft_strncmp(execl->chunk[0]->cmd_n_args[0], "exit", 10) == 0)
+			ft_exit(execl);
+		/*if (execl && execl->cmd_nmb == 1
+			&& ft_strncmp(execl->chunk[0]->cmd_n_args[0], "exit", 10) == 0)
 		{
 			free_exec(execl);
 			exit (0); //err_stt
-		}
+		}*/
 		if (execl)
 			free_exec(execl);
-		//ft_printf("\n\n\nafter free env\n");
-		//print_db_char(env);
-		//free_db_str(env);
-		//env = execl->my_envp[0];
-		/////////////////////
-		//free(input);
-		//if (global_sig == 2)
-			//free_exec(execl);
-		//else
-			//the_executor(execl, exit_stt);
 	}
 }
-
-/*
-#include <signal.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <termios.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-
-int global_sig = 0;
-struct termios orig_termios;
-
-// Function to reset terminal to original settings
-void reset_terminal_mode()
-{
-    tcsetattr(STDIN_FILENO, TCSANOW, &orig_termios);
-}
-
-// Function to set terminal to raw mode
-void set_raw_mode()
-{
-    struct termios raw;
-
-    // Get current terminal settings
-    tcgetattr(STDIN_FILENO, &orig_termios);
-
-    // Make a copy of the original settings
-    raw = orig_termios;
-
-    // Input modes: no break, no CR to NL, no parity check, no strip char, no start/stop output control.
-    raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-
-    // Output modes: disable post-processing
-    raw.c_oflag &= ~(OPOST);
-
-    // Control modes: set 8-bit chars
-    raw.c_cflag |= (CS8);
-
-    // Local modes: echoing off, canonical off, no extended functions, no signal chars.
-    raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-
-    // Apply the new settings
-    tcsetattr(STDIN_FILENO, TCSANOW, &raw);
-}
-
-void sig_repeat(int num)
-{
-    (void)num; // Unused parameter
-    global_sig = 1;
-    printf("\n");
-    rl_replace_line("", 0);  // Clear the current line
-    rl_on_new_line();        // Move cursor to a new line
-    rl_redisplay();          // Redisplay the prompt
-}
-
-void	set_tty_manual()
-{
-	struct	termios	manual;
-
-	tcgetattr(STDIN_FILENO, &manual);
-    manual.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-    manual.c_oflag &= ~(OPOST);
-    manual.c_cflag |= (CS8);
-	manual.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-	tcsetattr(STDIN_FILENO, TCSANOW, &manual);
-}
-
-void	sig_repeat(int num)
-{
-	struct termios origin;
-
-	(void)num;
-	tcgetattr(STDIN_FILENO, &origin);
-	set_tty_manual(); //set to manual
-	global_sig = 1;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	tcsetattr(STDIN_FILENO, TCSANOW, &origin); //reset to origins
-}
-*/
