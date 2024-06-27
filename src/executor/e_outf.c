@@ -6,13 +6,30 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:25:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/24 04:44:30 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/27 20:08:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ex_redir_file(t_execlist *execl, int i, char *buff, int *nfd)
+void	ex_end(char *buff, int *nfd)
+{
+	if (buff)
+		free(buff);
+	if (nfd)
+		free(nfd);
+	buff = NULL;
+	nfd = NULL;
+	//exit(0);
+}
+
+/*
+bruh nao posso ter um exit aqui wtf como é que eu estava sequer a funcionar com isto?
+sera que eram vestigios de quando tinha os execve?
+*/
+
+void	ex_redir_file(t_execlist *execl, int i, char *buff, int *nfd, \
+	char ***exec_str)
 {
 	int	tmp;
 	int	n_file;
@@ -20,21 +37,25 @@ void	ex_redir_file(t_execlist *execl, int i, char *buff, int *nfd)
 	tmp = 0;
 	n_file = execl->chunk[i]->nmb_outf;
 	if (buff)
-		temp_pipe(nfd, buff);
+		temp_pipe(nfd, buff); //cria o artifical infile e dup2 input
+	ex_end(buff, nfd);
 	if (execl->chunk[i]->append == 1) //append
 		tmp = open(execl->chunk[i]->outfiles[n_file], \
-		O_RDWR | O_CREAT | O_APPEND);
+		O_RDWR | O_CREAT | O_APPEND, 0644);
 	else // truncate
 		tmp = open(execl->chunk[i]->outfiles[n_file], \
-		O_RDWR | O_CREAT | O_TRUNC);
+		O_RDWR | O_CREAT | O_TRUNC, 0644);
 	dup2(tmp, STDOUT_FILENO);
 	close(tmp); //depois de dup, fecha-se
-	//execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
+	execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
 }
 
 /*
-faz open ao file, dup2 e close
-fazia execve nao sei bem do que
+depois do temp pipe, ja fiz dup2, já escrevi o buff, posso
+dar free logo ali there and then (antes do execve)
+e depois ainda fica a faltar o ultimo free acho eu? nope, só o ex_end
+
+implementar o execve aqui only if X BLT
 */
 
 void	ex_redir_pipe(int **fd, int i, char *buff, int *nfd)
@@ -59,15 +80,7 @@ if buff, escreve o buff para o nfd, e faz dup2 do fd para output
 qual o sentido disto?
 */
 
-void	ex_end(char *buff, int *nfd)
-{
-	if (buff)
-		free(buff);
-	free(nfd);
-	exit(0);
-}
-
-void	ex_outfile(t_execlist *execl, int **fd, int i)
+void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
 	char	*buff;
 	int		*nfd;
@@ -78,13 +91,17 @@ void	ex_outfile(t_execlist *execl, int **fd, int i)
 	//printf("buff:%s;\n", buff);
 	nfd = ft_calloc(2, sizeof(int));
 	pid = fork();
-	if (pid == 0) //redir para outfile
+	if (pid == 0) //redir para outfile, feito em fork (NAO CONTA), a nao ser que tambem faça exec
 	{
-		if ((i + 1) < execl->valid_cmds)
+		if ((i + 1) < execl->valid_cmds) //sera que é valid_cmds ou cmd_nmb?
 			close(fd[i + 1][1]);
-		ex_redir_file(execl, i, buff, nfd);
-		ex_end(buff, nfd);
-		return ;
+		if (execl->chunk[i]->blt == 0)
+			ex_redir_file(execl, i, buff, nfd, exec_str);
+		else if (execl->chunk[i]->blt == 1)
+		{
+			ex_end(buff, nfd);
+			exit(0); //sera que o chunk[i] é o numero correto?
+		}
 	}
 	wait(NULL);
 	if ((i + 1) < execl->valid_cmds) //outfile inside pipeline
@@ -96,19 +113,36 @@ void	ex_outfile(t_execlist *execl, int **fd, int i)
 }
 
 /*
-fora desta funcao, apenas vai haver isto
-if ((i + 1) < execl->valid_cmds)
-		close(fd[i + 1][1]);
-antes de sair e ir para o exec
--> fora desta funcao faz logo return p fora dela, é uma saida direta
+-> redir outfile COM EXEC (only if X BLT)
+-> redir pipe mantém se apenas com dup2 para ambos
+-> trazer o fd outfile cá para fora para o BLT
 
-redir - fecho ali o fd no inicio do redir fork
-pipe - faz dup e fecha a dup, execve fecha o original
+o ultimo redir pipe honestamente também nao preciso para nada
+para os builtins
+se for builtin acho que posso simplesmente sair desta funcao maybe?
+escuso de estar
 
-(V) retirar execve
-(V) cuidado c os dois processos a correr ao mm tempo ao sair
-(V) garantir que ambos os casos entram no execve la fora (e nas builtins tmb ja agora)
-() corrigir erro 1
+temp pipe
+como eu esvaziei o original infile, crio um pipe artificial só
+para simular um infile e ter um actual file descriptor para usar como
+dup2
+
+e se eu, ao executar 2 vezes os BLT, também esgotar o infile?
+o unico que recebe input é o echo certo?
+opa posso se calhar guardar o buff na execl idk... os outros nenhum deles
+precisa de infile, apenas args e outfile.. mas vou me lixar com
+echo <f1 | echo <f2
+qualquer comando | echo <f1
+wait nao isso sao chunks diferentes..
+é so com
+echo <f1 | cat, algum destes nao vai ter output (f1, terminal)
+retiro o que disse, echo nao aceita infile input, NENHUM aceita tho
+nao preciso entao de me preocupar com isso
+se calhar até testo os comandos depois e caso aceitem input eu venho aqui
+especificamente saltar isso à frente if (blt == 1)
+
+
+----------------------
 
 desde que outfiles != NULL, entra aqui
 portanto aqui entram todos de facto, agora é uma questao de gerir aqui dentro

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:29:03 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/24 03:35:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/27 20:02:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ int	open_all_outfs(t_chunk *chunk, int *exit)
 		while (++i <= nfile)
 		{
 			if (chunk->app_dcs[i] == 0)
-				tmp = open(chunk->outfiles[i], O_RDWR | O_CREAT | O_TRUNC);
+				tmp = open(chunk->outfiles[i], O_RDWR | O_CREAT | O_TRUNC, 0644);
 			else if (chunk->app_dcs[i] == 1)
-				tmp = open(chunk->outfiles[i], O_RDWR | O_CREAT | O_APPEND);
+				tmp = open(chunk->outfiles[i], O_RDWR | O_CREAT | O_APPEND, 0644);
 			if (tmp == -1)
 			{
 				return (-1);

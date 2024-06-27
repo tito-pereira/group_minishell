@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:44:12 by marvin            #+#    #+#              #
-#    Updated: 2024/06/25 20:49:31 by marvin           ###   ########.fr        #
+#    Updated: 2024/06/27 17:17:21 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,12 +36,12 @@ OBJ_E= ${SRC_E:.c=.o}
 
 SRC_B= ./src/builtin/blt_central.c ./src/builtin/cd.c \
 	./src/builtin/echo.c ./src/builtin/env.c \
-	./src/builtin/exit.c ./src/builtin/export.c \
-	./src/builtin/pwd.c ./src/builtin/unset.c
+	./src/builtin/export.c \
+	./src/builtin/pwd.c ./src/builtin/unset.c #./src/builtin/exit.c
 OBJ_B= ${SRC_B:.c=.o}
 
 SRC_M= ./src/free.c ./src/signals.c ./src/main.c \
-	./src/prints.c
+	./src/prints.c ./src/exit_mini.c
 OBJ_M= ${SRC_M:.c=.o}
 
 OBJ= $(OBJ_P) $(OBJ_E) $(OBJ_B) $(OBJ_M)

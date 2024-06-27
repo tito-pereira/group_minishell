@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/27 01:29:27 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/27 17:18:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ char	*search_my_envp(t_execlist *execl, char *env_name);
 void	updt_rdr_lst(t_chunk *chunk, int in_out, int flag, char *n_str);
 
 // GLOBAL SUPPORT
+void	ft_exit(int *err, char **cmd, t_execlist *execl);
 char	**create_envp(void);
 void	close_pipes(t_execlist *execl, int **fd, int i, int rel, int non_rel);
 char	*rmv_newline(char *old);
@@ -151,7 +152,7 @@ void	blt_central(t_execlist *execl, int i, char **exec_str);
 void	ft_cd(int *err, char **cmd, char ***env);
 void	ft_echo(int *err, char **cmd);
 void	ft_env(int *err, char **cmd, char ***envp);
-void	ft_exit(int *err, char **cmd, t_execlist *execl);
+//void	ft_exit(int *err, char **cmd, t_execlist *execl);
 void	ft_export(int *err, char **cmd, char ***envp);
 void    ft_pwd(int *err, char **cmd, char **envp);
 void	ft_unset(int *err, char **cmd, char ***envp);
