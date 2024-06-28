@@ -6,24 +6,55 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/27 20:25:15 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 02:05:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str) //int **redir
+void	blt_action(t_execlist *execl, int **fd, int i, char ***exec_str)
+{
+	int	n_file;
+	int	tmp;
+
+	n_file = execl->chunk[i]->nmb_outf;
+	close_pipes(execl, fd, i, 0, 1); //non related
+	if (execl->chunk[i]->app_dcs[n_file] == 1) //append
+		tmp = open(execl->chunk[i]->outfiles[n_file], \
+		O_RDWR | O_CREAT | O_APPEND, 0644);
+	else // truncate
+		tmp = open(execl->chunk[i]->outfiles[n_file], \
+		O_RDWR | O_CREAT | O_TRUNC, 0644); //outfile
+	dup2(tmp, STDOUT_FILENO);
+	close(tmp); //outfile
+	blt_central(execl, i, exec_str[i], 1);
+	dup2(fd[i + 1][1], STDOUT_FILENO);
+	close(fd[i + 1][1]); //outpipe
+	blt_central(execl, i, exec_str[i], 2);
+	close_pipes(execl, fd, i, 1, 0); //related
+}
+
+/*
+shall we test this?
+quero experimentar file redirs, com e sem BLT
+BLT (experimentar primeiro sem infile)
+pwd >f1 >f2 >f3
+cat <example >f4 >f5
+*/
+
+void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
 	open_all_redirs(execl); //acho que ta a dar
-	exec_input(execl, fd, i); //ver se é preciso mudar para **execl tambem
-	exec_output(execl, fd, i, exec_str);
 	if (execl->chunk[i]->blt == 0)
+	{
+		exec_input(execl, fd, i);
+		exec_output(execl, fd, i, exec_str);
 		execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
+	}
 	else if (execl->chunk[i]->blt == 1)
 	{
-		blt_central(execl, i, exec_str[i]); //mode 1
-		//dup2(coiso, STDOUT_FILENO);
-		//blt_central(execl, i, exec_str[i], mode 2);
+		//blt_central(execl, i, exec_str[i], 1);
+		blt_action(execl, fd, i, exec_str);
 		if (execl->valid_cmds == 1)
 		{
 			//printf("in writing: closing reading [%d]\n", execl->env_pipe[0]);
@@ -38,13 +69,7 @@ void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str) //int **r
 }
 
 /*
-mode 2 - echo, pwd (prints)
-mode 2 X - cd, export, unset, env? (alguma destas faz print)
-se for comandos de apenas print acho que esta maneira é tranquila
-mas se for comandos tipo unset export etc, vou tar eliminar ou criar
-variavéis 2 vezes etc
-posso adicionar mode 1 e mode 2 ao blt, mode 2 é a repeticao e certos comandos
-nao fazem mode 2 e nao repetem
+mode 2 é a segunda iteração/repeticao das BLT e so alguns comandos resultam
 
 e caso seja builtin nem sequer precisa de entrar no exec_input porque nao
 usa isso para nada. só preciso é de ter cuidado com fechar todos os pipes fd
@@ -52,8 +77,13 @@ usa isso para nada. só preciso é de ter cuidado com fechar todos os pipes fd
 ou seja, nem input nem output?
 só preciso é de escrever para aqueles dois files simultaneos e preciso dos
 file descriptors?
+tenho fds, dup2 e closes, acho que nao falta nada
 
-tenho fds, dup2 e closes
+portanto, preciso dos fds
+- arranjar fd[] de outfile e outpipe
+outfile é outfiles[app_nmb] ou algo assim, nmb_outf acho
+execl->chunk[i]->outfiles[n_file] ??? isto é filename
+creio que outpipe seja fd[i + 1] né?
 
 builtins
 (so dup2 no exec_output)

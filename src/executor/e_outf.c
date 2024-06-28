@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:25:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/27 20:08:51 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 00:03:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ex_redir_file(t_execlist *execl, int i, char *buff, int *nfd, \
 	if (buff)
 		temp_pipe(nfd, buff); //cria o artifical infile e dup2 input
 	ex_end(buff, nfd);
-	if (execl->chunk[i]->append == 1) //append
+	if (execl->chunk[i]->app_dcs[n_file] == 1) //append
 		tmp = open(execl->chunk[i]->outfiles[n_file], \
 		O_RDWR | O_CREAT | O_APPEND, 0644);
 	else // truncate
@@ -50,12 +50,14 @@ void	ex_redir_file(t_execlist *execl, int i, char *buff, int *nfd, \
 	execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
 }
 
-/*
+/* 
+
+nem sei se execl->chunk[i]->append ainda está em uso ou se é
+execl->chunk[i]->app_dcs[n_file] == 1
+
 depois do temp pipe, ja fiz dup2, já escrevi o buff, posso
 dar free logo ali there and then (antes do execve)
 e depois ainda fica a faltar o ultimo free acho eu? nope, só o ex_end
-
-implementar o execve aqui only if X BLT
 */
 
 void	ex_redir_pipe(int **fd, int i, char *buff, int *nfd)
@@ -95,13 +97,13 @@ void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str)
 	{
 		if ((i + 1) < execl->valid_cmds) //sera que é valid_cmds ou cmd_nmb?
 			close(fd[i + 1][1]);
-		if (execl->chunk[i]->blt == 0)
-			ex_redir_file(execl, i, buff, nfd, exec_str);
-		else if (execl->chunk[i]->blt == 1)
+		//if (execl->chunk[i]->blt == 0)
+		ex_redir_file(execl, i, buff, nfd, exec_str);
+		/*else if (execl->chunk[i]->blt == 1)
 		{
 			ex_end(buff, nfd);
-			exit(0); //sera que o chunk[i] é o numero correto?
-		}
+			exit(0);
+		}*/
 	}
 	wait(NULL);
 	if ((i + 1) < execl->valid_cmds) //outfile inside pipeline
@@ -113,14 +115,10 @@ void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str)
 }
 
 /*
--> redir outfile COM EXEC (only if X BLT)
--> redir pipe mantém se apenas com dup2 para ambos
--> trazer o fd outfile cá para fora para o BLT
+-> redir outfile c exec e ex_end
+-> redir pipe mantém se apenas com dup2
 
-o ultimo redir pipe honestamente também nao preciso para nada
-para os builtins
-se for builtin acho que posso simplesmente sair desta funcao maybe?
-escuso de estar
+ja tirei tudo o que é BLT daqui
 
 temp pipe
 como eu esvaziei o original infile, crio um pipe artificial só
@@ -150,7 +148,7 @@ portanto aqui entram todos de facto, agora é uma questao de gerir aqui dentro
 - redirs bloqueiam
 if (buff)
 	temp_pipe(nfd, buff);
-(mantem se o dup2 / default STDIN vindo do exec_input)
+(mantem se o dup2 / default STDIN vindo do exec_input) 
 - apenas se faz dup2 output
 
 
