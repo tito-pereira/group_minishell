@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/27 03:15:56 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 02:24:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,12 +132,12 @@ trocar o ponto 3 pelo ponto 4
 trocar o scope pelo spec char
 */
 
-void	exit_cmd_checker(t_execlist *execl)
+/*void	exit_cmd_checker(t_execlist *execl)
 {
 	if (execl && execl->cmd_nmb == 1
 		&& ft_strncmp(execl->chunk[0]->cmd_n_args[0], "exit", 10) == 0)
 		ft_exit(execl);
-}
+}*/
 
 /*
 fora:
@@ -210,7 +210,7 @@ int	main(void)
 			//tmp = execl->chunk[0]->cmd_n_args;
 		if (execl && execl->cmd_nmb == 1
 			&& ft_strncmp(execl->chunk[0]->cmd_n_args[0], "exit", 10) == 0)
-			ft_exit(execl);
+			ft_exit(execl->chunk[0]->cmd_n_args, execl);
 		/*if (execl && execl->cmd_nmb == 1
 			&& ft_strncmp(execl->chunk[0]->cmd_n_args[0], "exit", 10) == 0)
 		{

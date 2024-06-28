@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:29:03 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/27 20:02:14 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 02:32:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	open_all_outfs(t_chunk *chunk, int *exit)
 	
 	i = -1;
 	(void)exit;
-	printf("opening all outfiles, %d in total\n", chunk->nmb_outf);
+	//printf("opening all outfiles, %d in total\n", chunk->nmb_outf);
 	nfile = chunk->nmb_outf;
 	if (chunk->outfiles != NULL)
 	{
@@ -105,11 +105,11 @@ int	open_all_outfs(t_chunk *chunk, int *exit)
 				return (-1);
 				//*exit = 1; //verificar os erros possiveis
 			}
-			printf("will try to close tmp(%d) now\n", tmp);
+			//printf("will try to close tmp(%d) now\n", tmp);
 			if (tmp != -1)
 			{
 				close(tmp);
-				printf("closed in %d with tmp(%d)\n", i, tmp);
+				//printf("closed in %d with tmp(%d)\n", i, tmp);
 			}
 		}
 	}
@@ -122,27 +122,27 @@ void	open_all_redirs(t_execlist *execl)
 
 	c = -1;
 	execl->exit_stt = 0;
-	printf("--- INSIDE REDIR OPENING ---\n");
-	for (int i = 0; execl->chunk[i] != NULL; i++)
-		support_print(execl, i);
+	//printf("--- INSIDE REDIR OPENING ---\n");
+	//for (int i = 0; execl->chunk[i] != NULL; i++)
+		//support_print(execl, i);
 	while (execl->chunk[++c])
 	{
-		printf("inside loop\n");
-		if (execl->chunk[c]->infiles == NULL)
-			printf("infiles is NULL\n");
+		//printf("inside loop\n");
+		//if (execl->chunk[c]->infiles == NULL)
+			//printf("infiles is NULL\n");
 		if (execl->chunk[c]->infiles != NULL)
 		{
-			printf("inside infile loop\n");
+			//printf("inside infile loop\n");
 			open_all_infs(execl->chunk[c], execl->exit_stt);
 		}
 		//printf("exit_stt is %d after infiles\n", *(execl->exit_stt));
 		if (execl->chunk[c]->outfiles != NULL && execl->exit_stt == 0)
 		{
-			printf("inside outfile loop\n");
+			//printf("inside outfile loop\n");
 			open_all_outfs(execl->chunk[c], execl->exit_stt);
 		}
 	}
-	printf("--- OUTSIDE REDIR OPENING ---\n");
+	//printf("--- OUTSIDE REDIR OPENING ---\n");
 }
 
 /*

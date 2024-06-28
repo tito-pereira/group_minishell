@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/26 16:58:35 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 02:34:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	spec_char_heredoc(t_execlist *execl, int j, int *a, int *b)
 	int	inf;
 	
 	inf = -1;
-	printf("inside heredoc spec char\n");
+	//printf("inside heredoc spec char\n");
 	while (execl->chunk[j]->infiles[++inf] != NULL)
 	{
 		i = -1;
@@ -174,7 +174,7 @@ int	special_char(t_execlist *execl)
 	//int		flag;
 
 	j = -1;
-	printf("inside parser 3: spec char\n");
+	//printf("inside parser 3: spec char\n");
 	a = 0;
 	b = 0;
 	while (execl->chunk[++j] != NULL)
@@ -183,7 +183,7 @@ int	special_char(t_execlist *execl)
 			return (0);
 		if (execl->chunk[j]->infiles)
 		{
-			printf("will enter heredoc spec char\n");
+			//printf("will enter heredoc spec char\n");
 			if (spec_char_heredoc(execl, j, &a, &b) == 0)
 				return (0);
 		}

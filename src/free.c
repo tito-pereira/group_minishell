@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/26 19:08:36 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 02:29:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,28 +114,28 @@ t_execlist	*free_exec(t_execlist *execl)
 
 	i = -1;
 	//t_chunk **chunk
-	printf("free chunks\n");
+	//printf("free chunks\n");
 	while (execl->chunk && execl->chunk[++i] != NULL)
 		execl->chunk[i] = free_chunk(execl->chunk[i]);
 	//int *pipe_loc
-	printf("free pipe locs\n");
+	//printf("free pipe locs\n");
 	if (execl->pipe_loc)
 		execl->pipe_loc = free_int_arr(execl->pipe_loc);
 	//int *exit_stt
-	printf("free exit stt\n");
+	//printf("free exit stt\n");
 	//if (execl->exit_stt)
 		//execl->exit_stt = free_int_arr(execl->exit_stt);
 	//int *to_end
-	printf("free to end\n");
+	//printf("free to end\n");
 	//if (execl->to_end)
 		//execl->to_end = free_int_arr(execl->to_end);
 	//int *env_pipe
-	printf("free env pipe\n");
+	//printf("free env pipe\n");
 	//if (execl->env_pipe)
 		//execl->env_pipe = free_int_arr(execl->env_pipe);
 	//char ***my_envp
 	i = -1;
-	printf("free my envp\n");
+	//printf("free my envp\n");
 	/*while (execl->my_envp && execl->my_envp[++i] != NULL)
 		execl->my_envp[i] = free_db_str(execl->my_envp[i]);
 	if (execl->my_envp)
@@ -143,9 +143,9 @@ t_execlist	*free_exec(t_execlist *execl)
 		free(execl->my_envp);
 		execl->my_envp = NULL;
 	}*/
-	printf("free execl\n");
+	//printf("free execl\n");
 	free(execl);
-	printf("done frees\n");
+	//printf("done frees\n");
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/28 02:05:27 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 03:21:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,13 @@ cat <example >f4 >f5
 
 void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
+	//printf("begin exec action %d\n", i);
 	open_all_redirs(execl); //acho que ta a dar
 	if (execl->chunk[i]->blt == 0)
 	{
 		exec_input(execl, fd, i);
 		exec_output(execl, fd, i, exec_str);
+		//printf("end exec action %d\n", i);
 		execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
 	}
 	else if (execl->chunk[i]->blt == 1)
@@ -184,7 +186,6 @@ void	exec_loop(t_execlist *execl, int **fd, char ***exec_str)
 	if (pid == 0)
 		exec_launch(execl, fd, i, exec_str);
 	close_pipes(execl, fd, i, 1, 1);
-	//sig_handler(3);
 	wait(NULL);
 	if (execl->valid_cmds == 1 && check_changes(execl->chunk[0]) == 1)
 	{

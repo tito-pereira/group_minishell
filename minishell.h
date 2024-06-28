@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/27 23:46:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 02:22:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ char	*search_my_envp(t_execlist *execl, char *env_name);
 void	updt_rdr_lst(t_chunk *chunk, int in_out, int flag, char *n_str);
 
 // GLOBAL SUPPORT
-void	ft_exit(int *err, char **cmd, t_execlist *execl);
+void	ft_exit(char **cmd, t_execlist *execl);
 char	**create_envp(void);
 void	close_pipes(t_execlist *execl, int **fd, int i, int rel, int non_rel);
 char	*rmv_newline(char *old);
@@ -132,8 +132,8 @@ char	*rmv_newline(char *old);
 int		exec_main(t_execlist *execl);
 void	exec_loop(t_execlist *execl, int **fd, char ***exec_str);
 void	exec_input(t_execlist *execl, int **fd, int i);
-void	exec_output(t_execlist *execl, int **fd, int i);
-void	ex_outfile(t_execlist *execl, int **fd, int i);
+void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str);
+void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str);
 void	temp_pipe(int *nfd, char *buff);
 char	*empty_pipe(int fd, t_execlist *execl, int i);
 char	***read_from_pipe(int fd, t_execlist *execl);

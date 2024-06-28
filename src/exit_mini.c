@@ -39,7 +39,7 @@ static int	is_only_zeros(char *cmd)
 	return (1);
 }
 
-void	ft_exit(int *err, char **cmd, t_execlist *execl)
+void	ft_exit(char **cmd, t_execlist *execl) //int *err,
 {
 	int	code;
 	

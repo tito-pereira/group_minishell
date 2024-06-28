@@ -65,7 +65,7 @@ void	end_exec(t_execlist *execl, int **fd, char ***exec_str)
 	//free(redir);
 	free(fd);
 	free(exec_str);
-	ft_printf("All frees done.\n");
+	//ft_printf("All frees done.\n");
 }
 
 ////////////////////////////////
