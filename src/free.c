@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/28 02:29:41 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/29 04:07:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,11 +151,9 @@ t_execlist	*free_exec(t_execlist *execl)
 
 /*
 exit stt
-to end
+to end (posso apenas tirar)
 env pipe
 my envp??
 
 nao foram inicializados provavelmente
-
-also , redirections
 */
