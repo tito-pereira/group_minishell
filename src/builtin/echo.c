@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:08 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/23 18:24:38 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/06/28 23:16:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,3 +40,9 @@ void	ft_echo(int *err, char **cmd)
 		ft_printf("\n");
 	*err = 0;
 }
+
+/*
+nao esta a dar esta merda
+eu admito que nao receba input redirs, mas output redir e
+imprimir os args é o minimo que deveria fazer aqui
+*/

@@ -76,8 +76,6 @@ void	ft_exit(char **cmd, t_execlist *execl) //int *err,
 }
 
 /*
-acho que nao preciso deste code aqui, faço free + exit direto
-com o numero correspondente
 
 fora:
 - exit command called (strcmp)
@@ -86,6 +84,4 @@ fora:
 dentro:
 - so 1 argumento
 - argumento valido (digit)
-
-- tirar to_end
 */

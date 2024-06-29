@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/28 02:22:58 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 20:34:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ char	*rmv_newline(char *old);
 int		exec_main(t_execlist *execl);
 void	exec_loop(t_execlist *execl, int **fd, char ***exec_str);
 void	exec_input(t_execlist *execl, int **fd, int i);
-void	exec_output(t_execlist *execl, int **fd, int i, char ***exec_str);
+void	exec_output(t_execlist *execl, int **fd, int i);
 void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str);
 void	temp_pipe(int *nfd, char *buff);
 char	*empty_pipe(int fd, t_execlist *execl, int i);
@@ -148,7 +148,7 @@ t_chunk		*free_chunk(t_chunk *chunk);
 t_execlist	*free_exec(t_execlist *execl);
 
 // BUILT-IN
-void	blt_central(t_execlist *execl, int i, char **exec_str, int mode);
+void	blt_central(t_execlist *execl, int i, char **exec_str);
 void	ft_cd(int *err, char **cmd, char ***env);
 void	ft_echo(int *err, char **cmd);
 void	ft_env(int *err, char **cmd, char ***envp);

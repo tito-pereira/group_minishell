@@ -1,295 +1,133 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_4.c                                              :+:      :+:    :+:   */
+/*   p_3.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 17:44:47 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/28 02:34:22 by marvin           ###   ########.fr       */
+/*   Created: 2024/05/09 13:12:29 by tibarbos          #+#    #+#             */
+/*   Updated: 2024/06/23 04:50:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 /*
-(4) - environment variable expander with '$'
-	- handles single && double quotes
-	- does not handle redirections (handled previously)
+(3) - remove redirections from the parsing string to simplify parsing process
+
+e se houver >>>>> ou <<<<<
+redir interpreta isso ou da erro?
+-> get_name retorna NULL
+-> rmv_redirs salta todos os '<' a frente, assume bom senso
+
+cat <example.txt >tmp1|cat -e>tmp2|cat -e>tmp3
 */
+
+void	temp_strings(char *og, char **new, int a, int b)
+{
+	char	*first;
+	char	*secnd;
+	
+	first = NULL;
+	if (a != 0)
+		first = ft_substr(og, 0, a);
+	secnd = NULL;
+	if ((b + 1) != (int)ft_strlen(og))
+		secnd = ft_substr(og, b, ((int)ft_strlen(og) - b));
+	*new = NULL;
+	if (!first && secnd)
+		*new = secnd; //(malloc ja feito)
+	else if (first && secnd)
+	{
+		*new = ft_strjoin(first, secnd);
+		free(first);
+		free(secnd);
+	}
+	else if (first && !secnd)
+		*new = first; //(malloc ja feito)
+}
 
 /*
-nao esquecer que "" suporta $ mas '' já não
+if (b + 1)
 
-Handle environment variables ($ followed by a sequence of characters) which
-should expand to their values.
-Handle $? which should expand to the exit status of the most recently executed
-foreground pipeline.
+total 11, [10]
+char 6, [5]
 
-$PATH, $HOME, $SHELL, $PWD
-
-.ft_substr()
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-
-.ft_strcat()
-size_t	ft_strlcat(char *dest, const char *src, size_t size)
-
-char *ret = getenv("env_name")
-
-se calhar, por questoes de evitar erros, colocar a = $ && b = last_char
+provavelmente o erro ta na substr, ver como é feita
+[start]
+len = numero de malloc
 */
 
-void	get_positions(int *a, int *b, int *i, char *chunk)
+void	find_redirs(char *og, int *a, int *b, int *i)
 {
-	ft_printf("Getting positions a && b:\n");
-	*a = *i;
-	(*i)++;
-	while (chunk[*i] != 9 && chunk[*i] != 32 && chunk[*i] != '$'
-		&& chunk[*i] != '\0' && chunk[*i] != 34 && chunk[*i] != '\n')
-		(*i)++;
-	*b = (*i) - 1;
-	ft_printf("a:%d && b:%d\n", *a, *b);
-	/*
-	se calhar acrescentar uma condicao de [i] != 34 por causa da
-	double quote
-	ha alguma env var que possua double quote? nao creio
-	9, 32, 34, $, \0, e agr \n?
-	*/
+	if (og[*i] == '<' || og[*i] == '>')
+	{
+		(*a) = (*i);
+		while ((og[*i] == '<' || og[*i] == '>') && og[*i] != '\0')
+			(*i)++;
+		while ((og[*i] == 9 || og[*i] == 32) && og[*i] != '\0') //whitespaces + EOF
+			(*i)++;
+		while (og[*i] != 9 && og[*i] != 32 && og[*i] != '\0') // non white + EOF
+			(*i)++;
+		(*b) = (*i);
+		//printf("b = %d, position = '%c'\n", *b, og[*b]);
+	}
 }
 
-char	*get_spec(int *a, int *b, char *chunk, t_execlist *execl)
-{
-	char	*env_name;
-	char	*env_value;
+/*
+se houver <<hbkh>>njne<unoew>kcme vai tudo atrelado ate EOF ou espacos
+*/
 
-	ft_printf("Getting spec:\n");
-	env_name = ft_substr(chunk, ((*a) + 1), ((*b) - (*a)));
-	ft_printf("env_name: '%s'\n", env_name);
-	if (!env_name)
-		return(NULL);
-	if (env_name[0] == '?')
-	{
-		printf("will go for exit_stt itoa\n");
-		env_value = ft_itoa(*(execl->exit_stt));
-	}
-	else
-	{
-		printf("will go for search_my_envp\n");
-		env_value = search_my_envp(execl, env_name); //getenv(env_name);
-	}
-	if (!env_value)
-		return(NULL);
-	free(env_name);
-	ft_printf("spec: '%s'\n", env_value);
-	return (env_value);
-}
-
-int	h_env_var(int *a, int *b, int *i, char **chunk, t_execlist *execl)
-{
-	char	*spec;
-
-	ft_printf("Inside the handler\n");
-	get_positions(a, b, i, *chunk);
-	spec = ft_strdup(get_spec(a, b, *chunk, execl));
-	if (spec != NULL)
-	{
-		*chunk = new_chnk(spec, *chunk, *a, *b);
-		if (*chunk == NULL)
-		{
-			ft_printf("New chunk is NULL\n");
-			perror("Error handling environment variable ($)");
-			return (0);
-		}
-		ft_printf("New chunk: '%s'\n", *chunk);
-	}
-	else
-	{
-		ft_printf("Spec is NULL\n");
-		perror("Error handling environment variable ($)");
-		return (0);
-	}
-	return (1);
-}
-
-int	spec_char_chunk(t_execlist *execl, int j, int *a, int *b)
-{
-	int	i;
-	int	flag;
-	
-	i = -1;
-	flag = 1;
-	while (execl->chunk[j]->og[++i] != '\0')
-	{
-		if (execl->chunk[j]->og[i] == 39)
-			flag *= -1;
-		if (execl->chunk[j]->og[i] == '$' && flag == 1)
-		{
-			if (h_env_var(a, b, &i, &execl->chunk[j]->og, execl) == 0)
-			{
-				*(execl->exit_stt) = 1;
-				return (0);
-			}
-		}
-	}
-	return (1);
-}
-
-int	spec_char_heredoc(t_execlist *execl, int j, int *a, int *b)
-{
-	int	i;
-	int	flag;
-	int	inf;
-	
-	inf = -1;
-	//printf("inside heredoc spec char\n");
-	while (execl->chunk[j]->infiles[++inf] != NULL)
-	{
-		i = -1;
-		flag = 1;
-		while (execl->chunk[j]->here_dcs[inf] == 1
-			&& execl->chunk[j]->infiles[inf][++i] != '\0')
-		{
-			if (execl->chunk[j]->infiles[inf][i] == 39)
-				flag *= -1;
-			if (execl->chunk[j]->infiles[inf][i] == '$' && flag == 1)
-			{
-				printf("special $ sign found in %d position\n", i);
-				if (h_env_var(a, b, &i, &execl->chunk[j]->infiles[inf], execl) == 0)
-				{
-					*(execl->exit_stt) = 1;
-					return (0);
-				}
-			}
-		}
-	}
-	return (1);
-}
-
-int	special_char(t_execlist *execl)
+void	find_red_pos(t_chunk *chunk, int *i)
 {
 	int		a;
 	int		b;
-	int		j;
-	//int		i;
-	//int		flag;
+	char	*new;
 
-	j = -1;
-	//printf("inside parser 3: spec char\n");
 	a = 0;
 	b = 0;
-	while (execl->chunk[++j] != NULL)
+	new = NULL;
+	if (chunk->og[*i] == '<' || chunk->og[*i] == '>')
 	{
-		if (spec_char_chunk(execl, j, &a, &b) == 0)
-			return (0);
-		if (execl->chunk[j]->infiles)
-		{
-			//printf("will enter heredoc spec char\n");
-			if (spec_char_heredoc(execl, j, &a, &b) == 0)
-				return (0);
-		}
-	}
-	return(1);
-}
-//else, retorna normalmente sem fazer nada
-
-/*
-i = -1;
-while (execl->chunk[j]->here_dcs[x] == 1
-	&& execl->chunk[j]->infiles[x][i] != '\0')
-{
-	a = 0;
-	b = 0;
-	if (execl->chunk[j]->infiles[x][i] == 39)
-		flag *= -1;
-	if (execl->chunk[j]->infiles[x][i] == '$' && flag == 1)
-	{
-		if (h_env_var(&a, &b, &i, &execl->chunk[j]->infiles[x], execl) == 0)
-		{
-			*(execl->exit_stt) = 1;
-			return(0);
-		}
+		find_redirs(chunk->og, &a, &b, i);
+		temp_strings(chunk->og, &new, a, b);
+		free(chunk->og);
+		chunk->og = new;
+		(*i) = a;
+		//printf("a = %d, position = '%c'\n", a, chunk->og[a]);
 	}
 }
 
-execl->chunk->infiles[i] = char * com o heredoc
-execl->chunk->here_dcs[i] = int c flag se é heredoc ou nao
-
-ou eu aplico o heredoc ao og original e retiro o <<lim
-ou entao tenho que criar na mesma isto aqui
-
-typedef struct s_chunk {
-	char	**infiles; //nome dos files
-	int		nmb_inf; //numero total
-	int		*here_dcs; //valores da flag
-	int		heredoc; // --- //
-	char	*here_file; // --- //
-	char	*delimiter;
-	char	**outfiles; //
-	int		nmb_outf; //
-	int		append;
-	int		*app_dcs; //
-	char	*og;
-	char	**cmd_n_args;
-	char	*path; // --- //
-	int		inpipe;
-	int		inpfd; // --- //
-	int		outpipe; // --- //
-	int		outpfd; // --- //
-	int		blt;
-}	t_chunk;
-*/
-
-/*
-.fazer e testar o $? que devera expandir para o exit status do ultimo
-comando
-por default, acho que e zero
-default - 0;
-success - 0;
-errors:
-Exit status 1: Generic error code indicating unspecified error.
-Exit status 2: Misuse of shell builtins (e.g., incorrect usage of a command).
-Exit status 126: Permission problem or command is not executable.
-Exit status 127: Command not found or executable cannot be invoked.
-Exit status 128+n: Fatal error signal n (where n is a signal number).
-Exit status 130: Command terminated by Ctrl+C (SIGINT).
-Exit status 255: Exit status out of range or undefined.
-parsing + execution both create error status
-
-.first '$HOME' second
-(acho que o proprio ponto 4 do parser nao foi testado ent n sei
-de onde vem o erro)
-*/
-
-/*
-int	special_char(t_execlist *execl)
+int	scope_redirs(t_execlist *execl)
 {
-	int		a;
-	int		b;
-	int		j;
+	int		c;
 	int		i;
-	int		flag;
 
-	j = -1;
-	flag = 1;
-	while (execl->chunk[++j] != NULL)
+	c = -1;
+	i = -1;
+	//ft_printf("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\n");//
+	//ft_printf("Inside parsing (3): scope_redirs;\n");//
+	while (execl->chunk[++c] != NULL)
 	{
 		i = -1;
-		while (execl->chunk[j]->og[++i] != '\0')
-		{
-			a = 0;
-			b = 0;
-			if (execl->chunk[j]->og[i] == 39)
-				flag *= -1;
-			if (execl->chunk[j]->og[i] == '$' && flag == 1)
-			{
-				if (h_env_var(&a, &b, &i, &execl->chunk[j]->og, execl) == 0)
-				{
-					*(execl->exit_stt) = 1;
-					return(0);
-				}
-			}
-		}
+		while (execl->chunk[c]->og[++i] != '\0')
+			find_red_pos(execl->chunk[c], &i);
+		//ft_printf("Final chunk[%d]->og:%s;\n", c, execl->chunk[c]->og);//
 	}
-	return(1);
+	return (1);
 }
+
+/*
+algum error status aqui?
+
+< text
+<\0 (erro lidado previamente)
+
+<>text\0 || <> text\0
+text<>text\0
+text<>\0
+
+ajustar linhas main
+testar b pointer (b == index EOF)
+i = a final (a = index)
 */

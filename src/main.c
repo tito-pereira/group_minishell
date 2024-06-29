@@ -6,25 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/28 02:24:22 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/29 04:01:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-/*
--> esta global var, bem como a exit handler, vai ter de ficar no mesmo file da main
-senao não vou conseguir aceder a ele, assim ambas as funções têm acesso e
-podem alterar o seu valor sem mandar pointers para a frente e p trás
-
--> acho que o global nao vai ser para utilizar na ft_read mas sim quando sair da read para informar
-que é para dar free das cenas
-para ja, a unica situacao que vejo é para saber se dou free ao input buffer (escape c ctrl C) ou se é
-valido e o uso (escape normal c enter)
-
-global vai ser para guardar o error status / info para exit program
-comunicar entre as forks e 
-*/
 
 int	g_sig;
 
@@ -113,8 +99,6 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 		flag = pipe_chunks(execl, input, exit_stt, env);
 	if (flag == 1)
 		flag = redir_checker(*execl);
-	//if (flag == 1)
-		//flag = scope_redirs(*execl);
 	if (flag == 1)
 		flag = special_char(*execl);
 	if (flag == 1)
@@ -127,10 +111,6 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 	return (flag);
 }
 
-/*
-trocar o ponto 3 pelo ponto 4
-trocar o scope pelo spec char
-*/
 
 /*void	exit_cmd_checker(t_execlist *execl)
 {
@@ -167,22 +147,12 @@ int	main(void)
 	{
 		g_sig = 128;
 		sig_handlerr(1);
-		//if (global_checker(execl) == 1)
-			//continue;
-		//ft_printf("\n\n\nbegining env\n");
-		//print_db_char(env);
 		input = ft_read(); //with signal treatment included
-		//if (global_checker(execl) == 1)
-			//continue;
-		// sig_handler_two();
-		//ft_printf("Testing.\nInput = '%s';\n", input);//
-		///
 		/*if (ft_strncmp(input, "exit", 10) == 0)
 		{
 			ft_printf("Closing minishell...\n");
 			exit(0);
 		}*/
-		//sig_handler(2);
 		if (parse_central(&execl, input, &exit_stt, &env) == 1)
 		{
 			//print_exec(execl);
@@ -221,3 +191,17 @@ int	main(void)
 			free_exec(execl);
 	}
 }
+
+/*
+exit
+exit | ls
+ls | exit
+ls | exit | ls | exit
+exitt
+exit 100
+exit 100 23450
+exit 4635t
+exit 0000000000
+exit abc
+
+*/

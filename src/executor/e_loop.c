@@ -6,11 +6,16 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/28 03:21:07 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/29 02:28:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+/*
+apesar de nao me precisar de preocupar com input redirections aqui
+em BLT, tenho ainda que ter cuidado com fechar coisas que nao existem
+*/
 
 void	blt_action(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
@@ -18,44 +23,54 @@ void	blt_action(t_execlist *execl, int **fd, int i, char ***exec_str)
 	int	tmp;
 
 	n_file = execl->chunk[i]->nmb_outf;
+	tmp = 0;
+	//printf("BLT action\n");
 	close_pipes(execl, fd, i, 0, 1); //non related
-	if (execl->chunk[i]->app_dcs[n_file] == 1) //append
-		tmp = open(execl->chunk[i]->outfiles[n_file], \
-		O_RDWR | O_CREAT | O_APPEND, 0644);
-	else // truncate
-		tmp = open(execl->chunk[i]->outfiles[n_file], \
-		O_RDWR | O_CREAT | O_TRUNC, 0644); //outfile
-	dup2(tmp, STDOUT_FILENO);
-	close(tmp); //outfile
-	blt_central(execl, i, exec_str[i], 1);
-	dup2(fd[i + 1][1], STDOUT_FILENO);
-	close(fd[i + 1][1]); //outpipe
-	blt_central(execl, i, exec_str[i], 2);
+	if (execl->chunk[i]->outfiles)
+	{
+		if (execl->chunk[i]->app_dcs[n_file] == 1) //append
+			tmp = open(execl->chunk[i]->outfiles[n_file], \
+			O_RDWR | O_CREAT | O_APPEND, 0644);
+		else if (execl->chunk[i]->app_dcs[n_file] == 0) // truncate
+			tmp = open(execl->chunk[i]->outfiles[n_file], \
+			O_RDWR | O_CREAT | O_TRUNC, 0644);
+		dup2(tmp, STDOUT_FILENO);
+		close(tmp); //outfile
+		blt_central(execl, i, exec_str[i]);
+		close(tmp);
+	}
+	else if (!execl->chunk[i]->outfiles && (i + 1) < execl->valid_cmds) //outpipe
+	{
+		dup2(fd[i + 1][1], STDOUT_FILENO);
+		close(fd[i + 1][1]); //outpipe
+		blt_central(execl, i, exec_str[i]);
+	}
 	close_pipes(execl, fd, i, 1, 0); //related
 }
 
 /*
-shall we test this?
-quero experimentar file redirs, com e sem BLT
-BLT (experimentar primeiro sem infile)
-pwd >f1 >f2 >f3
-cat <example >f4 >f5
+X input
+outfile
+	- append
+	- trunc
+X outfile
+	- outpipe
+	- terminal
 */
 
 void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
 	//printf("begin exec action %d\n", i);
-	open_all_redirs(execl); //acho que ta a dar
+	//support_print(execl, i);
 	if (execl->chunk[i]->blt == 0)
 	{
 		exec_input(execl, fd, i);
-		exec_output(execl, fd, i, exec_str);
+		exec_output(execl, fd, i);
 		//printf("end exec action %d\n", i);
 		execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
 	}
 	else if (execl->chunk[i]->blt == 1)
 	{
-		//blt_central(execl, i, exec_str[i], 1);
 		blt_action(execl, fd, i, exec_str);
 		if (execl->valid_cmds == 1)
 		{
@@ -182,6 +197,7 @@ void	exec_loop(t_execlist *execl, int **fd, char ***exec_str)
 		else
 			printf("pipes created: [0] = %d, [1] = %d\n", execl->env_pipe[0], execl->env_pipe[1]);*/
 	}
+	open_all_redirs(execl);
 	pid = fork();
 	if (pid == 0)
 		exec_launch(execl, fd, i, exec_str);

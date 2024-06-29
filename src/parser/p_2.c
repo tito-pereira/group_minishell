@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/25 21:46:49 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/29 02:28:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,11 @@ int	check_redir(t_execlist *execl, int *i, int c)
 
 	nwe = NULL;
 	ret = 0;
-	//ft_printf("Inside check_redir;\n"); //
-	if (execl->chunk[c]->og[*i] == '<' && c == 0)
+	if (execl->chunk[c]->og[*i] == '<')
 	{
-		//ft_printf("Inside input redir;\n");
 		ret = input_redir(execl->chunk[c], i, nwe);
-		if (ret == -1 || ret == 130) //(input_redir(execl->chunk[c], i, nwe) == -1)
+		if (ret == -1 || ret == 130)
 		{
-			printf("return was either -1 or 130, will give 0\n");
 			perror("Input redirection parsing error");
 			*(execl->exit_stt) = 1;
 			return (0);
@@ -82,7 +79,7 @@ int	redir_checker(t_execlist *execl)
 		{
 			if (check_redir(execl, &i, c) == 0)
 			{
-				printf("parser 2 will return 0 to parser main\n");
+				//printf("parser 2 will return 0 to parser main\n");
 				return (0);
 			}
 		}
@@ -92,24 +89,9 @@ int	redir_checker(t_execlist *execl)
 }
 
 /*
-typedef struct s_chunk {
-	char	**infiles; //nome dos files
-	int		nmb_inf; //numero total
-	int		*here_dcs; //valores da flag
-	int		heredoc; // --- //
-	char	*here_file; // --- //
-	char	*delimiter;
-	char	**outfiles; //
-	int		nmb_outf; //
-	int		append;
-	int		*app_dcs; //
-	char	*og;
-	char	**cmd_n_args;
-	char	*path; // --- //
-	int		inpipe;
-	int		inpfd; // --- //
-	int		outpipe; // --- //
-	int		outpfd; // --- //
-	int		blt;
-}	t_chunk;
+infiles em chunks que nao sejam 0, nao esta a dar
+
+.X cat <ex>f1|pwd >f2|pwd >f3|cat <ex>f4|pwd >f5 (X BLT)
+.X cat <ex>f1|ls >f2|ls >f3|cat <ex>f4|ls >f5 (BLT)
+4 nao funciona como previsto
 */

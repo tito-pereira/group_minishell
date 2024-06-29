@@ -6,12 +6,12 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:25:54 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/28 04:26:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 19:47:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
+/*
 void	ex_end(char *buff, int *nfd)
 {
 	if (buff)
@@ -21,12 +21,8 @@ void	ex_end(char *buff, int *nfd)
 	buff = NULL;
 	nfd = NULL;
 }
-
-/*
-bruh nao posso ter um exit aqui wtf como é que eu estava sequer a funcionar com isto?
-sera que eram vestigios de quando tinha os execve?
 */
-
+/*
 void	ex_redir_file(t_execlist *execl, int i, char *buff, int *nfd, \
 	char ***exec_str)
 {
@@ -48,12 +44,12 @@ void	ex_redir_file(t_execlist *execl, int i, char *buff, int *nfd, \
 	close(tmp); //depois de dup, fecha-se
 	execve(exec_str[i][0], exec_str[i], *(execl->my_envp));
 }
-
+*/
 /* 
 nem sei se execl->chunk[i]->append ainda está em uso ou se é
 execl->chunk[i]->app_dcs[n_file] == 1
 */
-
+/*
 void	ex_redir_pipe(int **fd, int i, char *buff, int *nfd)
 {
 	if (buff)
@@ -89,7 +85,7 @@ void	ex_outfile(t_execlist *execl, int **fd, int i, char ***exec_str)
 		ex_end(buff, nfd);
 	}
 }
-
+*/
 /*
 - file output redirections override pipe redirections
 - input redirections work in every single fucking pipe
@@ -119,4 +115,4 @@ tou ainda no cat <example >f1 | cat <example >f2
 temp pipe
 como eu esvaziei o original infile, crio um pipe artificial só
 para simular um infile e ter um actual file descriptor para usar como
-dup2
+dup2*/

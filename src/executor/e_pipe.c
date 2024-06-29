@@ -6,12 +6,12 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 13:49:36 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/28 02:33:03 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 19:47:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
+/*
 char	*empty_pipe(int fd, t_execlist *execl, int i)
 {
 	char	*shovel;
@@ -41,13 +41,13 @@ char	*empty_pipe(int fd, t_execlist *execl, int i)
 	//ft_printf("final_chest [%d]:%s;\n", i, chest);
 	close(fd);
 	return (chest);
-}
+}*/
 
 /*
 gasta o reading file pointer e copia todo o conteudo do
 infile para uma buff str
 */
-
+/*
 void	temp_pipe(int *nfd, char *buff)
 {
 	int	pid;
@@ -66,7 +66,7 @@ void	temp_pipe(int *nfd, char *buff)
 	wait(NULL);
 	dup2(nfd[0], STDIN_FILENO);
 	close(nfd[0]);
-}
+}*/
 
 /*
 faz fork, escrevea buff para o pipe, e faz dup2 de input para esse pipe

@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 17:44:12 by marvin            #+#    #+#              #
-#    Updated: 2024/06/27 17:17:21 by marvin           ###   ########.fr        #
+#    Updated: 2024/06/28 17:31:15 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,8 @@ CFLAGS= -Wall -Wextra -Werror
 SRC_P= ./src/parser/p_1.c ./src/parser/p_1a.c \
 	./src/parser/p_2.c ./src/parser/p_2a.c ./src/parser/p_2b.c \
 	./src/parser/p_2c.c \
-	./src/parser/p_3.c \
-	./src/parser/p_4.c ./src/parser/p_4a.c ./src/parser/p_4b.c \
+	./src/parser/p_3.c ./src/parser/p_3a.c ./src/parser/p_3b.c \
+	./src/parser/p_4.c \
 	./src/parser/p_5.c ./src/parser/p_5a.c \
 	./src/parser/p_6.c ./src/parser/p_6a.c
 OBJ_P= ${SRC_P:.c=.o}
