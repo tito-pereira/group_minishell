@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/28 20:34:45 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 03:09:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ typedef struct s_execlist {
 	int		valid_cmds;
 	int		*pipe_loc;
 	int		*exit_stt;
-	int		*to_end;
 	int		*env_pipe;
 }	t_execlist;
 /*
@@ -141,18 +140,17 @@ void	write_to_pipe(int fd, char ***envs);
 void	open_all_redirs(t_execlist *execl);
 
 // FREE
-char	*free_str(char *str);
-int		*free_int_arr(int *str);
-char	**free_db_str(char **str);
+char		*free_str(char *str);
+int			*free_int_arr(int *str);
+char		**free_db_str(char **str);
 t_chunk		*free_chunk(t_chunk *chunk);
-t_execlist	*free_exec(t_execlist *execl);
+t_execlist	*free_exec(t_execlist *execl, int mode);
 
 // BUILT-IN
 void	blt_central(t_execlist *execl, int i, char **exec_str);
 void	ft_cd(int *err, char **cmd, char ***env);
 void	ft_echo(int *err, char **cmd);
 void	ft_env(int *err, char **cmd, char ***envp);
-//void	ft_exit(int *err, char **cmd, t_execlist *execl);
 void	ft_export(int *err, char **cmd, char ***envp);
 void    ft_pwd(int *err, char **cmd, char **envp);
 void	ft_unset(int *err, char **cmd, char ***envp);

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/29 04:01:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 02:28:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,8 @@ char	*ft_read()
 		}
 		else if (input == NULL) //ctrl-D stoppage, SIGINT (ctrl-\ ignores)
 			exit(0);
-		/*else if (input != NULL && global_sig == 1) //ctrl-C redisplay + full buffer (clear it)
-		{
-			free(input);
-			ft_printf("full buffer\nglobal_signal check: %d\n", global_sig);
-			global_sig = 0;
-			continue ;
-		}
-		else if (input == NULL && global_sig == 1) //ctrl-C redisplay + empty buffer (just repeat)
-		{
-			ft_printf("NULL buffer\nglobal_signal check: %d\n", global_sig);
-			global_sig = 0;
-			continue ;
-		}*/
 	}
 }
-
-/*
-entra sempre no full buffer
-
-sera preciso dar frees dos inputs depois de adicionar a history?
-*/
 
 char	**create_envp(void)
 {
@@ -111,27 +92,6 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 	return (flag);
 }
 
-
-/*void	exit_cmd_checker(t_execlist *execl)
-{
-	if (execl && execl->cmd_nmb == 1
-		&& ft_strncmp(execl->chunk[0]->cmd_n_args[0], "exit", 10) == 0)
-		ft_exit(execl);
-}*/
-
-/*
-fora:
-- exit command called (strcmp)
-- ausencia de pipes (cmd nmb == 1)
-
-dentro:
-- so 1 argumento
-- argumento valido (digit)
-
-se der erro de exit, sai daqui e reentra no caminho normal
-de free + new prompt
-*/
-
 int	main(void)
 {
 	char			*input;
@@ -147,7 +107,7 @@ int	main(void)
 	{
 		g_sig = 128;
 		sig_handlerr(1);
-		input = ft_read(); //with signal treatment included
+		input = ft_read();
 		/*if (ft_strncmp(input, "exit", 10) == 0)
 		{
 			ft_printf("Closing minishell...\n");
@@ -155,13 +115,10 @@ int	main(void)
 		}*/
 		if (parse_central(&execl, input, &exit_stt, &env) == 1)
 		{
-			//print_exec(execl);
-			//printf("\n\n\nafter parsing\n");
 			//print_db_char(execl->my_envp[0]);
 			if (exec_main(execl) == 1)
 			{
-				//if check_change() == 1
-				env = execl->my_envp[0];
+				//env = execl->my_envp[0];
 				exit_stt = 0;
 			}
 		}
@@ -169,15 +126,12 @@ int	main(void)
 		{
 			printf("need to handle parser fails\n");
 			if (execl)
-				free_exec(execl);
+				free_exec(execl, 1);
 			//if (g_sig == 130)
 			continue ; //podera haver algum erro que n seja para reset prompt?
 			//exit (0);
 		}
 		printf("returned to main\n");
-		//printf("command loop is done, to end is %d\n", to_end);
-		//if (execl)
-			//tmp = execl->chunk[0]->cmd_n_args;
 		if (execl && execl->cmd_nmb == 1
 			&& ft_strncmp(execl->chunk[0]->cmd_n_args[0], "exit", 10) == 0)
 			ft_exit(execl->chunk[0]->cmd_n_args, execl);
@@ -188,7 +142,7 @@ int	main(void)
 			exit (0); //err_stt
 		}*/
 		if (execl)
-			free_exec(execl);
+			free_exec(execl, 1);
 	}
 }
 

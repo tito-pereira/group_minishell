@@ -6,15 +6,14 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/29 02:28:29 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 03:24:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 /*
-apesar de nao me precisar de preocupar com input redirections aqui
-em BLT, tenho ainda que ter cuidado com fechar coisas que nao existem
+pwd, echo, export deixaram de dar qq tipo de output no terminal
 */
 
 void	blt_action(t_execlist *execl, int **fd, int i, char ***exec_str)
@@ -25,7 +24,7 @@ void	blt_action(t_execlist *execl, int **fd, int i, char ***exec_str)
 	n_file = execl->chunk[i]->nmb_outf;
 	tmp = 0;
 	//printf("BLT action\n");
-	close_pipes(execl, fd, i, 0, 1); //non related
+	close_pipes(execl, fd, i, 0, 1); //close non related
 	if (execl->chunk[i]->outfiles)
 	{
 		if (execl->chunk[i]->app_dcs[n_file] == 1) //append
@@ -45,7 +44,9 @@ void	blt_action(t_execlist *execl, int **fd, int i, char ***exec_str)
 		close(fd[i + 1][1]); //outpipe
 		blt_central(execl, i, exec_str[i]);
 	}
-	close_pipes(execl, fd, i, 1, 0); //related
+	else
+		blt_central(execl, i, exec_str[i]); //terminal
+	close_pipes(execl, fd, i, 1, 0); //close related
 }
 
 /*

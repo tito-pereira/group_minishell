@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/29 04:07:33 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 03:26:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,23 @@ typedef struct s_execlist {
 }	t_execlist;
 */
 
-t_execlist	*free_exec(t_execlist *execl)
+t_execlist	*free_exec(t_execlist *execl, int mode)
 {
 	int	i;
 
 	i = -1;
+	printf("free mode %d\n", mode);
 	//t_chunk **chunk
 	//printf("free chunks\n");
 	while (execl->chunk && execl->chunk[++i] != NULL)
 		execl->chunk[i] = free_chunk(execl->chunk[i]);
+	//char ***my_envp
+	if (execl->my_envp && mode == 2)
+	{
+		*(execl->my_envp) = free_db_str(*(execl->my_envp));
+		free(*(execl->my_envp));
+		execl->my_envp = NULL;
+	}
 	//int *pipe_loc
 	//printf("free pipe locs\n");
 	if (execl->pipe_loc)
@@ -125,24 +133,10 @@ t_execlist	*free_exec(t_execlist *execl)
 	//printf("free exit stt\n");
 	//if (execl->exit_stt)
 		//execl->exit_stt = free_int_arr(execl->exit_stt);
-	//int *to_end
-	//printf("free to end\n");
-	//if (execl->to_end)
-		//execl->to_end = free_int_arr(execl->to_end);
 	//int *env_pipe
 	//printf("free env pipe\n");
-	//if (execl->env_pipe)
-		//execl->env_pipe = free_int_arr(execl->env_pipe);
-	//char ***my_envp
-	i = -1;
-	//printf("free my envp\n");
-	/*while (execl->my_envp && execl->my_envp[++i] != NULL)
-		execl->my_envp[i] = free_db_str(execl->my_envp[i]);
-	if (execl->my_envp)
-	{
-		free(execl->my_envp);
-		execl->my_envp = NULL;
-	}*/
+	if (execl->env_pipe)
+		execl->env_pipe = free_int_arr(execl->env_pipe);
 	//printf("free execl\n");
 	free(execl);
 	//printf("done frees\n");
@@ -150,10 +144,50 @@ t_execlist	*free_exec(t_execlist *execl)
 }
 
 /*
+ERROR
+export + exit
+(provavelmente as my_envp)
+tenho mesmo que ir ver ao executor como fiz honestamente
+
+- ja retirei o to_end do header e n me deu nenhum erro.. espero n haver esqueletos prai
+- para testar o free my_envp, tem que ser modo 2 (exit ou erros)
+
+ENVP:
+envp leva malloc de char ** e varios char *
+o envp em si (char ***) nao leva malloc nem deve levar free
+c jeito o free_db podia levar char *** e dar free ao char ** original
+e returnar NULL
+env = create_env
+while
+{
+execl.env = env
+execl = new_env (pos exec)
+//env = execl.env
+}
+
+EXIT_STT
+X malloc na main (sem maloc, um int local)
+malloc geral da struct, não do pointer especifico
+vamos simplesmente nao dar free a exit_stt nenhum e no
+fim ver se sobram leaks ou nao
+
+ENV PIPE
+p_1 = NULL
+exec usado ou nao
+free aqui
+p_1, etc
+
 exit stt
 to end (posso apenas tirar)
 env pipe
+. o que é?
 my envp??
+. o que é? a minha duplicacao das env vars
+(main.c, p_1.c, etc)
+testar com ls que nao altera envp
+talvez testar aqueles comandos unset e o crl p verificar que funciona?
 
-nao foram inicializados provavelmente
+FREE (free_execl)
+- (provavelmente tenho que esperar pelo error_stt)
+- pelo menos resolver os non error stt
 */
