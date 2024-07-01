@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:19 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/22 18:07:17 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 22:32:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	ft_unset(int *err, char **cmd, char ***envp)
 {
 	while (*(++cmd))
 		remove_var (*cmd, envp);
-	*err = 0;
+	//*err = 0;
+	(void)err;
 }
 
 /*

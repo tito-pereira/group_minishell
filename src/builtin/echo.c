@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:08 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/06/28 23:16:07 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 22:31:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	ft_echo(int *err, char **cmd)
 	}
 	if (newline)
 		ft_printf("\n");
-	*err = 0;
+	//*err = 0;
+	(void)err;
 }
 
 /*

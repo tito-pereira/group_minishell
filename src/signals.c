@@ -68,9 +68,17 @@ void	sig_handlerr(int mode)
 	//struct	sigaction	sa_dfl;
 
 	sa_repeat.sa_handler = &sig_repeat;
+	sigemptyset(&sa_repeat.sa_mask);
+	sa_repeat.sa_flags = 0;
 	sa_hd_repeat.sa_handler = &sig_hd_repeat;
+	sigemptyset(&sa_hd_repeat.sa_mask);
+	sa_hd_repeat.sa_flags = 0;
 	sa_global.sa_handler = &sig_global;
+	sigemptyset(&sa_global.sa_mask);
+	sa_global.sa_flags = 0;
 	sa_ign.sa_handler = SIG_IGN;
+	sigemptyset(&sa_ign.sa_mask);
+	sa_ign.sa_flags = 0;
 	//sa_dfl.sa_handler = SIG_DFL;
 	if (mode == 1) //prompt
 	{

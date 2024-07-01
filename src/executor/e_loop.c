@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:38:06 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/30 03:24:33 by marvin           ###   ########.fr       */
+/*   Updated: 2024/07/01 02:33:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ void	blt_action(t_execlist *execl, int **fd, int i, char ***exec_str)
 
 	n_file = execl->chunk[i]->nmb_outf;
 	tmp = 0;
-	//printf("BLT action\n");
+	//printf("inside BLT action\n");
 	close_pipes(execl, fd, i, 0, 1); //close non related
 	if (execl->chunk[i]->outfiles)
 	{
+		//printf("if 1\n");
 		if (execl->chunk[i]->app_dcs[n_file] == 1) //append
 			tmp = open(execl->chunk[i]->outfiles[n_file], \
 			O_RDWR | O_CREAT | O_APPEND, 0644);
@@ -40,12 +41,17 @@ void	blt_action(t_execlist *execl, int **fd, int i, char ***exec_str)
 	}
 	else if (!execl->chunk[i]->outfiles && (i + 1) < execl->valid_cmds) //outpipe
 	{
+		//printf("else if 2\n");
 		dup2(fd[i + 1][1], STDOUT_FILENO);
 		close(fd[i + 1][1]); //outpipe
 		blt_central(execl, i, exec_str[i]);
 	}
 	else
+	{
+		//printf("else if 3\n");
 		blt_central(execl, i, exec_str[i]); //terminal
+	}
+	//printf("getting out\n");
 	close_pipes(execl, fd, i, 1, 0); //close related
 }
 
@@ -72,10 +78,11 @@ void	exec_action(t_execlist *execl, int **fd, int i, char ***exec_str)
 	}
 	else if (execl->chunk[i]->blt == 1)
 	{
+		//printf("BLT command %d\n", i);
 		blt_action(execl, fd, i, exec_str);
 		if (execl->valid_cmds == 1)
 		{
-			//printf("in writing: closing reading [%d]\n", execl->env_pipe[0]);
+			//printf("inside BLT env pipe\n");
 			close(execl->env_pipe[0]);
 			//write(execl->env_pipe[1], execl->my_envp, sizeof(char ***));
 			write_to_pipe(execl->env_pipe[1], execl->my_envp);
@@ -102,35 +109,13 @@ portanto, preciso dos fds
 outfile é outfiles[app_nmb] ou algo assim, nmb_outf acho
 execl->chunk[i]->outfiles[n_file] ??? isto é filename
 creio que outpipe seja fd[i + 1] né?
-
-builtins
-(so dup2 no exec_output)
-dup2 outfile
-blt_central
-dup2 outpipe
-blt central
-envp write to pipe
-
-X builtins
-(execve para outfile)
-dup2 outpipe NO MESMO PROCESS
-sair ca p fora e execve normal
-
-para os BLT:
--> trazer os fd cá para fora ou guardados no execl
-(inserir aqui os espaços dentro do chunk q eles vao ocupar)
-(se calhar so preciso de trazer o outfile cá para fora)
--> fazer o dup2 para o segundo (por convençao, la dentro outfile, ca fora
-outpipe)
-
-se calhar para evitar grandes mudanças, os BLT trazem já a default redirection
-outpipe, fazem primeiro o exec outpipe, e depois é que fazem novo dup2 para outfile
 */
 
 void	exec_launch(t_execlist *execl, int **fd, int i, char ***exec_str)
 {
 	int	pid;
 
+	//printf("in exec launch. exit stt is %d\n", (*execl->exit_stt));
 	if ((i + 1) < execl->valid_cmds)
 	{
 		i++;
@@ -183,22 +168,28 @@ void	exec_loop(t_execlist *execl, int **fd, char ***exec_str)
 	int	i;
 	int	pid;
 	//int	ret;
-	char ***tmpenv;
+	//char ***tmpenv;
 
 	i = 0;
-	ft_printf("Inside exec_loop.\n\n\n");
+	//printf("in exec_loop. exit stt is %d\n", (*execl->exit_stt));
+	//ft_printf("Inside exec_loop.\n\n\n");
 	//print_db_char(execl->my_envp[0]);
-	tmpenv = NULL;
+	//ret = 0;
+	//tmpenv = NULL;
 	if (execl->valid_cmds == 1 && check_changes(execl->chunk[0]) == 1)
 	{
-		execl->env_pipe = malloc(2 * sizeof(int));
-		//ret = pipe(execl->env_pipe);
-		/*if (ret == -1)
-			printf("pipe error\n");
-		else
-			printf("pipes created: [0] = %d, [1] = %d\n", execl->env_pipe[0], execl->env_pipe[1]);*/
+		//printf("creating the envp pipes:\n");
+		execl->env_pipe = (int *)ft_calloc(2, sizeof(int));
+		pipe(execl->env_pipe);
+		//if (ret == -1)
+			//printf("pipe error\n");
+		//else
+			//printf("pipes created: [0] = %d, [1] = %d\n", execl->env_pipe[0], execl->env_pipe[1]);
 	}
+	//printf("after env pipe exec_loop. exit stt is %d\n", (*execl->exit_stt));
 	open_all_redirs(execl);
+	//printf("after open redirs exec_loop. exit stt is %d\n", (*execl->exit_stt));
+	ft_printf("Inside exec_loop.\n\n\n");
 	pid = fork();
 	if (pid == 0)
 		exec_launch(execl, fd, i, exec_str);
@@ -210,14 +201,21 @@ void	exec_loop(t_execlist *execl, int **fd, char ***exec_str)
 		//printf("in read: closing writing [%d]\n", execl->env_pipe[1]);
 		close(execl->env_pipe[1]);
 		free_db_str(execl->my_envp[0]);
-		tmpenv = read_from_pipe(execl->env_pipe[0], execl);
-		execl->my_envp = tmpenv;
-		//printf("\n\n\nnew envs\n");
-		//print_db_char(execl->my_envp[0]);
+		//tmpenv = read_from_pipe(execl->env_pipe[0], execl);
+		//execl->my_envp = tmpenv;
+		execl->my_envp = read_from_pipe(execl->env_pipe[0], execl);
+		/*if (execl->my_envp)
+		{
+			printf("\nnew envs\n");
+			print_db_char(execl->my_envp[0]);
+		}
+		else
+			printf("there are no new envs\n");*/
 		close(execl->env_pipe[0]);
 		//printf("also here\n");
 	}
 	//free_db_str(execl->my_envp[0]);
 	//execl->my_envp = tmpenv;
 	ft_printf("\n\n\nexec_loop finished.\n");
+	printf("out exec_loop. exit stt is %d\n", (*execl->exit_stt));
 }

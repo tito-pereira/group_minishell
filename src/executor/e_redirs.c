@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:29:03 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/28 02:32:29 by marvin           ###   ########.fr       */
+/*   Updated: 2024/07/01 01:49:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	open_all_redirs(t_execlist *execl)
 	int	c;
 
 	c = -1;
-	execl->exit_stt = 0;
+	//(*execl->exit_stt) = 0;
 	//printf("--- INSIDE REDIR OPENING ---\n");
 	//for (int i = 0; execl->chunk[i] != NULL; i++)
 		//support_print(execl, i);

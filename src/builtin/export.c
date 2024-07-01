@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:15 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/22 18:06:53 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 22:35:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,7 @@ void	ft_export(int *err, char **cmd, char ***envp)
 	int	i;
 	int	var_pos;
 
-	ft_printf("INSIDE EXPORT:\n");
-	//ft_printf("cmd[1] = %s\n", cmd[1]);
+	//printf("INSIDE EXPORT:\n");
 	i = 1;
 	if (!cmd[1])
 		ft_env(err, cmd, envp);
@@ -102,13 +101,14 @@ void	ft_export(int *err, char **cmd, char ***envp)
 		else if (!valid_var (cmd[i]))
 		{
 			ft_printf("minishell >> : export : %s : is not valid", cmd[i]);
-			*err = 69;
+			//*err = 69;
 		}	
 		i++;
 	}
-	//ft_printf("\n\n\ndentro export env\n");
+	//printf("\nleavin export env\n");
 	//print_db_char(envp[0]);
-	*err = 0;
+	//*err = 0;
+	(void)err;
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:29 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/30 03:12:13 by marvin           ###   ########.fr       */
+/*   Updated: 2024/07/01 00:51:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,7 @@ int	pipe_chunks(t_execlist **execl, char *input, int *ex_stt, char ***env)
 	(*execl)->exit_stt = ex_stt;
 	(*execl)->env_pipe = NULL;
 	(*execl)->chunk[c + 1] = NULL;
-	//ft_printf("Pipe counter: %d;\n", c); //
 	if (chunk_create(input, *execl) == 0)
 		return(0);
-	/*if (*execl)
-	{
-		ft_printf("execl exists and has %d chunks:\n", (*execl)->cmd_nmb);
-		for (int i = 0; (*execl)->chunk[i] != NULL; i++)
-			ft_printf("chunk[%d]->og: %s;\n", i, (*execl)->chunk[i]->og);
-	}*/
 	return(1);
 }

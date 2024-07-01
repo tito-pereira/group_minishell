@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:44:04 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/30 02:28:51 by marvin           ###   ########.fr       */
+/*   Updated: 2024/07/01 02:33:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,22 @@ int	parse_central(t_execlist **execl, char *input, int *exit_stt, char ***env)
 	flag = null_input(input, exit_stt);
 	if (flag == 1)
 		flag = pipe_chunks(execl, input, exit_stt, env);
+	//printf("p1. exit stt is %d\n", (*(*execl)->exit_stt));
 	if (flag == 1)
 		flag = redir_checker(*execl);
+	//printf("p2. exit stt is %d\n", (*(*execl)->exit_stt));
 	if (flag == 1)
 		flag = special_char(*execl);
+	//printf("p3. exit stt is %d\n", (*(*execl)->exit_stt));
 	if (flag == 1)
 		flag = scope_redirs(*execl);
+	//printf("p4. exit stt is %d\n", (*(*execl)->exit_stt));
 	if (flag == 1)
 		flag = arg_separator(*execl);
+	//printf("p5. exit stt is %d\n", (*(*execl)->exit_stt));
 	if (flag == 1)
 		flag = arg_id(*execl);
+	//printf("p6. exit stt is %d\n", (*(*execl)->exit_stt));
 	//ft_printf("Finished parsing with flag %d\n", flag);//
 	return (flag);
 }
@@ -115,10 +121,11 @@ int	main(void)
 		}*/
 		if (parse_central(&execl, input, &exit_stt, &env) == 1)
 		{
-			//print_db_char(execl->my_envp[0]);
+			//printf("main/pre-exec. exit stt is %d\n", (*execl->exit_stt));
 			if (exec_main(execl) == 1)
 			{
-				//env = execl->my_envp[0];
+				//printf("main/post-exec. exit stt is %d\n", (*execl->exit_stt));
+				env = *(execl->my_envp);
 				exit_stt = 0;
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:04 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/22 18:06:27 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 22:31:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	set_dir(char *dir, char ***envp, int *err)
 	if (chdir (dir))
 	{
 		ft_printf("minishell >> : cd : not a directory");
-		*err = 69;
+		//*err = 69;
 	}
 	else
 	{
@@ -38,6 +38,7 @@ static void	set_dir(char *dir, char ***envp, int *err)
 	}
 	temp = free_str(temp);
 	var = free_db_str(var);
+	(void)err;
 }
 
 static char	*get_home(char **envp)
@@ -59,7 +60,8 @@ void	ft_cd(int *err, char **cmd, char ***envp)
 	else
 	{
 		ft_printf("minishell >> : cd: invalid usage\n", 2);
-		*err = 69;
+		//*err = 69;
 	}
-	*err = 0;
+	//*err = 0;
+	(void)err;
 }

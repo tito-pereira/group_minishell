@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:43:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/30 03:26:43 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 23:23:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ t_execlist	*free_exec(t_execlist *execl, int mode)
 	while (execl->chunk && execl->chunk[++i] != NULL)
 		execl->chunk[i] = free_chunk(execl->chunk[i]);
 	//char ***my_envp
-	if (execl->my_envp && mode == 2)
+	if (execl->my_envp && mode == 3)
 	{
 		*(execl->my_envp) = free_db_str(*(execl->my_envp));
 		free(*(execl->my_envp));
@@ -145,9 +145,26 @@ t_execlist	*free_exec(t_execlist *execl, int mode)
 
 /*
 ERROR
-export + exit
+(export, cd, unset) + exit
+(export, cd, unset) + (export, cd, unset)
+(export, cd, unset) simplesmente assim da erro
 (provavelmente as my_envp)
-tenho mesmo que ir ver ao executor como fiz honestamente
+ontem estava a dar (acho eu), o que raio mudei
+
+cd && unset sem args
+testar ja isto. se estiver bem, nao preciso de mudar nada
+-----
+export VAR=value | env (nao muda)
+export TESTVAR=hello (muda)
+env | grep TESTVAR (nao muda)
+unset TESTVAR | env (nao muda)
+env | grep TESTVAR  
+cd <local> | pwd
+pwd
+export TESTVAR1=foo
+export TESTVAR2=bar
+export TESTVAR1=newvalue | unset TESTVAR2 | env
+
 
 - ja retirei o to_end do header e n me deu nenhum erro.. espero n haver esqueletos prai
 - para testar o free my_envp, tem que ser modo 2 (exit ou erros)
@@ -186,8 +203,4 @@ my envp??
 (main.c, p_1.c, etc)
 testar com ls que nao altera envp
 talvez testar aqueles comandos unset e o crl p verificar que funciona?
-
-FREE (free_execl)
-- (provavelmente tenho que esperar pelo error_stt)
-- pelo menos resolver os non error stt
 */

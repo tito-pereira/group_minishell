@@ -109,7 +109,7 @@ int	exec_main(t_execlist *execl)
 	//int		**redir;
 	char	***exec_str;
 
-	//ft_printf("Inside the executor:\n");
+	//printf("exec. exit stt is %d\n", (*execl->exit_stt));
 	fd = (int **)ft_calloc(execl->valid_cmds, sizeof(int *));
 	//redir = (int **)ft_calloc(execl->valid_cmds, sizeof(int *));
 	exec_str = (char ***)ft_calloc(execl->valid_cmds, sizeof(char **));
@@ -123,18 +123,23 @@ int	exec_main(t_execlist *execl)
 	}
 	//ft_printf("All mallocs succesfull\n");
 	sig_handlerr(3);
+	/*if (execl->valid_cmds)
+		printf("valid_cmds = %d\n", execl->valid_cmds);
+	else
+		printf("there are no valid_cmds\n");*/
 	init_exec(execl, fd); // V
 	get_exec_str(execl, exec_str); // V
+	//printf("exec2. exit stt is %d\n", (*execl->exit_stt));
 	exec_loop(execl, fd, exec_str); // X
-	//if (execl->my_envp)
-	//{
-		//printf("\n\n\nenvp exists\n");
-		//print_db_char(execl->my_envp[0]);
-	//}
-	//else
-		//printf("envp is NULL somehow\n");
+	/*if (execl->my_envp)
+	{
+		printf("\n\n\nenvp exists\n");
+		print_db_char(execl->my_envp[0]);
+	}
+	else
+		printf("envp is NULL somehow\n");*/
 	//ft_printf("after exec loop env = %s\n", execl->my_envp[0][51]);
 	end_exec(execl, fd, exec_str); // X
-	//ft_printf("after exec end env = %s\n", execl->my_envp[0][52]);
+	//printf("end exec. exit stt is %d\n", (*execl->exit_stt));
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 13:01:23 by tibarbos          #+#    #+#             */
-/*   Updated: 2024/06/28 22:22:35 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 21:30:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	blt_central(t_execlist *execl, int i, char **exec_str)
 {
-	//printf("BLT central\n");
+	printf("BLT central\n");
 	if (ft_strncmp(exec_str[0], "cd", 3) == 0)
 		ft_cd(execl->exit_stt, execl->chunk[i]->cmd_n_args, execl->my_envp);
 	else if (ft_strncmp(exec_str[0], "echo", 5) == 0)
@@ -29,7 +29,7 @@ void	blt_central(t_execlist *execl, int i, char **exec_str)
 		ft_pwd(execl->exit_stt, execl->chunk[i]->cmd_n_args, *(execl->my_envp));
     else if (ft_strncmp(exec_str[0], "unset", 6) == 0)
 		ft_unset(execl->exit_stt, execl->chunk[i]->cmd_n_args, execl->my_envp);
-	//ft_printf("\n\n\ndentro blt central env\n");
+	ft_printf("\nleaving blt central env\n");
 	//print_db_char(execl->my_envp[0]);
 }
 

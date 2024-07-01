@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarbos <tibarbos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:06:17 by rlima-fe          #+#    #+#             */
-/*   Updated: 2024/05/23 18:18:29 by tibarbos         ###   ########.fr       */
+/*   Updated: 2024/06/30 22:32:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	ft_pwd(int *err, char **cmd, char **envp)
 	else
 	{
 		ft_printf("minishell >> : pwd : invalid usage\n");
-		*err = 69;
+		//*err = 69;
 	}
-	*err = 0;
+	//*err = 0;
+	(void)err;
 }
